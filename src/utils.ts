@@ -7,17 +7,16 @@ const CORSHeaders: Record<string, string> = {
   "Access-Control-Max-Age": "86400",
 };
 
-const CacheHeaders: Record<string, string> = {
-  ...CORSHeaders,
-  "Cache-Control": "public, max-age=300, s-maxage=3600",
-};
-
 const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
 
-const json = (data: unknown, status = 200, useCache = false): JSONResponse => {
+const metaNameRegex = (name: string) => new RegExp(`<meta[^>]*name="${name}"[^>]*content="([^"]*)"`, "i");
+const metaPropertyRegex = (property: string) => new RegExp(`<meta[^>]*property="${property}"[^>]*content="([^"]*)"`, "i");
+const metaTwitterRegex = (name: string) => new RegExp(`<meta[^>]*name="twitter:${name}"[^>]*content="([^"]*)"`, "i");
+
+const json = (data: unknown, status = 200): JSONResponse => {
   return new Response(JSON.stringify(data), {
     status,
-    headers: useCache ? CacheHeaders : CORSHeaders,
+    headers: CORSHeaders,
   });
 };
 
@@ -25,11 +24,10 @@ const error = (message: string, status = 500): JSONResponse => {
   return json({ error: message }, status);
 };
 
-const fetchAoty = async (path: string, useCache = false): Promise<Response> => {
+const fetchAoty = async (path: string): Promise<Response> => {
   const url = path.startsWith("http") ? path : `https://www.albumoftheyear.org${path}`;
   const res = await fetch(url, {
     headers: { "User-Agent": USER_AGENT },
-    ...(useCache && { cf: { cacheTtl: 3600, cacheEverything: true } }),
   });
   if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
   return res;
@@ -61,23 +59,22 @@ const stripHtml = (html: string): string => {
 };
 
 const extractMeta = (html: string, name: string): string => {
-  const match = html.match(new RegExp(`<meta[^>]*name="${name}"[^>]*content="([^"]*)"`, "i"));
+  const match = html.match(metaNameRegex(name));
   return match ? match[1] : "";
 };
 
 const extractOgMeta = (html: string, property: string): string => {
-  const match = html.match(new RegExp(`<meta[^>]*property="${property}"[^>]*content="([^"]*)"`, "i"));
+  const match = html.match(metaPropertyRegex(property));
   return match ? match[1] : "";
 };
 
 const extractTwMeta = (html: string, name: string): string => {
-  const match = html.match(new RegExp(`<meta[^>]*name="twitter:${name}"[^>]*content="([^"]*)"`, "i"));
+  const match = html.match(metaTwitterRegex(name));
   return match ? match[1] : "";
 };
 
 export {
   CORSHeaders,
-  CacheHeaders,
   USER_AGENT,
   json,
   error,

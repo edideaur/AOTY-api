@@ -1,4 +1,4 @@
-import { json, stripHtml, extractMeta, extractOgMeta, extractTwMeta, splitArtistAlbum } from "../utils";
+import { json, stripHtml, extractMeta, extractOgMeta, extractTwMeta, splitArtistAlbum, fetchAoty } from "../utils";
 import type { AlbumItem, ListMetadata, ParsedAlbumItem, JSONResponse } from "../types";
 
 const URL_A_REGEX = /<a[^>]*href="([^"]+)"[^>]*itemprop="url"[^>]*>([^<]+)<\/a>/;
@@ -75,12 +75,9 @@ const parseMetadata = (html: string): ListMetadata => {
 };
 
 export const handleListItems = async (slug: string): Promise<JSONResponse> => {
-  const res = await fetch(`https://www.albumoftheyear.org/list/${slug}/`, {
-    headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" },
-  });
-  if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
-
-  const html = new TextDecoder().decode(await res.arrayBuffer());
+  try {
+    const res = await fetchAoty(`/list/${slug}/`);
+    const html = new TextDecoder().decode(await res.arrayBuffer());
   const metadata = parseMetadata(html);
 
   const items: AlbumItem[] = [];
@@ -115,5 +112,8 @@ export const handleListItems = async (slug: string): Promise<JSONResponse> => {
       } as ParsedAlbumItem;
     });
 
-  return json({ metadata, items: sorted }, 200, true);
+  return json({ metadata, items: sorted });
+  } catch {
+    return json({ error: "Failed to fetch list" }, 500);
+  }
 };

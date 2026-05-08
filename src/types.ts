@@ -1,7 +1,3 @@
-export interface Env {
-  AOTY_WORKER: unknown;
-}
-
 export interface AlbumItem {
   rank: number | null;
   artistAlbum: string;
@@ -69,11 +65,6 @@ export interface ListMetadata {
   fbAppId: string;
   listImage: string;
   sourceUrl: string;
-}
-
-export interface ListResult {
-  metadata: ListMetadata;
-  items: ParsedAlbumItem[];
 }
 
 export interface ParsedAlbumItem {

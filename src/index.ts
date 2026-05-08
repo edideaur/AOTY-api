@@ -3,7 +3,7 @@ import { handleListItems } from "./handlers/listItems";
 import { handleLists } from "./handlers/lists";
 import { handleAlbum } from "./handlers/album";
 import { handleDiscover, handleDiscoverCategory } from "./handlers/anticipated";
-import type { Env, JSONResponse } from "./types";
+import type { JSONResponse } from "./types";
 
 const API_INFO = {
   name: "Album of the Year API",
@@ -52,7 +52,18 @@ const handleRoot = (): JSONResponse => {
   });
 };
 
-const handleRequest = async (request: Request, _env: Env): Promise<JSONResponse> => {
+const handleRequest = async (request: Request): Promise<JSONResponse> => {
+  if (request.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Max-Age": "86400",
+      },
+    });
+  }
+
   const url = new URL(request.url);
   const pathname = url.pathname;
   const params: Record<string, string> = {};
@@ -103,7 +114,7 @@ const handleRequest = async (request: Request, _env: Env): Promise<JSONResponse>
 };
 
 export default {
-  fetch(request: Request, env: Env): Promise<JSONResponse> {
-    return handleRequest(request, env);
+  fetch(request: Request): Promise<JSONResponse> {
+    return handleRequest(request);
   }
-} satisfies ExportedHandler<Env>;
+};

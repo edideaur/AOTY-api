@@ -1,4 +1,4 @@
-import { json, extractMeta, extractOgMeta } from "../utils";
+import { json, extractMeta, extractOgMeta, fetchAoty } from "../utils";
 import type { ListItem, ListsMetadata, JSONResponse } from "../types";
 
 const parseListsMetadata = (html: string): ListsMetadata => {
@@ -19,38 +19,38 @@ const parseListsMetadata = (html: string): ListsMetadata => {
 };
 
 export const handleLists = async (year?: string): Promise<JSONResponse> => {
-  const path = year 
-    ? `https://www.albumoftheyear.org/lists.php?y=${year}`
-    : "https://www.albumoftheyear.org/lists.php";
+  try {
+    const path = year 
+      ? `/lists.php?y=${year}`
+      : "/lists.php";
 
-  const res = await fetch(path, {
-    headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" },
-  });
-  if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+    const res = await fetchAoty(path);
+    const html = new TextDecoder().decode(await res.arrayBuffer());
+    const metadata = parseListsMetadata(html);
 
-  const html = new TextDecoder().decode(await res.arrayBuffer());
-  const metadata = parseListsMetadata(html);
+    const listColumnRegex = /<div class="listColumn">([\s\S]*?)<\/div><\/div>/g;
+    const lists: ListItem[] = [];
+    let match;
 
-  const listColumnRegex = /<div class="listColumn">([\s\S]*?)<\/div><\/div>/g;
-  const lists: ListItem[] = [];
-  let match;
+    while ((match = listColumnRegex.exec(html)) !== null) {
+      const columnHtml = match[1];
+      const linkMatch = columnHtml.match(/<div class="listText"><a href="(\/list\/[^"]+)"[^>]*>([^<]+)<\/a>/);
+      const imgMatch = columnHtml.match(/<div class="listLogo"><img[^>]*src="[^"]+\/([^."]+)\.[^"]+"/);
+      const iconMatch = columnHtml.match(/<div class="listIcon"><i class="[^"]*"><\/i><\/div>/);
 
-  while ((match = listColumnRegex.exec(html)) !== null) {
-    const columnHtml = match[1];
-    const linkMatch = columnHtml.match(/<div class="listText"><a href="(\/list\/[^"]+)"[^>]*>([^<]+)<\/a>/);
-    const imgMatch = columnHtml.match(/<div class="listLogo"><img[^>]*src="[^"]+\/([^."]+)\.[^"]+"/);
-    const iconMatch = columnHtml.match(/<div class="listIcon"><i class="[^"]*"><\/i><\/div>/);
+      if (linkMatch) {
+        const slug = linkMatch[1].replace(/^\/list\//, "").replace(/\/$/, "");
+        const name = linkMatch[2].trim();
+        let image = "";
+        if (imgMatch) image = imgMatch[1];
+        else if (iconMatch) image = "icon";
 
-    if (linkMatch) {
-      const slug = linkMatch[1].replace(/^\/list\//, "").replace(/\/$/, "");
-      const name = linkMatch[2].trim();
-      let image = "";
-      if (imgMatch) image = imgMatch[1];
-      else if (iconMatch) image = "icon";
-
-      lists.push({ name, slug, image });
+        lists.push({ name, slug, image });
+      }
     }
-  }
 
-  return json({ metadata, lists }, 200, true);
+    return json({ metadata, lists });
+  } catch {
+    return json({ error: "Failed to fetch lists" }, 500);
+  }
 };
