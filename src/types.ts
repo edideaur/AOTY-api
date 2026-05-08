@@ -39,6 +39,7 @@ export interface Album {
   artist: string;
   album: string;
   url: string;
+  image: string;
   critic: {
     score: string;
     count: string;
@@ -47,6 +48,12 @@ export interface Album {
   user: {
     score: string;
     count: string;
+  };
+  streaming: {
+    amazon: string;
+    appleMusic: string;
+    spotify: string;
+    soundcloud: string;
   };
 }
 

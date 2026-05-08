@@ -7,6 +7,7 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
 
     const searchRes = await fetchAoty(searchUrl);
     let albumPageUrl: string | null = null;
+    let albumImage: string = "";
 
     await new HTMLRewriter().on("div.albumBlock a", {
       element(el) {
@@ -27,11 +28,13 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
     let userReviewsRaw = "";
     let reviewSelector = 0;
 
+    let amazon = "";
+    let appleMusic = "";
+    let spotify = "";
+    let soundcloud = "";
+
     const reviews: Review[] = [];
     let currentReview: Review | null = null;
-    let inReviewText = false;
-    let inPublication = false;
-    let inAuthor = false;
 
     await new HTMLRewriter()
       .on('a[href="#critics"]', {
@@ -47,13 +50,39 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
           if (reviewSelector === 2) userReviewsRaw += t.text;
         }
       })
+      .on("div.albumTopBox.cover img", {
+        element(el) {
+          albumImage = el.getAttribute("src") || "";
+        }
+      })
+      .on("a[data-track-action='Amazon']", {
+        element(el) {
+          const href = el.getAttribute("href");
+          if (href) amazon = href;
+        }
+      })
+      .on("a[href*='apple.com']", {
+        element(el) {
+          const href = el.getAttribute("href");
+          if (href) appleMusic = href;
+        }
+      })
+      .on("a[href*='spotify.com']", {
+        element(el) {
+          const href = el.getAttribute("href");
+          if (href) spotify = href;
+        }
+      })
+      .on("a[href*='soundcloud.com']", {
+        element(el) {
+          const href = el.getAttribute("href");
+          if (href) soundcloud = href;
+        }
+      })
       .on("div.albumReviewRow", {
         element() {
           currentReview = { score: "", publication: "", author: "", text: "", image: "", link: "" };
           reviews.push(currentReview);
-          inReviewText = false;
-          inPublication = false;
-          inAuthor = false;
         }
       })
       .on("div.albumReviewRating", {
@@ -67,33 +96,32 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
         }
       })
       .on("div.publication a", {
-        element(el) { 
-          inPublication = true;
+        element(el) {
+          if (currentReview) {
+            const href = el.getAttribute("href");
+            if (href && href.startsWith("/publication/")) currentReview.link = `https://www.albumoftheyear.org${href}`;
+          }
+        },
+        text(t) {
+          if (currentReview && !currentReview.publication) currentReview.publication += t.text;
+        }
+      })
+      .on("div.author a", {
+        text(t) {
+          if (currentReview) currentReview.author += t.text;
+        }
+      })
+      .on("div.albumReviewText", {
+        text(t) {
+          if (currentReview) currentReview.text += t.text;
+        }
+      })
+      .on("div.extLink a", {
+        element(el) {
           if (currentReview) {
             const href = el.getAttribute("href");
             if (href && href.startsWith("http")) currentReview.link = href;
           }
-        },
-        text(t) {
-          if (currentReview && inPublication) currentReview.publication += t.text;
-        }
-      })
-      .on("div.author a", {
-        element() { inAuthor = true; },
-        text(t) {
-          if (currentReview && inAuthor) currentReview.author += t.text;
-        }
-      })
-      .on("div.albumReviewText", {
-        element() {
-          inReviewText = true;
-          inPublication = false;
-          inAuthor = false;
-        }
-      })
-      .on("div.albumReviewText *", {
-        text(t) {
-          if (currentReview && inReviewText) currentReview.text += t.text;
         }
       })
       .transform(albumRes)
@@ -103,12 +131,13 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
       artist: artistQuery,
       album: albumQuery,
       url: albumPageUrl,
+      image: albumImage,
       critic: {
         score: criticScore.trim() || "N/A",
         count: extractNumbers(criticReviewsRaw),
         reviews: reviews
           .slice(0, 50)
-          .filter((r): r is Review => !!r.publication.trim() && !!r.link)
+          .filter((r): r is Review => !!r.publication.trim() && (!!r.link || !!r.text))
           .map((r) => ({
             score: r.score.trim(),
             publication: r.publication.trim(),
@@ -121,6 +150,12 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
       user: {
         score: userScore.trim() || "N/A",
         count: extractNumbers(userReviewsRaw),
+      },
+      streaming: {
+        amazon: amazon || "",
+        appleMusic: appleMusic || "",
+        spotify: spotify || "",
+        soundcloud: soundcloud || "",
       },
     };
 
