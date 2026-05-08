@@ -40,6 +40,7 @@ export interface Album {
   album: string;
   url: string;
   image: string;
+  mustHear: boolean;
   critic: {
     score: string;
     count: string;

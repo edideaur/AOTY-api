@@ -32,6 +32,7 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
     let appleMusic = "";
     let spotify = "";
     let soundcloud = "";
+    let mustHear = false;
 
     const reviews: Review[] = [];
     let currentReview: Review | null = null;
@@ -77,6 +78,11 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
         element(el) {
           const href = el.getAttribute("href");
           if (href) soundcloud = href;
+        }
+      })
+      .on("div.mustHearButton", {
+        element() {
+          mustHear = true;
         }
       })
       .on("div.albumReviewRow", {
@@ -132,6 +138,7 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
       album: albumQuery,
       url: albumPageUrl,
       image: albumImage,
+      mustHear,
       critic: {
         score: criticScore.trim() || "N/A",
         count: extractNumbers(criticReviewsRaw),
