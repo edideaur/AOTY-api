@@ -33,9 +33,11 @@ const fetchAoty = async (path: string): Promise<Response> => {
   return res;
 };
 
-const extractNumbers = (str: string): string => {
-  const match = str.match(/[\d,]+/);
-  return match ? match[0] : "N/A";
+const parseCount = (s: string): number | null => {
+  const kMatch = s.match(/^([\d.]+)K$/i);
+  if (kMatch) return Math.round(parseFloat(kMatch[1]) * 1000);
+  const n = parseInt(s.replace(/,/g, ""), 10);
+  return isNaN(n) ? null : n;
 };
 
 const splitArtistAlbum = (artistAlbum: string): { artist: string; album: string } => {
@@ -79,7 +81,7 @@ export {
   json,
   error,
   fetchAoty,
-  extractNumbers,
+  parseCount,
   splitArtistAlbum,
   stripHtml,
   extractMeta,

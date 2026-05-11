@@ -3,6 +3,7 @@ import { handleListItems } from "./handlers/listItems";
 import { handleLists } from "./handlers/lists";
 import { handleAlbum } from "./handlers/album";
 import { handleDiscover, handleDiscoverCategory } from "./handlers/anticipated";
+import { handleMustHear } from "./handlers/musthear";
 import type { JSONResponse } from "./types";
 
 const API_INFO = {
@@ -18,7 +19,8 @@ const API_INFO = {
     "/discover/singles": "Get discover singles with reviews",
     "/discover/top-rated": "Get top rated albums",
     "/discover/under-radar": "Get under the radar albums",
-    "/discover/anticipated": "Get highly anticipated albums"
+    "/discover/anticipated": "Get highly anticipated albums",
+    "/musthear": "Get must hear albums (optional: ?page=2, ?decade=2020, ?year=2024)"
   },
   examples: {
     lists: [
@@ -38,6 +40,14 @@ const API_INFO = {
       "GET /discover/top-rated",
       "GET /discover/under-radar",
       "GET /discover/anticipated"
+    ],
+    musthear: [
+      "GET /musthear",
+      "GET /musthear?page=2",
+      "GET /musthear?decade=2020",
+      "GET /musthear?decade=2020s&page=2",
+      "GET /musthear?year=2024",
+      "GET /musthear?year=2024&page=2"
     ]
   }
 };
@@ -64,7 +74,11 @@ const handleRequest = async (request: Request): Promise<JSONResponse> => {
     });
   }
 
-  const url = new URL(request.url);
+  const rawUrl = request.url;
+  const qIdx = rawUrl.indexOf('?');
+  const fixedUrl = qIdx === -1 ? rawUrl
+    : rawUrl.slice(0, qIdx + 1) + rawUrl.slice(qIdx + 1).replace(/\?/g, '&');
+  const url = new URL(fixedUrl);
   const pathname = url.pathname;
   const params: Record<string, string> = {};
   url.searchParams.forEach((v, k) => { params[k] = v; });
@@ -105,6 +119,10 @@ const handleRequest = async (request: Request): Promise<JSONResponse> => {
 
     case "/discover/anticipated": {
       return handleDiscoverCategory("anticipated");
+    }
+
+    case "/musthear": {
+      return handleMustHear(params.page || "1", params.decade || null, params.year || null);
     }
 
     default: {

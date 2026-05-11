@@ -1,4 +1,4 @@
-import { fetchAoty, json } from "../utils";
+import { fetchAoty, json, parseCount } from "../utils";
 import type { AnticipatedAlbum, JSONResponse } from "../types";
 
 export const handleDiscover = async (): Promise<JSONResponse> => {
@@ -34,14 +34,24 @@ export const handleDiscoverCategory = async (category: string): Promise<JSONResp
       const linkMatch = blockHtml.match(/<div class="image"><a href="([^"]+)"[^>]*>/);
       const url = linkMatch ? `https://www.albumoftheyear.org${linkMatch[1]}` : "";
 
-      const ratingMatch = blockHtml.match(/<div class="rating"[^>]*>(\d+)<\/div>/);
-      const criticScore = ratingMatch ? parseInt(ratingMatch[1], 10) : null;
+      let criticScore: number | null = null;
+      let criticReviewCount: number | null = null;
+      let userScore: number | null = null;
+      let userReviewCount: number | null = null;
 
-      const criticReviewMatch = blockHtml.match(/<div class="ratingText">critic score<\/div>[\s\S]*?<div class="ratingText">\((\d+)\)/);
-      const criticReviewCount = criticReviewMatch ? parseInt(criticReviewMatch[1].replace(/,/g, ""), 10) : null;
-
-      const userReviewMatch = blockHtml.match(/<div class="ratingText">user score<\/div>[\s\S]*?<div class="ratingText">\((\d+)\)/);
-      const userReviewCount = userReviewMatch ? parseInt(userReviewMatch[1].replace(/,/g, ""), 10) : null;
+      const ratingRowParts = blockHtml.split('<div class="ratingRow">');
+      for (let i = 1; i < ratingRowParts.length; i++) {
+        const rowPart = ratingRowParts[i];
+        const scoreMatch = rowPart.match(/<div class="rating">\s*(\d+)\s*<\/div>/);
+        const typeMatch = rowPart.match(/<div class="ratingText">\s*(critic|user) score\s*<\/div>/);
+        const countMatch = rowPart.match(/<div class="ratingText">\s*\(([\d,.]+K?)\)\s*<\/div>/);
+        if (scoreMatch && typeMatch) {
+          const s = parseInt(scoreMatch[1], 10);
+          const count = countMatch ? parseCount(countMatch[1]) : null;
+          if (typeMatch[1] === "critic") { criticScore = s; criticReviewCount = count; }
+          else { userScore = s; userReviewCount = count; }
+        }
+      }
 
       const wantMatch = blockHtml.matchAll(/<div class="comment_count"[^>]*>([\d,]+)<\/div>/g);
       const wantCounts = Array.from(wantMatch, m => parseInt(m[1].replace(/,/g, ""), 10) || 0);
@@ -54,9 +64,9 @@ export const handleDiscoverCategory = async (category: string): Promise<JSONResp
           image,
           releaseDate,
           url,
-          score: criticScore,
           criticScore,
           criticReviewCount,
+          userScore,
           userReviewCount,
           wantCount,
         });

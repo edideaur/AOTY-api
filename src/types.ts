@@ -42,13 +42,13 @@ export interface Album {
   image: string;
   mustHear: boolean;
   critic: {
-    score: string;
-    count: string;
+    score: number | null;
+    count: number | null;
     reviews: Review[];
   };
   user: {
-    score: string;
-    count: string;
+    score: number | null;
+    count: number | null;
   };
   streaming: {
     amazon: string;
@@ -96,11 +96,23 @@ export interface AnticipatedAlbum {
   image: string;
   releaseDate: string;
   url: string;
-  score: number | null;
   criticScore: number | null;
   criticReviewCount: number | null;
+  userScore: number | null;
   userReviewCount: number | null;
   wantCount: number;
+}
+
+export interface MustHearAlbum {
+  artist: string;
+  album: string;
+  image: string;
+  year: number | null;
+  url: string;
+  criticScore: number | null;
+  criticCount: number | null;
+  userScore: number | null;
+  userCount: number | null;
 }
 
 export type JSONResponse = Response;

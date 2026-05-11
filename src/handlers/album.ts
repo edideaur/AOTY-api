@@ -1,4 +1,4 @@
-import { fetchAoty, json, extractNumbers, stripHtml } from "../utils";
+import { fetchAoty, json, parseCount, stripHtml } from "../utils";
 import type { Album, Review, JSONResponse } from "../types";
 
 export const handleAlbum = async (artistQuery: string, albumQuery: string): Promise<JSONResponse> => {
@@ -140,8 +140,8 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
       image: albumImage,
       mustHear,
       critic: {
-        score: criticScore.trim() || "N/A",
-        count: extractNumbers(criticReviewsRaw),
+        score: parseCount(criticScore.trim()),
+        count: parseCount(criticReviewsRaw.trim()),
         reviews: reviews
           .slice(0, 50)
           .filter((r): r is Review => !!r.publication.trim() && (!!r.link || !!r.text))
@@ -155,8 +155,8 @@ export const handleAlbum = async (artistQuery: string, albumQuery: string): Prom
           })),
       },
       user: {
-        score: userScore.trim() || "N/A",
-        count: extractNumbers(userReviewsRaw),
+        score: parseCount(userScore.trim()),
+        count: parseCount(userReviewsRaw.trim()),
       },
       streaming: {
         amazon: amazon || "",
