@@ -196,8 +196,8 @@ export async function scrapeAlbumPage(pageUrl: string): Promise<AlbumDetail> {
   const extractNum = (raw: string): string => (raw.match(/[\d,]+/) ?? [""])[0];
 
   const format = (() => {
-    const row = s.detailRowTexts[1] ?? "";
-    return row.split(/\/[\s ]*Format/i)[0].trim().replace(/\s+/g, " ");
+    const row = (s.detailRowTexts[1] ?? "").replace(/&nbsp;/g, " ").replace(/ /g, " ");
+    return row.split(/\/\s*Format/i)[0].trim().replace(/\s+/g, " ");
   })();
 
   const primaryLabel = s.labels.length > 0
@@ -234,7 +234,7 @@ export async function scrapeAlbumPage(pageUrl: string): Promise<AlbumDetail> {
     id: s.albumId,
     title: String(jsonLd["name"] ?? ""),
     artist: byArtist?.name ?? "",
-    artistUrl: byArtist?.url ? `${BASE}${byArtist.url}` : "",
+    artistUrl: byArtist?.url ? (byArtist.url.startsWith("http") ? byArtist.url : `${BASE}${byArtist.url}`) : "",
     cover: String(jsonLd["image"] ?? ""),
     datePublished: String(jsonLd["datePublished"] ?? ""),
     format,
