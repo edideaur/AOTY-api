@@ -9,14 +9,16 @@ const EXTRAS_HEADERS: HeadersInit = {
 
 export async function scrapeAlbumStats(albumId: string): Promise<AlbumStats | null> {
   try {
-    const res = await fetch("https://www.albumoftheyear.org/scripts/moreStatsAlbum.php", {
+    const res = await fetch(`${BASE}/scripts/moreStatsAlbum.php`, {
       method: "POST",
       headers: EXTRAS_HEADERS,
       body: `albumID=${albumId}`,
     });
     if (!res.ok) return null;
     const text = await res.text();
-    const nums = [...text.matchAll(/[\d,]+/g)].map((m) => parseInt(m[0].replace(/,/g, ""), 10));
+    const nums = [...text.matchAll(/[\d,]+/g)]
+      .map((m) => parseInt(m[0].replace(/,/g, ""), 10))
+      .filter((n) => !isNaN(n));
     if (nums.length < 5) return null;
     return {
       favorites: nums[0] ?? null,
@@ -32,7 +34,7 @@ export async function scrapeAlbumStats(albumId: string): Promise<AlbumStats | nu
 
 export async function scrapeAlbumCredits(albumId: string): Promise<CreditSection[] | null> {
   try {
-    const res = await fetch("https://www.albumoftheyear.org/scripts/showAlbumCredits.php", {
+    const res = await fetch(`${BASE}/scripts/showAlbumCredits.php`, {
       method: "POST",
       headers: EXTRAS_HEADERS,
       body: `albumID=${albumId}`,

@@ -1,8 +1,8 @@
-import { BASE, REQ_HEADERS } from "../constants.js";
+import { BASE, FETCH_OPTS } from "../constants.js";
 import type { NewsItem } from "../types.js";
 
 export async function scrapeNewsPage(url: string): Promise<NewsItem[]> {
-  const res = await fetch(url, { headers: REQ_HEADERS });
+  const res = await fetch(url, FETCH_OPTS);
   if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
 
   const items: NewsItem[] = [];
@@ -19,8 +19,8 @@ export async function scrapeNewsPage(url: string): Promise<NewsItem[]> {
           source: "",
           sourceUrl: "",
           date: "",
-          likes: "0",
-          comments: "0",
+          likes: "",
+          comments: "",
         };
         items.push(current as NewsItem);
       },
@@ -58,7 +58,7 @@ export async function scrapeNewsPage(url: string): Promise<NewsItem[]> {
     title: (item.title ?? "").trim(),
     source: (item.source ?? "").trim(),
     date: (item.date ?? "").trim(),
-    likes: (item.likes ?? "0").trim(),
-    comments: (item.comments ?? "0").trim(),
+    likes: (item.likes ?? "").trim() || "0",
+    comments: (item.comments ?? "").trim() || "0",
   }));
 }

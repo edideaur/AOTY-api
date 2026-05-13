@@ -1,8 +1,8 @@
-import { BASE, REQ_HEADERS } from "../constants.js";
+import { BASE, FETCH_OPTS } from "../constants.js";
 import type { SearchArtist, SearchLabel } from "../types.js";
 
 export async function scrapeArtistSearch(url: string): Promise<SearchArtist[]> {
-  const res = await fetch(url, { headers: REQ_HEADERS });
+  const res = await fetch(url, FETCH_OPTS);
   if (!res.ok) throw new Error(`Artist search failed: ${res.status}`);
 
   const artists: SearchArtist[] = [];
@@ -49,7 +49,7 @@ export async function scrapeArtistSearch(url: string): Promise<SearchArtist[]> {
 }
 
 export async function scrapeLabelSearch(url: string): Promise<SearchLabel[]> {
-  const res = await fetch(url, { headers: REQ_HEADERS });
+  const res = await fetch(url, FETCH_OPTS);
   if (!res.ok) throw new Error(`Label search failed: ${res.status}`);
 
   const labels: SearchLabel[] = [];

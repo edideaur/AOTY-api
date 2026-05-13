@@ -1,5 +1,7 @@
-import { BASE, RES_HEADERS } from "./constants.js";
+import { BASE, FETCH_OPTS, RES_HEADERS } from "./constants.js";
 import { openApiSpec } from "./openapi.js";
+
+const OPENAPI_BODY = JSON.stringify(openApiSpec);
 import { scrapeAlbumBlocks } from "./scrapers/albumBlock.js";
 import { findAlbumUrl, scrapeAlbumPage } from "./scrapers/album.js";
 import { scrapeNewsPage } from "./scrapers/news.js";
@@ -15,8 +17,7 @@ function corsOptions(): Response {
   return new Response(null, { status: 204, headers: RES_HEADERS });
 }
 
-function scalarPage(): Response {
-  const html = `<!DOCTYPE html>
+const SCALAR_HTML = `<!DOCTYPE html>
 <html>
 <head>
   <title>AOTY API</title>
@@ -69,19 +70,19 @@ function scalarPage(): Response {
   <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
 </body>
 </html>`;
-  return new Response(html, {
+
+function scalarPage(): Response {
+  return new Response(SCALAR_HTML, {
     headers: { "Content-Type": "text/html; charset=utf-8", "Access-Control-Allow-Origin": "*" },
   });
 }
 
+function getPage(q: URLSearchParams): number {
+  return Math.max(1, parseInt(q.get("page") ?? "1", 10));
+}
+
 async function fetchAlbumBlocks(aotyPath: string) {
-  const res = await fetch(`${BASE}${aotyPath}`, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-      "Accept-Language": "en-US,en;q=0.9",
-    },
-  });
+  const res = await fetch(`${BASE}${aotyPath}`, FETCH_OPTS);
   if (!res.ok) throw new Error(`Upstream fetch failed: ${res.status}`);
   return scrapeAlbumBlocks(res);
 }
@@ -99,7 +100,7 @@ export default {
       }
 
       if (path === "/openapi.json") {
-        return json(openApiSpec);
+        return new Response(OPENAPI_BODY, { status: 200, headers: RES_HEADERS });
       }
 
       if (path === "/album") {
@@ -115,7 +116,7 @@ export default {
           albumUrl = await findAlbumUrl(artist, name);
           if (!albumUrl) return json({ error: "Album not found" }, 404);
         } else {
-          return json({ error: "Provide either slug or both artist and name" }, 400);
+          return json({ error: "Provide either slug (ID or full slug) or both artist and name" }, 400);
         }
 
         const detail = await scrapeAlbumPage(albumUrl);
@@ -131,19 +132,19 @@ export default {
       }
 
       if (path === "/releases") {
-        const page = Math.max(1, parseInt(q.get("page") ?? "1", 10));
+        const page = getPage(q);
         const albums = await fetchAlbumBlocks(`/releases/${page}/`);
         return json({ page, albums });
       }
 
       if (path === "/releases/singles") {
-        const page = Math.max(1, parseInt(q.get("page") ?? "1", 10));
+        const page = getPage(q);
         const albums = await fetchAlbumBlocks(`/releases/singles/${page}/`);
         return json({ page, albums });
       }
 
       if (path === "/upcoming") {
-        const page = Math.max(1, parseInt(q.get("page") ?? "1", 10));
+        const page = getPage(q);
         const albums = await fetchAlbumBlocks(`/upcoming/${page}/`);
         return json({ page, albums });
       }
@@ -171,7 +172,7 @@ export default {
       if (path === "/must-hear") {
         const year = q.get("year");
         const decade = q.get("decade");
-        const page = Math.max(1, parseInt(q.get("page") ?? "1", 10));
+        const page = getPage(q);
 
         let aotyPath: string;
         let periodLabel: string;
@@ -191,7 +192,7 @@ export default {
       }
 
       if (path === "/news") {
-        const page = Math.max(1, parseInt(q.get("page") ?? "1", 10));
+        const page = getPage(q);
         const type = q.get("type") ?? "newsworthy";
         const validTypes = ["newsworthy", "new", "comment"];
         const feedType = validTypes.includes(type) ? type : "newsworthy";

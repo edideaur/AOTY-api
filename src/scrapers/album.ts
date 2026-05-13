@@ -1,9 +1,9 @@
-import { BASE, REQ_HEADERS } from "../constants.js";
+import { BASE, FETCH_OPTS } from "../constants.js";
 import type { AlbumDetail, CriticReview, StreamingLink, Track } from "../types.js";
 
 export async function findAlbumUrl(artist: string, name: string): Promise<string | null> {
   const q = encodeURIComponent(`${artist} - ${name}`);
-  const res = await fetch(`${BASE}/search/albums/?q=${q}`, { headers: REQ_HEADERS });
+  const res = await fetch(`${BASE}/search/albums/?q=${q}`, FETCH_OPTS);
   if (!res.ok) throw new Error(`Search failed: ${res.status}`);
 
   const found = { url: null as string | null };
@@ -23,7 +23,7 @@ export async function findAlbumUrl(artist: string, name: string): Promise<string
 }
 
 export async function scrapeAlbumPage(pageUrl: string): Promise<AlbumDetail> {
-  const res = await fetch(pageUrl, { headers: REQ_HEADERS });
+  const res = await fetch(pageUrl, FETCH_OPTS);
   if (!res.ok) throw new Error(`Album fetch failed: ${res.status}`);
 
   const s = {

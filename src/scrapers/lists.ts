@@ -1,20 +1,18 @@
-import { BASE, REQ_HEADERS } from "../constants.js";
+import { BASE, FETCH_OPTS } from "../constants.js";
 import type { ListDetailItem, ListEntry } from "../types.js";
 
 export async function scrapeListsIndex(url: string): Promise<ListEntry[]> {
-  const res = await fetch(url, { headers: REQ_HEADERS });
+  const res = await fetch(url, FETCH_OPTS);
   if (!res.ok) throw new Error(`Lists fetch failed: ${res.status}`);
 
   const entries: ListEntry[] = [];
   let current: Partial<ListEntry> | null = null;
-  let inLogo = false;
 
   await new HTMLRewriter()
     .on(".listColumn .listPub", {
       element() {
         current = { url: "", title: "", publication: "", cover: null };
         entries.push(current as ListEntry);
-        inLogo = false;
       },
     })
     .on(".listColumn .listPub > a", {
@@ -25,16 +23,12 @@ export async function scrapeListsIndex(url: string): Promise<ListEntry[]> {
         }
       },
     })
-    .on(".listColumn .listLogo", {
-      element() { inLogo = true; },
-    })
     .on(".listColumn .listLogo img", {
       element(el) {
         if (current) {
           current.cover = el.getAttribute("src") ?? null;
           current.title = el.getAttribute("alt") ?? "";
         }
-        inLogo = false;
       },
     })
     .on(".listColumn .listText a", {
@@ -51,7 +45,7 @@ export async function scrapeListsIndex(url: string): Promise<ListEntry[]> {
 }
 
 export async function scrapeListDetail(url: string): Promise<{ title: string; sourceUrl: string; items: ListDetailItem[] }> {
-  const res = await fetch(url, { headers: REQ_HEADERS });
+  const res = await fetch(url, FETCH_OPTS);
   if (!res.ok) throw new Error(`List detail fetch failed: ${res.status}`);
 
   let listTitle = "";

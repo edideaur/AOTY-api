@@ -12,7 +12,7 @@ export const openApiSpec = {
       get: {
         summary: "Get album details",
         description:
-          "Return full album details including scores, tracklist, reviews, streaming links, stats, and credits. Provide either slug (direct lookup) or both artist and name (search-based lookup). Pass minimal=true to skip the PHP-based stats and credits calls.",
+          "Return full album details including scores, tracklist, reviews, streaming links, stats, and credits. Provide either slug (ID or full slug for direct lookup) or both artist and name (search-based lookup). Pass minimal=true to skip the PHP-based stats and credits calls.",
         operationId: "getAlbum",
         parameters: [
           {
@@ -20,8 +20,8 @@ export const openApiSpec = {
             in: "query",
             required: false,
             schema: { type: "string" },
-            description: "AOTY album slug for direct lookup (e.g. 12345-artist-album-name). Use this or artist+name.",
-            example: "35936-outkast-aquemini",
+            description: "AOTY album ID or full slug (e.g. '2915' or '2915-outkast-aquemini'). Use this or artist+name.",
+            example: "2915",
           },
           {
             name: "artist",
