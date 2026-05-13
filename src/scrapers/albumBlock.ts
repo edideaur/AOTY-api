@@ -38,7 +38,7 @@ export async function scrapeAlbumBlocks(res: Response): Promise<AlbumBlock[]> {
     })
     .on(".albumBlock .image img", {
       element(el) {
-        if (cur) cur.cover = el.getAttribute("src") ?? "";
+        if (cur) cur.cover = el.getAttribute("src") || el.getAttribute("data-src") || "";
       },
     })
     .on(".albumBlock .image .mustHear", {
@@ -91,10 +91,10 @@ export async function scrapeAlbumBlocks(res: Response): Promise<AlbumBlock[]> {
     .transform(res)
     .arrayBuffer();
 
-  return albums.map((a) => ({
-    ...a,
-    artist: (a.artist ?? "").trim(),
-    title: (a.title ?? "").trim(),
-    releaseDate: (a.releaseDate ?? "").trim(),
-  }));
+  for (const a of albums) {
+    a.artist = a.artist.trim();
+    a.title = a.title.trim();
+    a.releaseDate = a.releaseDate.trim();
+  }
+  return albums;
 }

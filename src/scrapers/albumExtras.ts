@@ -82,6 +82,13 @@ export async function scrapeAlbumCredits(albumId: string): Promise<CreditSection
       .transform(res)
       .arrayBuffer();
 
+    for (const section of sections) {
+      section.title = section.title.trim();
+      for (const credit of section.credits) {
+        credit.name = credit.name.trim();
+      }
+    }
+
     return sections.length > 0 ? sections : null;
   } catch {
     return null;

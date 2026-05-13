@@ -102,7 +102,7 @@ export async function scrapeListDetail(url: string): Promise<{ title: string; so
       url: item.url ?? "",
       cover: item.cover ?? "",
       date: (item.date ?? "").trim(),
-      genres: ((item.genres as string[]) ?? []).map((g) => g.trim()).filter(Boolean),
+      genres: [...new Set(((item.genres as string[]) ?? []).map((g) => g.trim()).filter(Boolean))],
     })),
   };
 }

@@ -69,7 +69,7 @@ export async function scrapeLabelSearch(url: string): Promise<SearchLabel[]> {
           if (href) current.url = BASE + href;
         }
       },
-      text(t) { if (current && !current.name) current.name += t.text; },
+      text(t) { if (current) current.name += t.text; },
     })
     .on(".tagRow .ui-autocomplete-descriptor", {
       text(t) { if (current) current.description = (current.description ?? "") + t.text; },
