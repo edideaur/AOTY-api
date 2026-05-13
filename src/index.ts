@@ -21,6 +21,7 @@ const SCALAR_HTML = `<!DOCTYPE html>
 <html>
 <head>
   <title>AOTY API</title>
+  <link rel="icon" href="https://Prigoana.com/favicon.png" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
