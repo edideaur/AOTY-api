@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xmlns:fb="http://ogp.me/ns/fb#">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Album Search - Album of The Year</title>
+        <link rel="preconnect" href="https://config.playwire.com" crossorigin/>
+        <link rel="preconnect" href="https://cdn.intergi.com" crossorigin/>
+        <link rel="preconnect" href="https://cdn.intergient.com" crossorigin/>
+        <link rel="preconnect" href="https://securepubads.g.doubleclick.net" crossorigin/>
+        <link rel="preconnect" href="https://cdn.playwire.com" crossorigin/>
+        <link rel="preconnect" href="https://cdn.video.playwire.com" crossorigin/>
+        <link rel="preconnect" href="https://z.moatads.com" crossorigin/>
+        <script data-cfasync="false">
+            window.ramp = window.ramp || {};
+            window.ramp.que = window.ramp.que || [];
+        </script>
+        <!--<script data-cfasync="false" async src="//cdn.intergient.com/1024410/73067/ramp_config.js"></script>-->
+        <script>
+            window._pwGA4PageviewId = ''.concat(Date.now());
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = window.gtag || function() {
+                dataLayer.push(arguments);
+            }
+            ;
+            gtag('js', new Date());
+            gtag('config', 'G-JB4RT8XZVE', {
+                'send_page_view': false
+            });
+            gtag('event', 'ramp_js', {
+                'send_to': 'G-JB4RT8XZVE',
+                'pageview_id': window._pwGA4PageviewId
+            });
+        </script>
+        <link rel="stylesheet" type="text/css" href="/style.css?v=1778257874">
+        <link rel="preload" href="/font-awesome/css/fontawesome.min.css" as="style" onload="this.rel='stylesheet'">
+        <link rel="preload" href="/font-awesome/css/regular.min.css" as="style" onload="this.rel='stylesheet'">
+        <link rel="preload" href="/font-awesome/css/solid.min.css" as="style" onload="this.rel='stylesheet'">
+        <link rel="preload" href="/font-awesome/css/brands.min.css" as="style" onload="this.rel='stylesheet'">
+        <link rel="preload" href="/font-awesome/css/light.min.css" as="style" onload="this.rel='stylesheet'">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+        <noscript>
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" type="text/css"/>
+        </noscript>
+        <!-- <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> -->
+        <link rel="icon" href="https://cdn.albumoftheyear.org/images/favicon.png" type="image/x-icon">
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start': new Date().getTime(),
+                    event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0]
+                  , j = d.createElement(s)
+                  , dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            }
+            )(window, document, 'script', 'dataLayer', 'GTM-TPD5DD');
+        </script>
+        <!-- End Google Tag Manager -->
+        <script>
+            var dimensionValue = 'Logged Out';
+            ga('set', 'dimension1', dimensionValue);
+        </script>
+        <script>
+            gtag('set', 'user_properties', {
+                account_status: 'Logged Out'
+            });
+        </script>
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#000000">
+        <script>
+            if ('serviceWorker'in navigator) {
+                navigator.serviceWorker.register('/sw.js?v=2');
+            }
+        </script>
+    </head>
+    <body id="graybg">
+        <script data-cfasync="false">
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+            if (prefersDarkScheme.matches) {
+                document.body.classList.add("dark");
+            } else {
+                document.body.classList.remove("dark");
+            }
+        </script>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TPD5DD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <div id="header" class="header" style="z-index: 2147483647;">
+            <div id="content">
+                <div class="logoHead">
+                    <a class="siteLogo" href="/"></a>
+                </div>
+                <div class="mobileProfile">
+                    <a href="/account/">
+                        <img src="https://cdn.albumoftheyear.org/user/thumbs/default.jpg"/>
+                    </a>
+                </div>
+                <div id="mobileNav" class="navButton">
+                    <button onclick="changeClass(); return false;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                <div class="searchContainer" id="searchContainer">
+                    <form id="search" action="/search/">
+                        <input type="text" class="searchBox" name="q" id="searchT" autocomplete="off" placeholder="Search albums, artists, genres etc." value="kanye"/>
+                        <span class="searchImage">
+                            <button onclick="document.getElementById('search').submit()">
+                                <i class="far fa-search" style="vertical-align: middle;"></i>
+                            </button>
+                        </span>
+                    </form>
+                </div>
+                <div id="searchSuggestions"></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="nav" id="nav" style="z-index: 2147483646;">
+            <div id="content">
+                <div class="navBlock">
+                    <a href="/ratings/6-highest-rated/2026/1">Best Albums</a>
+                </div>
+                <div class="navBlock">
+                    <a href="/discover/">Discover</a>
+                </div>
+                <div class="navBlock">
+                    <a href="/releases/">New Releases</a>
+                </div>
+                <div class="navBlock">
+                    <a href="/lists.php">Lists</a>
+                </div>
+                <div class="navBlock noTablet">
+                    <a href="/genre.php">Genres</a>
+                </div>
+                <div class="navBlock noTablet">
+                    <a href="/l/newsworthy/">News</a>
+                </div>
+                <div class="navBlock noTablet">
+                    <a href="/users/">Community</a>
+                </div>
+                <div class="navBlock signIn">
+                    <a href="/account/">Sign In</a>
+                </div>
+                <div class="navSocialMobile">
+                    <a href="https://www.facebook.com/albumoftheyear" target="_blank" rel="nofollow">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.twitter.com/aoty" target="_blank" rel="nofollow">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/aotyorg/" target="_blank" rel="nofollow">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.threads.net/@aotyorg" target="_blank" title="Threads" rel="nofollow">
+                        <i class="fa-brands fa-threads"></i>
+                    </a>
+                    <a href="https://bsky.app/profile/aoty.org" target="_blank" title="Bluesky" rel="nofollow">
+                        <i class="fa-brands fa-bluesky"></i>
+                    </a>
+                    <a href="https://open.spotify.com/user/aoty" target="_blank" rel="nofollow">
+                        <i class="fa-brands fa-spotify"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="headerAd">
+            <!--  [Desktop/Tablet]leaderboard_atf -->
+            <div data-pw-desk="leaderboard_atf" id="pwDeskLbAtf"></div>
+            <script type="text/javascript">
+                window.ramp.que.push(function() {
+                    window.ramp.addTag("pwDeskLbAtf");
+                })
+            </script>
+        </div>
+        <div id="centerContent">
+            <div class="fullWidth">
+                <div class="selectRow">
+                    <div class="selectBox">
+                        <a href="/search/?q=kanye">All</a>
+                    </div>
+                    <div class="selectBox selected">Albums</div>
+                    <div class="selectBox">
+                        <a href="/search/artists/?q=kanye">Artists</a>
+                    </div>
+                    <div class="selectBox">
+                        <a href="/search/lists/?q=kanye">Lists</a>
+                    </div>
+                    <div class="selectBox">
+                        <a href="/search/labels/?q=kanye">Labels</a>
+                    </div>
+                    <div class="selectBox">
+                        <a href="/search/tags/?q=kanye">Tags</a>
+                    </div>
+                    <div class="selectBox">
+                        <a href="/search/news/?q=kanye">News</a>
+                    </div>
+                </div>
+                <h1 class="headline" style="margin-top:5px;">Search Results for "kanye"</h1>
+                <div style="margin-bottom:10px;">
+                    <div class="subHeadline">Albums (490)</div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/43815-the-chainsmokers-kanye.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/2014/43815-kanye.jpg" alt="The Chainsmokers - Kanye" srcset="https://cdn2.albumoftheyear.org/400x0/album/2014/43815-kanye.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/18404-the-chainsmokers/">
+                            <div class="artistTitle">The Chainsmokers</div>
+                        </a>
+                        <a href="/album/43815-the-chainsmokers-kanye.php">
+                            <div class="albumTitle">Kanye</div>
+                        </a>
+                        <div class="type">2014 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/634927-twinstar-kanye.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/634927-kanye_1334.jpg" alt="Twinstar - kanye" srcset="https://cdn2.albumoftheyear.org/400x0/album/634927-kanye_1334.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">Twinstar & Kys devi</div>
+                        <a href="/album/634927-twinstar-kanye.php">
+                            <div class="albumTitle">kanye</div>
+                        </a>
+                        <div class="type">2023 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/1789465-jspr-kanye.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1789465-kanye_183946.jpg" alt="jspr - kanye" srcset="https://cdn2.albumoftheyear.org/400x0/album/1789465-kanye_183946.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/647891-jspr/">
+                            <div class="artistTitle">jspr</div>
+                        </a>
+                        <a href="/album/1789465-jspr-kanye.php">
+                            <div class="albumTitle">kanye</div>
+                        </a>
+                        <div class="type">2026 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock video" data-type="music video">
+                        <div class="image">
+                            <a href="/album/1801021-the-chainsmokers-kanye.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1801021-kanye_212124.jpg" alt="The Chainsmokers - Kanye" srcset="https://cdn2.albumoftheyear.org/400x0/album/1801021-kanye_212124.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/18404-the-chainsmokers/">
+                            <div class="artistTitle">The Chainsmokers</div>
+                        </a>
+                        <a href="/album/1801021-the-chainsmokers-kanye.php">
+                            <div class="albumTitle">Kanye</div>
+                        </a>
+                        <div class="type">2014 • Music Video</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image">
+                            <a href="/album/1629164-zivo-kanye.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1629164-kanye_161609.jpg" alt="zivo - Kanye" srcset="https://cdn2.albumoftheyear.org/400x0/album/1629164-kanye_161609.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/626274-zivo/">
+                            <div class="artistTitle">zivo</div>
+                        </a>
+                        <a href="/album/1629164-zivo-kanye.php">
+                            <div class="albumTitle">Kanye</div>
+                        </a>
+                        <div class="type">2019 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image mustHear both">
+                            <a href="/album/1998-kanye-west-my-beautiful-dark-twisted-fantasy.php">
+                                <div class="mustHear">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/my-beautiful-dark-twisted-fantasy-2.jpg" alt="Kanye West - My Beautiful Dark Twisted Fantasy" srcset="https://cdn2.albumoftheyear.org/400x0/album/my-beautiful-dark-twisted-fantasy-2.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/1998-kanye-west-my-beautiful-dark-twisted-fantasy.php">
+                            <div class="albumTitle">My Beautiful Dark Twisted Fantasy</div>
+                        </a>
+                        <div class="type">2010 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image mustHear user">
+                            <a href="/album/435-kanye-west-graduation.php">
+                                <div class="mustHear">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/graduation-1.jpg" alt="Kanye West - Graduation" srcset="https://cdn2.albumoftheyear.org/400x0/album/graduation-1.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/435-kanye-west-graduation.php">
+                            <div class="albumTitle">Graduation</div>
+                        </a>
+                        <div class="type">2007 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image mustHear both">
+                            <a href="/album/508-kanye-west-the-college-dropout.php">
+                                <div class="mustHear">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/the-college-dropout-2.jpg" alt="Kanye West - The College Dropout" srcset="https://cdn2.albumoftheyear.org/400x0/album/the-college-dropout-2.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/508-kanye-west-the-college-dropout.php">
+                            <div class="albumTitle">The College Dropout</div>
+                        </a>
+                        <div class="type">2004 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image mustHear both">
+                            <a href="/album/7215-kanye-west-yeezus.php">
+                                <div class="mustHear">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/7215-yeezus_112411.jpg" alt="Kanye West - Yeezus" srcset="https://cdn2.albumoftheyear.org/400x0/album/7215-yeezus_112411.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/7215-kanye-west-yeezus.php">
+                            <div class="albumTitle">Yeezus</div>
+                        </a>
+                        <div class="type">2013 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image mustHear user">
+                            <a href="/album/48146-kanye-west-the-life-of-pablo.php">
+                                <div class="mustHear">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="noCover">
+                                    <i class="fa-light fa-lock"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/48146-kanye-west-the-life-of-pablo.php">
+                            <div class="albumTitle">The Life of Pablo</div>
+                        </a>
+                        <div class="type">2016 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image mustHear both">
+                            <a href="/album/484-kanye-west-late-registration.php">
+                                <div class="mustHear">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/484-late-registration_045254.jpg" alt="Kanye West - Late Registration" srcset="https://cdn2.albumoftheyear.org/400x0/album/484-late-registration_045254.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/484-kanye-west-late-registration.php">
+                            <div class="albumTitle">Late Registration</div>
+                        </a>
+                        <div class="type">2005 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image">
+                            <a href="/album/112577-kanye-west-ye.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/112577-ye_232655.jpg" alt="Kanye West - ye" srcset="https://cdn2.albumoftheyear.org/400x0/album/112577-ye_232655.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/112577-kanye-west-ye.php">
+                            <div class="albumTitle">ye</div>
+                        </a>
+                        <div class="type">2018 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image mustHear user">
+                            <a href="/album/844-kanye-west-808s-heartbreak.php">
+                                <div class="mustHear">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/808s-heartbreak-1.jpg" alt="Kanye West - 808s &amp; Heartbreak" srcset="https://cdn2.albumoftheyear.org/400x0/album/808s-heartbreak-1.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/844-kanye-west-808s-heartbreak.php">
+                            <div class="albumTitle">808s &amp;Heartbreak</div>
+                        </a>
+                        <div class="type">2008 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image">
+                            <a href="/album/262792-kanye-west-donda.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/262792-donda_211950.jpg" alt="Kanye West - Donda" srcset="https://cdn2.albumoftheyear.org/400x0/album/262792-donda_211950.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/262792-kanye-west-donda.php">
+                            <div class="albumTitle">Donda</div>
+                        </a>
+                        <div class="type">2021 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image">
+                            <a href="/album/173704-kanye-west-jesus-is-king.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/2019/173704-jesus-is-king-3.jpg" alt="Kanye West - JESUS IS KING" srcset="https://cdn2.albumoftheyear.org/400x0/album/2019/173704-jesus-is-king-3.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/173704-kanye-west-jesus-is-king.php">
+                            <div class="albumTitle">JESUS IS KING</div>
+                        </a>
+                        <div class="type">2019 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image">
+                            <a href="/album/1087819-kanye-west-bully.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1087819-bully_141411.jpg" alt="Kanye West - BULLY" srcset="https://cdn2.albumoftheyear.org/400x0/album/1087819-bully_141411.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Ye</div>
+                        </a>
+                        <a href="/album/1087819-kanye-west-bully.php">
+                            <div class="albumTitle">BULLY</div>
+                        </a>
+                        <div class="type">2026 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image">
+                            <a href="/album/854855-ys-vultures-2.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/854855-vultures-2_093208.jpg" alt="¥$ - VULTURES 2" srcset="https://cdn2.albumoftheyear.org/400x0/album/854855-vultures-2_093208.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/287060-ys/">
+                            <div class="artistTitle">¥$</div>
+                        </a>
+                        <a href="/album/854855-ys-vultures-2.php">
+                            <div class="albumTitle">VULTURES 2</div>
+                        </a>
+                        <div class="type">2024 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image">
+                            <a href="/album/2724-jay-z-kanye-west-watch-the-throne.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/2724-watch-the-throne_112744.jpg" alt="JAY-Z & Kanye West - Watch the Throne" srcset="https://cdn2.albumoftheyear.org/400x0/album/2724-watch-the-throne_112744.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">JAY-Z & Kanye West</div>
+                        <a href="/album/2724-jay-z-kanye-west-watch-the-throne.php">
+                            <div class="albumTitle">Watch the Throne</div>
+                        </a>
+                        <div class="type">2011 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="compilation">
+                        <div class="image">
+                            <a href="/album/1242209-jackboys-jackboys-2.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1242209-jackboys-2_050611.jpg" alt="JACKBOYS - JACKBOYS 2" srcset="https://cdn2.albumoftheyear.org/400x0/album/1242209-jackboys-2_050611.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">JACKBOYS & Travis Scott</div>
+                        <a href="/album/1242209-jackboys-jackboys-2.php">
+                            <div class="albumTitle">JACKBOYS 2</div>
+                        </a>
+                        <div class="type">2025 • Compilation</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="lp">
+                        <div class="image">
+                            <a href="/album/463133-kanye-west-donda-2.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/463133-donda-2_061343.jpg" alt="Kanye West - Donda 2" srcset="https://cdn2.albumoftheyear.org/400x0/album/463133-donda-2_061343.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Ye</div>
+                        </a>
+                        <a href="/album/463133-kanye-west-donda-2.php">
+                            <div class="albumTitle">Donda 2</div>
+                        </a>
+                        <div class="type">2022 • LP</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="reissue">
+                        <div class="image">
+                            <a href="/album/1256144-kanye-west-donda-2-reissue.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1256144-donda-2_024309.jpg" alt="Kanye West - DONDA 2 [Reissue]" srcset="https://cdn2.albumoftheyear.org/400x0/album/1256144-donda-2_024309.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">DONDA</div>
+                        </a>
+                        <a href="/album/1256144-kanye-west-donda-2-reissue.php">
+                            <div class="albumTitle">DONDA 2 [Reissue]</div>
+                        </a>
+                        <div class="type">2025 • Reissue</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/1264506-kanye-west-ww3.php">
+                                <div class="noCover">
+                                    <i class="fa-light fa-lock"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Ye</div>
+                        </a>
+                        <a href="/album/1264506-kanye-west-ww3.php">
+                            <div class="albumTitle">WW3</div>
+                        </a>
+                        <div class="type">2025 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="compilation">
+                        <div class="image">
+                            <a href="/album/3911-various-artists-kanye-west-presents-good-music-cruel-summer.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/cruel-summer-1.jpg" alt="Various Artists - Kanye West Presents: GOOD Music - Cruel Summer" srcset="https://cdn2.albumoftheyear.org/400x0/album/cruel-summer-1.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/396-various-artists/">
+                            <div class="artistTitle">G.O.O.D. Music</div>
+                        </a>
+                        <a href="/album/3911-various-artists-kanye-west-presents-good-music-cruel-summer.php">
+                            <div class="albumTitle">Kanye West Presents: GOOD Music - Cruel Summer</div>
+                        </a>
+                        <div class="type">2012 • Compilation</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/410551-kanye-west-andre-3000-life-of-the-party.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/410551-life-of-the-party-1.jpg" alt="Kanye West & André 3000 - Life of the Party" srcset="https://cdn2.albumoftheyear.org/400x0/album/410551-life-of-the-party-1.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">Kanye West & André 3000</div>
+                        <a href="/album/410551-kanye-west-andre-3000-life-of-the-party.php">
+                            <div class="albumTitle">Life of the Party</div>
+                        </a>
+                        <div class="type">2021 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="miscellaneous">
+                        <div class="image">
+                            <a href="/album/1360535-kanye-west-bully-june-sampler.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1360535-bully_155129.jpg" alt="Kanye West - BULLY [June Sampler]" srcset="https://cdn2.albumoftheyear.org/400x0/album/1360535-bully_155129.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Ye</div>
+                        </a>
+                        <a href="/album/1360535-kanye-west-bully-june-sampler.php">
+                            <div class="albumTitle">BULLY [June Sampler]</div>
+                        </a>
+                        <div class="type">2025 • Miscellaneous</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="unofficial">
+                        <div class="image">
+                            <a href="/album/165954-kanye-west-yandhi.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/165954-yandhi-4.jpg" alt="Kanye West - Yandhi" srcset="https://cdn2.albumoftheyear.org/400x0/album/165954-yandhi-4.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/165954-kanye-west-yandhi.php">
+                            <div class="albumTitle">Yandhi</div>
+                        </a>
+                        <div class="type">2019 • Unofficial</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="reissue">
+                        <div class="image">
+                            <a href="/album/437824-kanye-west-donda-deluxe.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/437824-donda-deluxe.jpg" alt="Kanye West - Donda (Deluxe)" srcset="https://cdn2.albumoftheyear.org/400x0/album/437824-donda-deluxe.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/437824-kanye-west-donda-deluxe.php">
+                            <div class="albumTitle">Donda (Deluxe)</div>
+                        </a>
+                        <div class="type">2021 • Reissue</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="video">
+                        <div class="image">
+                            <a href="/album/1256148-kanye-west-bully-v1.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1256148-bully_032655.jpg" alt="Kanye West - BULLY V1" srcset="https://cdn2.albumoftheyear.org/400x0/album/1256148-bully_032655.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/1256148-kanye-west-bully-v1.php">
+                            <div class="albumTitle">BULLY V1</div>
+                        </a>
+                        <div class="type">2025 • Video</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/48660-kanye-west-runaway.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/48660-runaway-1.jpg" alt="Kanye West - Runaway" srcset="https://cdn2.albumoftheyear.org/400x0/album/48660-runaway-1.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/48660-kanye-west-runaway.php">
+                            <div class="albumTitle">Runaway</div>
+                        </a>
+                        <div class="type">2010 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/936141-kanye-west-like-that-remix.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/936141-like-that-remix_214604.jpg" alt="Kanye West - LIKE THAT REMIX" srcset="https://cdn2.albumoftheyear.org/400x0/album/936141-like-that-remix_214604.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Ye</div>
+                        </a>
+                        <a href="/album/936141-kanye-west-like-that-remix.php">
+                            <div class="albumTitle">LIKE THAT REMIX</div>
+                        </a>
+                        <div class="type">2024 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/1296326-kanye-west-cousins.php">
+                                <div class="noCover">
+                                    <i class="fa-light fa-lock"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Ye</div>
+                        </a>
+                        <a href="/album/1296326-kanye-west-cousins.php">
+                            <div class="albumTitle">COUSINS</div>
+                        </a>
+                        <div class="type">2025 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/109224-kanye-west-lift-yourself.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/109224-lift-yourself_033419.jpg" alt="Kanye West - Lift Yourself" srcset="https://cdn2.albumoftheyear.org/400x0/album/109224-lift-yourself_033419.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/109224-kanye-west-lift-yourself.php">
+                            <div class="albumTitle">Lift Yourself</div>
+                        </a>
+                        <div class="type">2018 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/143188-kanye-west-devil-in-a-new-dress.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/143188-devil-in-a-new-dress-1.jpg" alt="Kanye West - Devil in a New Dress" srcset="https://cdn2.albumoftheyear.org/400x0/album/143188-devil-in-a-new-dress-1.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/143188-kanye-west-devil-in-a-new-dress.php">
+                            <div class="albumTitle">Devil in a New Dress</div>
+                        </a>
+                        <div class="type">2010 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/48557-kanye-west-no-more-parties-in-la.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/2016/48557-no-more-parties-in-la.jpg" alt="Kanye West - No More Parties in LA" srcset="https://cdn2.albumoftheyear.org/400x0/album/2016/48557-no-more-parties-in-la.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/48557-kanye-west-no-more-parties-in-la.php">
+                            <div class="albumTitle">No More Parties in LA</div>
+                        </a>
+                        <div class="type">2016 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/22423-kanye-west-power.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/22423-power.jpg" alt="Kanye West - POWER" srcset="https://cdn2.albumoftheyear.org/400x0/album/22423-power.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/22423-kanye-west-power.php">
+                            <div class="albumTitle">POWER</div>
+                        </a>
+                        <div class="type">2010 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="miscellaneous">
+                        <div class="image">
+                            <a href="/album/1377431-kanye-west-bully-july-sampler.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1377431-bully_211325.jpg" alt="Kanye West - BULLY [July Sampler]" srcset="https://cdn2.albumoftheyear.org/400x0/album/1377431-bully_211325.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Ye</div>
+                        </a>
+                        <a href="/album/1377431-kanye-west-bully-july-sampler.php">
+                            <div class="albumTitle">BULLY [July Sampler]</div>
+                        </a>
+                        <div class="type">2025 • Miscellaneous</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="demo">
+                        <div class="image">
+                            <a href="/album/153023-kanye-west-kanyes-beat-sept-97.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/153023-kanye-west-demo-beat-tape.jpg" alt="Kanye West - Kanye&#039;s Beat Sept. 97&#039;" srcset="https://cdn2.albumoftheyear.org/400x0/album/153023-kanye-west-demo-beat-tape.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/153023-kanye-west-kanyes-beat-sept-97.php">
+                            <div class="albumTitle">Kanye &#039;s Beat Sept. 97 &#039;</div>
+                        </a>
+                        <div class="type">1997 • Demo</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="dj mix">
+                        <div class="image">
+                            <a href="/album/254198-kanye-west-welcome-to-kanyes-soul-mix-show.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/254198-kanyes-soul-mix-show.jpg" alt="Kanye West - Welcome To Kanye&#039;s Soul Mix Show" srcset="https://cdn2.albumoftheyear.org/400x0/album/254198-kanyes-soul-mix-show.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">A-Trak & Kanye West</div>
+                        <a href="/album/254198-kanye-west-welcome-to-kanyes-soul-mix-show.php">
+                            <div class="albumTitle">Welcome To Kanye &#039;s Soul Mix Show</div>
+                        </a>
+                        <div class="type">2006 • DJ Mix</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/1538270-kanye-west-i-love-kanye.php">
+                                <div class="noCover">
+                                    <i class="fa-light fa-lock"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/1538270-kanye-west-i-love-kanye.php">
+                            <div class="albumTitle">I Love Kanye</div>
+                        </a>
+                        <div class="type">2016 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="unofficial">
+                        <div class="image">
+                            <a href="/album/393326-kanye-west-kanye-west-presents-donda-live-listening-event-july-22nd-2021.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/393326-kanye-west-presents-donda-live-listening-event-july-22nd-2021.jpg" alt="Kanye West - Kanye West Presents Donda (Live Listening Event July 22nd, 2021)" srcset="https://cdn2.albumoftheyear.org/400x0/album/393326-kanye-west-presents-donda-live-listening-event-july-22nd-2021.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/393326-kanye-west-kanye-west-presents-donda-live-listening-event-july-22nd-2021.php">
+                            <div class="albumTitle">Kanye West Presents Donda (Live Listening Event July 22nd, 2021)</div>
+                        </a>
+                        <div class="type">2021 • Unofficial</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="unofficial">
+                        <div class="image">
+                            <a href="/album/398010-kanye-west-kanye-west-presents-donda.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/398010-kanye-west-presents-donda-second-live-listening-event-august-5.jpg" alt="Kanye West - Kanye West Presents Donda: The Livestream (August 5th)" srcset="https://cdn2.albumoftheyear.org/400x0/album/398010-kanye-west-presents-donda-second-live-listening-event-august-5.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/398010-kanye-west-kanye-west-presents-donda.php">
+                            <div class="albumTitle">Kanye West Presents Donda: The Livestream (August 5th)</div>
+                        </a>
+                        <div class="type">2021 • Unofficial</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="unofficial">
+                        <div class="image">
+                            <a href="/album/403313-kanye-west-kanye-west-presents-donda-the-livestream-august-26th.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/403313-kanye-west-presents-donda-the-livestream-august-26th-1.jpg" alt="Kanye West - Kanye West Presents Donda: The Livestream (August 26th)" srcset="https://cdn2.albumoftheyear.org/400x0/album/403313-kanye-west-presents-donda-the-livestream-august-26th-1.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/403313-kanye-west-kanye-west-presents-donda-the-livestream-august-26th.php">
+                            <div class="albumTitle">Kanye West Presents Donda: The Livestream (August 26th)</div>
+                        </a>
+                        <div class="type">2021 • Unofficial</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="compilation">
+                        <div class="image">
+                            <a href="/album/878142-kanye-west-kanye-the-essentials-collection.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/878142-kanye-the-essentials-collection_231029.jpg" alt="Kanye West - Kanye: The Essentials Collection" srcset="https://cdn2.albumoftheyear.org/400x0/album/878142-kanye-the-essentials-collection_231029.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">Kanye & Mick Boogie</div>
+                        <a href="/album/878142-kanye-west-kanye-the-essentials-collection.php">
+                            <div class="albumTitle">Kanye: The Essentials Collection</div>
+                        </a>
+                        <div class="type">2004 • Compilation</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="compilation">
+                        <div class="image">
+                            <a href="/album/878145-kanye-west-second-semester-kanye-essentials-2.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/878145-second-semester-kanye-essentials-2_232058.jpg" alt="Kanye West - Second Semester: Kanye Essentials 2" srcset="https://cdn2.albumoftheyear.org/400x0/album/878145-second-semester-kanye-essentials-2_232058.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">Kanye West & Mick Boogie</div>
+                        <a href="/album/878145-kanye-west-second-semester-kanye-essentials-2.php">
+                            <div class="albumTitle">Second Semester: Kanye Essentials 2</div>
+                        </a>
+                        <div class="type">2005 • Compilation</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="instrumental">
+                        <div class="image">
+                            <a href="/album/247539-kanye-west-ferris-bueller-plain-pat-present-behind-the-beats-kanye-west.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/247539-ferris-bueller-plain-pat-present-behind-the-beats-kanye-west.jpg" alt="Kanye West - Ferris Bueller &amp; Plain Pat Present: Behind The Beats - Kanye West" srcset="https://cdn2.albumoftheyear.org/400x0/album/247539-ferris-bueller-plain-pat-present-behind-the-beats-kanye-west.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/247539-kanye-west-ferris-bueller-plain-pat-present-behind-the-beats-kanye-west.php">
+                            <div class="albumTitle">Ferris Bueller &amp;Plain Pat Present: Behind The Beats - Kanye West</div>
+                        </a>
+                        <div class="type">2003 • Instrumental</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="miscellaneous">
+                        <div class="image">
+                            <a href="/album/1098759-kanye-west-kanye-west-vodafone-mixtape.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1098759-kanye-west-vodafone-mixtape_025902.jpg" alt="Kanye West - Kanye West Vodafone Mixtape" srcset="https://cdn2.albumoftheyear.org/400x0/album/1098759-kanye-west-vodafone-mixtape_025902.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/1098759-kanye-west-kanye-west-vodafone-mixtape.php">
+                            <div class="albumTitle">Kanye West Vodafone Mixtape</div>
+                        </a>
+                        <div class="type">2007 • Miscellaneous</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="unofficial">
+                        <div class="image">
+                            <a href="/album/512930-kanye-west-the-hype-men-present-kanye-wests-first-beats.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/512930-the-hype-men-present-kanye-wests-first-beats.jpg" alt="Kanye West - The Hype Men Present... Kanye West&#039;s First Beats" srcset="https://cdn2.albumoftheyear.org/400x0/album/512930-the-hype-men-present-kanye-wests-first-beats.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/512930-kanye-west-the-hype-men-present-kanye-wests-first-beats.php">
+                            <div class="albumTitle">The Hype Men Present... Kanye West &#039;s First Beats</div>
+                        </a>
+                        <div class="type">2011 • Unofficial</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="miscellaneous">
+                        <div class="image">
+                            <a href="/album/1149096-mike-love-the-mike-love-show-the-interview-with-kanye-west.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1149096-the-mike-love-show-the-interview-with-kanye-west_223441.jpg" alt="Mike Love - The Mike Love Show: The Interview with Kanye West" srcset="https://cdn2.albumoftheyear.org/400x0/album/1149096-the-mike-love-show-the-interview-with-kanye-west_223441.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">Mike Love & Kanye West</div>
+                        <a href="/album/1149096-mike-love-the-mike-love-show-the-interview-with-kanye-west.php">
+                            <div class="albumTitle">The Mike Love Show: The Interview with Kanye West</div>
+                        </a>
+                        <div class="type">2004 • Miscellaneous</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="unofficial">
+                        <div class="image">
+                            <a href="/album/1336325-kanye-west-nebuchadnezzar-a-kanye-west-opera.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1336325-nebuchadnezzar-a-kanye-west-opera_160451.jpg" alt="Kanye West - Nebuchadnezzar: A Kanye West Opera" srcset="https://cdn2.albumoftheyear.org/400x0/album/1336325-nebuchadnezzar-a-kanye-west-opera_160451.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/1336325-kanye-west-nebuchadnezzar-a-kanye-west-opera.php">
+                            <div class="albumTitle">Nebuchadnezzar: A Kanye West Opera</div>
+                        </a>
+                        <div class="type">2019 • Unofficial</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="unofficial">
+                        <div class="image">
+                            <a href="/album/946396-kanye-west-the-hype-men-present-kanye-wests-first-beats-disc-2.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/946396-the-hype-men-present-kanye-wests-first-beats-disc-2_231023.jpg" alt="Kanye West - The Hype Men Present... Kanye West&#039;s First Beats Disc 2" srcset="https://cdn2.albumoftheyear.org/400x0/album/946396-the-hype-men-present-kanye-wests-first-beats-disc-2_231023.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/946396-kanye-west-the-hype-men-present-kanye-wests-first-beats-disc-2.php">
+                            <div class="albumTitle">The Hype Men Present... Kanye West &#039;s First Beats Disc 2</div>
+                        </a>
+                        <div class="type">2011 • Unofficial</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="unofficial">
+                        <div class="image">
+                            <a href="/album/1806536-various-artists-the-kanye-collection.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1806536-the-kanye-collection_183956.jpg" alt="Various Artists - The Kanye Collection" srcset="https://cdn2.albumoftheyear.org/400x0/album/1806536-the-kanye-collection_183956.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/396-various-artists/">
+                            <div class="artistTitle">Various Artists</div>
+                        </a>
+                        <a href="/album/1806536-various-artists-the-kanye-collection.php">
+                            <div class="albumTitle">The Kanye Collection</div>
+                        </a>
+                        <div class="type">2005 • Unofficial</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/1169849-rkanye-good-sunday-3-devil-in-a-new-dress-feat-rkanye.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1169849-good-sunday-3-devil-in-a-new-dress-feat-rkanye_015948.jpg" alt="r/kanye - G​.​O​.​O​.​D. Sunday #3: Devil in a New Dress (feat. r/kanye)" srcset="https://cdn2.albumoftheyear.org/400x0/album/1169849-good-sunday-3-devil-in-a-new-dress-feat-rkanye_015948.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/65730-rkanye/">
+                            <div class="artistTitle">r/kanye</div>
+                        </a>
+                        <a href="/album/1169849-rkanye-good-sunday-3-devil-in-a-new-dress-feat-rkanye.php">
+                            <div class="albumTitle">G​.​O​.​O​.​D. Sunday #3: Devil in a New Dress (feat. r/kanye)</div>
+                        </a>
+                        <div class="type">2018 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="video">
+                        <div class="image">
+                            <a href="/album/1717518-kanye-west-bet-official-presents-kanye-west.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/1717518-bet-official-presents-kanye-west_160420.jpg" alt="Kanye West - BET Official Presents Kanye West" srcset="https://cdn2.albumoftheyear.org/400x0/album/1717518-bet-official-presents-kanye-west_160420.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/1717518-kanye-west-bet-official-presents-kanye-west.php">
+                            <div class="albumTitle">BET Official Presents Kanye West</div>
+                        </a>
+                        <div class="type">2005 • Video</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/88231-kanye-west-saint-pablo.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/88231-saint-pablo.jpg" alt="Kanye West - Saint Pablo" srcset="https://cdn2.albumoftheyear.org/400x0/album/88231-saint-pablo.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/88231-kanye-west-saint-pablo.php">
+                            <div class="albumTitle">Saint Pablo</div>
+                        </a>
+                        <div class="type">2016 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/86413-drake-kanye-west-lil-wayne-eminem-forever.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/86413-forever_223839.jpg" alt="Drake, Kanye West, Lil Wayne & Eminem - Forever" srcset="https://cdn2.albumoftheyear.org/400x0/album/86413-forever_223839.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <div class="artistTitle">Drake, Kanye West, Lil Wayne & Eminem</div>
+                        <a href="/album/86413-drake-kanye-west-lil-wayne-eminem-forever.php">
+                            <div class="albumTitle">Forever</div>
+                        </a>
+                        <div class="type">2009 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/457781-the-game-kanye-west-eazy.php">
+                                <div class="noCover">
+                                    <i class="fa-light fa-lock"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="artistTitle">Kanye West & The Game</div>
+                        <a href="/album/457781-the-game-kanye-west-eazy.php">
+                            <div class="albumTitle">Eazy</div>
+                        </a>
+                        <div class="type">2022 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/48517-kanye-west-through-the-wire.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/48517-through-the-wire.jpg" alt="Kanye West - Through the Wire" srcset="https://cdn2.albumoftheyear.org/400x0/album/48517-through-the-wire.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/48517-kanye-west-through-the-wire.php">
+                            <div class="albumTitle">Through the Wire</div>
+                        </a>
+                        <div class="type">2003 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/48594-kanye-west-all-day.php">
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/2015/48594-all-day.jpg" alt="Kanye West - All Day" srcset="https://cdn2.albumoftheyear.org/400x0/album/2015/48594-all-day.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/48594-kanye-west-all-day.php">
+                            <div class="albumTitle">All Day</div>
+                        </a>
+                        <div class="type">2015 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="live">
+                        <div class="image mustHear user">
+                            <a href="/album/29229-kanye-west-late-orchestration.php">
+                                <div class="mustHear">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <img src="https://cdn2.albumoftheyear.org/200x0/album/29229-late-orchestration-1.jpg" alt="Kanye West - Late Orchestration" srcset="https://cdn2.albumoftheyear.org/400x0/album/29229-late-orchestration-1.jpg 2x" loading="lazy"/>
+                            </a>
+                        </div>
+                        <a href="/artist/183-kanye-west/">
+                            <div class="artistTitle">Kanye West</div>
+                        </a>
+                        <a href="/album/29229-kanye-west-late-orchestration.php">
+                            <div class="albumTitle">Late Orchestration</div>
+                        </a>
+                        <div class="type">2006 • Live</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="albumBlock" data-type="single">
+                        <div class="image">
+                            <a href="/album/120862-kanye-west-lil-pump-i-love-it.php">
+                                <div class="noCover">
+                                    <i class="fa-light fa-lock"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="artistTitle">Kanye West & Lil Pump</div>
+                        <a href="/album/120862-kanye-west-lil-pump-i-love-it.php">
+                            <div class="albumTitle">I Love It</div>
+                        </a>
+                        <div class="type">2018 • Single</div>
+                        <div class="ratingRowContainer"></div>
+                    </div>
+                    <div class="pageSelectRow">
+                        <a href="/search/albums/?q=kanye&p=2">
+                            <div class="pageSelect next">Next</div>
+                        </a>
+                    </div>
+                    <div class="adTagWide">
+                        <div class="adHeading">Advertisement</div>
+                        <!--  [Desktop/Tablet]leaderboard_btf -->
+                        <div data-pw-desk="leaderboard_btf" id="pwDeskLbBtf1"></div>
+                        <script type="text/javascript">
+                            window.ramp.que.push(function() {
+                                window.ramp.addTag("pwDeskLbBtf1");
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <br/>
+            <div class="footerButtons">
+                <div class="footerButton spotify">
+                    <a href="https://open.spotify.com/playlist/5AlWnnrZ2RMGWLyTqQH8wV?si=e19b5a596b75430f" rel="nofollow" target="_blank">
+                        <i class="fa-brands fa-spotify"></i>
+                        April Playlist
+                    </a>
+                </div>
+                <!--<div class="footerButton"><a href="https://forums.albumoftheyear.org">Forums</a></div>-->
+                <div class="footerButton donate">
+                    <a href="/subscribe/">
+                        Go Ad-Free <i class="far fa-check-circle"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="footerContent">
+                    <div class="footerColumn">
+                        <div>
+                            <strong>ALBUMS</strong>
+                        </div>
+                        <div>
+                            <a href="/ratings/6-highest-rated/2026/1">Highest Rated</a>
+                        </div>
+                        <!--<div><a href="/ratings/worst/2024/">Lowest Rated</a></div>-->
+                        <div>
+                            <a href="/must-hear/">Must Hear Albums</a>
+                        </div>
+                        <div>
+                            <a href="/lists.php">Year End Lists</a>
+                        </div>
+                        <div>
+                            <a href="/releases/">New Releases</a>
+                        </div>
+                        <div>
+                            <button class="randomFilters">Random</button>
+                        </div>
+                    </div>
+                    <div class="footerColumn">
+                        <div>
+                            <strong>ARTISTS</strong>
+                        </div>
+                        <!-- <div><a href="/artists/">Overview</a></div> -->
+                        <div>
+                            <a href="/bands/top-artists/">Highest Rated</a>
+                        </div>
+                        <div>
+                            <a href="/random/artist/" rel="nofollow">Random</a>
+                        </div>
+                    </div>
+                    <div class="footerColumn">
+                        <div>
+                            <strong>GENRE</strong>
+                        </div>
+                        <div>
+                            <a href="/genre.php">Overview</a>
+                        </div>
+                        <div>
+                            <a href="/genre/1-indie-rock/">Indie Rock</a>
+                        </div>
+                        <div>
+                            <a href="/genre/6-electronic/">Electronic</a>
+                        </div>
+                        <div>
+                            <a href="/genre/3-hip-hop/">Hip Hop</a>
+                        </div>
+                        <div>
+                            <a href="/genre/5-folk/">Folk</a>
+                        </div>
+                        <div>
+                            <a href="/genre/4-indie-pop/">Indie Pop</a>
+                        </div>
+                    </div>
+                    <div class="footerColumn">
+                        <div>
+                            <strong>MORE</strong>
+                        </div>
+                        <div>
+                            <a href="/on-this-day/">On This Day</a>
+                        </div>
+                        <!--<div><a href="https://forums.albumoftheyear.org">Forums</a></div>-->
+                        <div>
+                            <a href="/l/newsworthy/">Newsworthy</a>
+                        </div>
+                        <div>
+                            <a href="/users/">User Updates</a>
+                        </div>
+                        <div>
+                            <a href="/updates/">Site Updates</a>
+                        </div>
+                    </div>
+                    <div class="footerColumn">
+                        <div>
+                            <strong>SITE DETAILS</strong>
+                        </div>
+                        <div>
+                            <a href="/faq/" rel="nofollow">FAQ</a>
+                        </div>
+                        <div>
+                            <a href="/changelog/" rel="nofollow">Changelog</a>
+                        </div>
+                        <div>
+                            <a href="/privacy.php" rel="nofollow">Privacy Policy</a>
+                        </div>
+                        <div>
+                            <a href="/terms-of-use/" rel="nofollow">Terms of Use</a>
+                        </div>
+                        <div>
+                            <a href="/advertising.php" rel="nofollow">Advertising</a>
+                        </div>
+                        <div>
+                            <a href="/contact.php" rel="nofollow">Contact Us</a>
+                        </div>
+                        <div>
+                            <a href="/subscribe/">Subscribe</a>
+                        </div>
+                    </div>
+                    <div class="footerSocials">
+                        <div>
+                            <a href="https://www.instagram.com/aotyorg/" target="_blank" title="Instagram" rel="nofollow">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="https://www.twitter.com/aoty" target="_blank" title="Twitter" rel="nofollow">
+                                <i class="fa-brands fa-twitter"></i>
+                            </a>
+                            <a href="https://www.facebook.com/albumoftheyear" target="_blank" title="Facebook" rel="nofollow">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.threads.net/@aotyorg" target="_blank" title="Threads" rel="nofollow">
+                                <i class="fa-brands fa-threads"></i>
+                            </a>
+                            <a href="https://bsky.app/profile/aoty.org" target="_blank" title="Bluesky" rel="nofollow">
+                                <i class="fa-brands fa-bluesky"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div>&copy;2026 Album of the Year </div>
+                </div>
+                <div class="overlay"></div>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                <script data-cfasync="false" async src="//cdn.intergient.com/1024410/73067/ramp.js"></script>
+                <script src="/scripts/main.js?v=1776979459" type="text/javascript" async></script>
+                <script src="/scripts/albumScript.js?v=33" type="text/javascript" async></script>
+            </div>
+            <script src="https://cdn.albumoftheyear.org/js/lazysizes.min.js" async></script>
+            <script data-cfasync="false">
+
+                if (prefersDarkScheme.matches) {
+                    document.body.classList.add("dark");
+                } else {
+                    document.body.classList.remove("dark");
+                }
+            </script>
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"af0ac591638742488910a9d5def551d8","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+    </body>
+</html>

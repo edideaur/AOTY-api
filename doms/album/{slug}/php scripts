@@ -1,0 +1,1729 @@
+fetch("https://www.albumoftheyear.org/scripts/moreStatsAlbum.php", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9",
+    "cache-control": "no-cache",
+    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "pragma": "no-cache",
+    "priority": "u=1, i",
+    "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+    "sec-ch-ua-arch": "\"x86\"",
+    "sec-ch-ua-bitness": "\"64\"",
+    "sec-ch-ua-full-version": "\"146.0.7680.164\"",
+    "sec-ch-ua-full-version-list": "\"Chromium\";v=\"146.0.7680.164\", \"Not-A.Brand\";v=\"24.0.0.0\", \"Google Chrome\";v=\"146.0.7680.164\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-model": "\"\"",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-ch-ua-platform-version": "\"10.0.0\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "x-requested-with": "XMLHttpRequest"
+  },
+  "referrer": "https://www.albumoftheyear.org/album/564912-asap-rocky-dont-be-dumb.php",
+  "body": "albumID=564912",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+});
+
+<div>
+    <i class="fa-solid fa-star"></i>
+    47<span class="tooltiptext">Favorites</span>
+</div>
+<div>
+    <i class="fa-solid fa-heart"></i>
+    3,499<span class="tooltiptext">Likes</span>
+</div>
+<div>
+    <i class="fa-solid fa-headphones"></i>
+    21,437<span class="tooltiptext">Listens</span>
+</div>
+<div>
+    <i class="fa-solid fa-album-collection"></i>
+    2,267<span class="tooltiptext">In Library</span>
+</div>
+<div>
+    <i class="fa-solid fa-list"></i>
+    3,570<span class="tooltiptext">Lists</span>
+</div>
+
+fetch("https://www.albumoftheyear.org/scripts/showAlbumCredits.php", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "en-US,en;q=0.9",
+    "cache-control": "no-cache",
+    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "pragma": "no-cache",
+    "priority": "u=1, i",
+    "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+    "sec-ch-ua-arch": "\"x86\"",
+    "sec-ch-ua-bitness": "\"64\"",
+    "sec-ch-ua-full-version": "\"146.0.7680.164\"",
+    "sec-ch-ua-full-version-list": "\"Chromium\";v=\"146.0.7680.164\", \"Not-A.Brand\";v=\"24.0.0.0\", \"Google Chrome\";v=\"146.0.7680.164\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-model": "\"\"",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-ch-ua-platform-version": "\"10.0.0\"",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "x-requested-with": "XMLHttpRequest"
+  },
+  "referrer": "https://www.albumoftheyear.org/album/564912-asap-rocky-dont-be-dumb.php",
+  "body": "albumID=564912",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+});
+<div class="content">
+    <div class="close">
+        <a href="#" class="overlayClose">
+            <i class="far fa-times-circle"></i>
+        </a>
+    </div>
+    <div class="heading">Credits</div>
+    <div class="inner">
+        <div class="sectionTitle">Performers</div>
+        <div class="creditWrapper">
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/2003-asap-rocky/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/asap-rocky_1769005461.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/2003-asap-rocky/">A$AP Rocky</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="0">Primary</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/1471-tyler-the-creator/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/tyler-the-creator_1753098069.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/1471-tyler-the-creator/">Tyler, The Creator</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/2703-jessica-pratt/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/jessica-pratt_1707854696.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/2703-jessica-pratt/">Jessica Pratt</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="10">Vocals</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/3570-william/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/william_1538509210.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/3570-william/">will.i.am</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/21320-westside-gunn/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/westside-gunn_1761913202.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/21320-westside-gunn/">Westside Gunn</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="12">Background Vocals</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/25627-sauce-walka/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/sauce-walka_1758764766.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/25627-sauce-walka/">Sauce Walka</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/28284-brent-faiyaz/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/brent-faiyaz_1769006467.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/28284-brent-faiyaz/">Brent Faiyaz</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/436353-slay-squad/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/slay-squad_1748531362.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/436353-slay-squad/">Slay Squad</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/297064-bossman-dlow/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/bossman-dlow_1734105961.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/297064-bossman-dlow/">BossMan Dlow</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/829-gorillaz/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/gorillaz_1757624371.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/829-gorillaz/">Gorillaz</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/123907-doechii/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/doechii_1725015036.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/123907-doechii/">Doechii</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/102373-jozzy/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/jozzy_1725033833.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/102373-jozzy/">Jozzy</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="9">Feature</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/627037-jordan-patrick/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/jordan-patrick_1768773287.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/627037-jordan-patrick/">Jordan Patrick</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="12">Background Vocals</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="17">Keyboards</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="33">Guitar</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="8">Percussion</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="2">Drums</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="53">Saxophone</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/183707-zach-fogarty/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/183707-zach-fogarty/">Zach Fogarty</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="33">Guitar</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="611">Arp Synthesizer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/54161-ging/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/ging_1717452940.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/54161-ging/">GING</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="2">Drums</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="3">Bass</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/629795-ilhan-saferali/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/629795-ilhan-saferali/">Ilhan Saferali</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="73">Trumpet</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/70859-zsela/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/zsela_1718369413.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/70859-zsela/">Zsela</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="12">Background Vocals</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/629794-michael-garin/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/629794-michael-garin/">Michael Garin</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="6">Piano</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/629789-nakia-mason/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/629789-nakia-mason/">Nakia Mason</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="29">Choir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/1932-thundercat/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/thundercat_1758284669.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/1932-thundercat/">Thundercat</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="3">Bass</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="88">Performer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="33">Guitar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/532954-cristoforo-donadi/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/cristoforo-donadi_1753128580.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/532954-cristoforo-donadi/">Cristoforo Donadi</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="33">Guitar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/447801-michael-prince/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/michael-prince_1744545384.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/447801-michael-prince/">Michael Prince</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="25">Violin</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/29758-jon-batiste/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/jon-batiste_1766197379.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/29758-jon-batiste/">Jon Batiste</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="10">Vocals</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/395736-ashly-williams/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/395736-ashly-williams/">Ashly Williams</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="29">Choir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/393075-jaden-gray/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/393075-jaden-gray/">Jaden Gray</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="29">Choir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/366707-alexandria-dopson/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/366707-alexandria-dopson/">Alexandria Dopson</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="29">Choir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/332075-anthony-mceastland/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/332075-anthony-mceastland/">Anthony McEastland</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="29">Choir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/313229-caleb-arredondo/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/313229-caleb-arredondo/">Caleb Arredondo</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="53">Saxophone</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/54009-spencer-sutherland/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/spencer-sutherland_1739145747.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/54009-spencer-sutherland/">Spencer Sutherland</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="12">Background Vocals</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/287919-anycia/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/anycia_1721469107.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/287919-anycia/">Anycia</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="12">Background Vocals</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/189852-carlton/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/189852-carlton/">Car!ton</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="51" data-role="12">Background Vocals</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sectionTitle">Composition & Lyrics</div>
+        <div class="creditWrapper">
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/54161-ging/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/ging_1717452940.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/54161-ging/">Adam King Feeney</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/183707-zach-fogarty/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/183707-zach-fogarty/">Zach Fogarty</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/1932-thundercat/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/thundercat_1758284669.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/1932-thundercat/">Thundercat</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/123907-doechii/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/doechii_1725015036.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/123907-doechii/">Doechii</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/102373-jozzy/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/jozzy_1725033833.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/102373-jozzy/">Jozzy</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/297064-bossman-dlow/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/bossman-dlow_1734105961.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/297064-bossman-dlow/">BossMan Dlow</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/532954-cristoforo-donadi/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/cristoforo-donadi_1753128580.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/532954-cristoforo-donadi/">Cristoforo Donadi</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/28284-brent-faiyaz/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/brent-faiyaz_1769006467.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/28284-brent-faiyaz/">Brent Faiyaz</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/25627-sauce-walka/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/sauce-walka_1758764766.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/25627-sauce-walka/">Sauce Walka</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/1471-tyler-the-creator/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/tyler-the-creator_1753098069.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/1471-tyler-the-creator/">Tyler, The Creator</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/3570-william/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/william_1538509210.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/3570-william/">will.i.am</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/2003-asap-rocky/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/asap-rocky_1769005461.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/2003-asap-rocky/">Rakim Mayers</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/180491-mingo/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/180491-mingo/">Mingo</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/180728-hector-delgado/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/180728-hector-delgado/">Hector Delgado</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/180729-kelvin-krash/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/kelvin-krash_1739510696.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/180729-kelvin-krash/">Kelvin Krash</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/631286-keilo-kei/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/631286-keilo-kei/">Keilo Kei</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/184806-lamar-edwards/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/myguymars_1749572403.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/184806-lamar-edwards/">Lamar Edwards</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/190138-soufien3000/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/190138-soufien3000/">Soufien Rhouat</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/200698-clif-shayne/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/200698-clif-shayne/">Clif Shayne</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/262909-troy-taylor/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/troy-taylor_1763137301.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/262909-troy-taylor/">Troy Taylor</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/274162-chef-tone/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/274162-chef-tone/">Chef Tone</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/277239-david-biral/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/277239-david-biral/">David Biral</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/277240-denzel-baptiste/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/277240-denzel-baptiste/">Denzel Baptiste</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/279709-irving-mills/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/279709-irving-mills/">Irving Mills</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/631284-brahim-gousse/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/631284-brahim-gousse/">Brahim Gousse</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/374169-juan-tizol/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/374169-juan-tizol/">Juan Tizol</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/631277-edrick-miles/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/631277-edrick-miles/">Edrick Miles</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/627037-jordan-patrick/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/jordan-patrick_1768773287.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/627037-jordan-patrick/">Jordan Patrick</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/629786-grogs/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/629786-grogs/">Grogs</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/91699-ken-carson/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/ken-carson_1716751300.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/91699-ken-carson/">Ken Carson</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/11095-emile-haynie/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/emile-haynie_1725839158.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/11095-emile-haynie/">Emile Haynie</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/12649-hit-boy/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/hit-boy_1689026951.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/12649-hit-boy/">Hit-Boy</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/12749-duke-ellington/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/duke-ellington_1520798438.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/12749-duke-ellington/">Duke Ellington</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/21322-rostam/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/rostam_1736463837.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/21322-rostam/">Rostam</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/31848-icytwat/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/icytwat_1651001600.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/31848-icytwat/">ICYTWAT</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/35380-clairo/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/clairo_1716536984.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/35380-clairo/">Clairo</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/49627-cardo/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/cardo_1709071248.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/49627-cardo/">Cardo</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/71529-digital-nas/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/digital-nas_1687717324.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/71529-digital-nas/">Digital Nas</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/75251-beat-butcha/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/75251-beat-butcha/">Beat Butcha</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/172991-jacob-kasher-hindlin/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/jacob-kasher-hindlin_1772890956.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/172991-jacob-kasher-hindlin/">Jacob Kasher Hindlin</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/125201-loukeman/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/loukeman_1734101384.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/125201-loukeman/">Loukeman</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/133968-adam-levine/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/adam-levine_1686429066.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/133968-adam-levine/">Adam Levine</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/137058-bantu/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/bantu_1746286880.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/137058-bantu/">Bantu</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170305-greg-kurstin/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/greg-kurstin_1659102804.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170305-greg-kurstin/">Greg Kurstin</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170345-john-ryan/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/john-ryan_1773194928.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170345-john-ryan/">John Ryan</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170426-larrance-dopson/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170426-larrance-dopson/">Larrance Dopson</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170622-hitkidd/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/hitkidd_1671130250.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170622-hitkidd/">Hitkidd</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170758-rex-kudo/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170758-rex-kudo/">Rex Kudo</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/171479-swiff-d/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/swiff-d_1739080979.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/171479-swiff-d/">Swiff D</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="6">Songwriter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/298556-gosha-usov/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/298556-gosha-usov/">Gosha Usov</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="12">Arranger</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sectionTitle">Production & Engineering</div>
+        <div class="creditWrapper">
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/627037-jordan-patrick/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/jordan-patrick_1768773287.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/627037-jordan-patrick/">Jordan Patrick</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="5">Additional Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="11">Recording Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/180728-hector-delgado/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/180728-hector-delgado/">Hector Delgado</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="7">Mixing Engineer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="11">Recording Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/54161-ging/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/ging_1717452940.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/54161-ging/">GING</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="4">Co-Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/1932-thundercat/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/thundercat_1758284669.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/1932-thundercat/">Thundercat</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="5">Additional Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/180729-kelvin-krash/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/kelvin-krash_1739510696.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/180729-kelvin-krash/">Kelvin Krash</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="11">Recording Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/125201-loukeman/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/loukeman_1734101384.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/125201-loukeman/">Loukeman</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="5">Additional Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/2003-asap-rocky/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/asap-rocky_1769005461.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/2003-asap-rocky/">A$AP Rocky</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/532954-cristoforo-donadi/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/cristoforo-donadi_1753128580.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/532954-cristoforo-donadi/">Cristoforo Donadi</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/436353-slay-squad/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/slay-squad_1748531362.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/436353-slay-squad/">Slay Squad</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/297064-bossman-dlow/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/bossman-dlow_1734105961.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/297064-bossman-dlow/">BossMan Dlow</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/3570-william/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/william_1538509210.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/3570-william/">will.i.am</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/28284-brent-faiyaz/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/brent-faiyaz_1769006467.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/28284-brent-faiyaz/">Brent Faiyaz</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/11095-emile-haynie/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/emile-haynie_1725839158.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/11095-emile-haynie/">Emile Haynie</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/12649-hit-boy/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/hit-boy_1689026951.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/12649-hit-boy/">Hit-Boy</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/2369-damon-albarn/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/damon-albarn_1433946601.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/2369-damon-albarn/">Damon Albarn</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/71529-digital-nas/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/digital-nas_1687717324.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/71529-digital-nas/">Digital Nas</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/190138-soufien3000/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/190138-soufien3000/">Soufien 3000</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/31848-icytwat/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/icytwat_1651001600.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/31848-icytwat/">ICYTWAT</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/180491-mingo/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/180491-mingo/">Mingo</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170758-rex-kudo/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170758-rex-kudo/">Rex Kudo</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170622-hitkidd/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/hitkidd_1671130250.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170622-hitkidd/">Hitkidd</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170426-larrance-dopson/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170426-larrance-dopson/">Larrance Dopson</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170418-t-minus/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/t-minus_1716330269.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170418-t-minus/">T-Minus</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/170305-greg-kurstin/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/greg-kurstin_1659102804.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/170305-greg-kurstin/">Greg Kurstin</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/49627-cardo/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/cardo_1709071248.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/49627-cardo/">Cardo</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/629786-grogs/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/629786-grogs/">Grogs</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/72062-take-a-daytrip/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/take-a-daytrip_1687985038.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/72062-take-a-daytrip/">Take A Daytrip</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="2">Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/183707-zach-fogarty/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/183707-zach-fogarty/">Zach Fogarty</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="4">Co-Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="5">Additional Producer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="11">Recording Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/75251-beat-butcha/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/75251-beat-butcha/">Beat Butcha</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="4">Co-Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/240965-al-carlson/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/240965-al-carlson/">Al Carlson</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="5">Additional Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/344056-matthew-mcdermott/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/344056-matthew-mcdermott/">Matthew McDermott</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="5">Additional Producer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/445331-matt-scatchell/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/445331-matt-scatchell/">Matt Scatchell</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="7">Mixing Engineer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="10">Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/411549-jayda-love/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/411549-jayda-love/">Jayda Love</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="7">Mixing Engineer</a>
+                        , <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="11">Recording Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/242095-rob-kinelski/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/242095-rob-kinelski/">Rob Kinelski</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="7">Mixing Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/422242-ryan-rajagopal/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/422242-ryan-rajagopal/">Ryan Rajagopal</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="7">Mixing Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/288709-neal-pogue/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/288709-neal-pogue/">Neal Pogue</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="7">Mixing Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/82022-mike-dean/">
+                        <img src="https://cdn.albumoftheyear.org/artists/sq/mike-dean_1677163333.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/82022-mike-dean/">MIKE DEAN</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="7">Mixing Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/288348-tatsuya-sato/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/288348-tatsuya-sato/">Tatsuya Sato</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="8">Mastering Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/298556-gosha-usov/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/298556-gosha-usov/">Gosha Usov</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="11">Recording Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/629694-noe-corona/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/629694-noe-corona/">Noe Corona</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="11">Recording Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/631272-josh-shubach/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/631272-josh-shubach/">Josh Shubach</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="11">Recording Engineer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="credit">
+                <div class="photo">
+                    <a href="/artist/620232-ray-bergin/">
+                        <img src="https://cdn.albumoftheyear.org/artists/thumbs/default.jpg" loading="lazy"/>
+                    </a>
+                </div>
+                <div class="name">
+                    <a href="/artist/620232-ray-bergin/">Ray Bergin</a>
+                    <div class="songs">
+                        <a href="#" class="showAlbumCredits" data-album-id="564912" data-type="28">Assistant Mastering Engineer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

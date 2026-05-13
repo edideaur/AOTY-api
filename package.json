@@ -1,14 +1,16 @@
 {
-  "name": "aoty-worker",
-  "version": "0.0.0",
-  "private": true,
+  "name": "aoty-api",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
+    "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev"
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241004.0",
-    "typescript": "^5.6.0",
-    "wrangler": "^4.0.0"
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "typescript": "^5.7.2",
+    "wrangler": "^3.100.0"
   }
 }

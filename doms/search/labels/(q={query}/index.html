@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xmlns:fb="http://ogp.me/ns/fb#">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Label Search - Album of The Year</title>
+        <link rel="preconnect" href="https://config.playwire.com" crossorigin/>
+        <link rel="preconnect" href="https://cdn.intergi.com" crossorigin/>
+        <link rel="preconnect" href="https://cdn.intergient.com" crossorigin/>
+        <link rel="preconnect" href="https://securepubads.g.doubleclick.net" crossorigin/>
+        <link rel="preconnect" href="https://cdn.playwire.com" crossorigin/>
+        <link rel="preconnect" href="https://cdn.video.playwire.com" crossorigin/>
+        <link rel="preconnect" href="https://z.moatads.com" crossorigin/>
+        <script data-cfasync="false">
+            window.ramp = window.ramp || {};
+            window.ramp.que = window.ramp.que || [];
+        </script>
+        <!--<script data-cfasync="false" async src="//cdn.intergient.com/1024410/73067/ramp_config.js"></script>-->
+        <script>
+            window._pwGA4PageviewId = ''.concat(Date.now());
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = window.gtag || function() {
+                dataLayer.push(arguments);
+            }
+            ;
+            gtag('js', new Date());
+            gtag('config', 'G-JB4RT8XZVE', {
+                'send_page_view': false
+            });
+            gtag('event', 'ramp_js', {
+                'send_to': 'G-JB4RT8XZVE',
+                'pageview_id': window._pwGA4PageviewId
+            });
+        </script>
+        <link rel="stylesheet" type="text/css" href="/style.css?v=1778257874">
+        <link rel="preload" href="/font-awesome/css/fontawesome.min.css" as="style" onload="this.rel='stylesheet'">
+        <link rel="preload" href="/font-awesome/css/regular.min.css" as="style" onload="this.rel='stylesheet'">
+        <link rel="preload" href="/font-awesome/css/solid.min.css" as="style" onload="this.rel='stylesheet'">
+        <link rel="preload" href="/font-awesome/css/brands.min.css" as="style" onload="this.rel='stylesheet'">
+        <link rel="preload" href="/font-awesome/css/light.min.css" as="style" onload="this.rel='stylesheet'">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+        <noscript>
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" type="text/css"/>
+        </noscript>
+        <!-- <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> -->
+        <link rel="icon" href="https://cdn.albumoftheyear.org/images/favicon.png" type="image/x-icon">
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start': new Date().getTime(),
+                    event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0]
+                  , j = d.createElement(s)
+                  , dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            }
+            )(window, document, 'script', 'dataLayer', 'GTM-TPD5DD');
+        </script>
+        <!-- End Google Tag Manager -->
+        <script>
+            var dimensionValue = 'Logged Out';
+            ga('set', 'dimension1', dimensionValue);
+        </script>
+        <script>
+            gtag('set', 'user_properties', {
+                account_status: 'Logged Out'
+            });
+        </script>
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#000000">
+        <script>
+            if ('serviceWorker'in navigator) {
+                navigator.serviceWorker.register('/sw.js?v=2');
+            }
+        </script>
+    </head>
+    <body id="graybg">
+        <script data-cfasync="false">
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+            if (prefersDarkScheme.matches) {
+                document.body.classList.add("dark");
+            } else {
+                document.body.classList.remove("dark");
+            }
+        </script>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TPD5DD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <div id="header" class="header" style="z-index: 2147483647;">
+            <div id="content">
+                <div class="logoHead">
+                    <a class="siteLogo" href="/"></a>
+                </div>
+                <div class="mobileProfile">
+                    <a href="/account/">
+                        <img src="https://cdn.albumoftheyear.org/user/thumbs/default.jpg"/>
+                    </a>
+                </div>
+                <div id="mobileNav" class="navButton">
+                    <button onclick="changeClass(); return false;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                <div class="searchContainer" id="searchContainer">
+                    <form id="search" action="/search/">
+                        <input type="text" class="searchBox" name="q" id="searchT" autocomplete="off" placeholder="Search albums, artists, genres etc." value="GOOD"/>
+                        <span class="searchImage">
+                            <button onclick="document.getElementById('search').submit()">
+                                <i class="far fa-search" style="vertical-align: middle;"></i>
+                            </button>
+                        </span>
+                    </form>
+                </div>
+                <div id="searchSuggestions"></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="nav" id="nav" style="z-index: 2147483646;">
+            <div id="content">
+                <div class="navBlock">
+                    <a href="/ratings/6-highest-rated/2026/1">Best Albums</a>
+                </div>
+                <div class="navBlock">
+                    <a href="/discover/">Discover</a>
+                </div>
+                <div class="navBlock">
+                    <a href="/releases/">New Releases</a>
+                </div>
+                <div class="navBlock">
+                    <a href="/lists.php">Lists</a>
+                </div>
+                <div class="navBlock noTablet">
+                    <a href="/genre.php">Genres</a>
+                </div>
+                <div class="navBlock noTablet">
+                    <a href="/l/newsworthy/">News</a>
+                </div>
+                <div class="navBlock noTablet">
+                    <a href="/users/">Community</a>
+                </div>
+                <div class="navBlock signIn">
+                    <a href="/account/">Sign In</a>
+                </div>
+                <div class="navSocialMobile">
+                    <a href="https://www.facebook.com/albumoftheyear" target="_blank" rel="nofollow">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.twitter.com/aoty" target="_blank" rel="nofollow">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/aotyorg/" target="_blank" rel="nofollow">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.threads.net/@aotyorg" target="_blank" title="Threads" rel="nofollow">
+                        <i class="fa-brands fa-threads"></i>
+                    </a>
+                    <a href="https://bsky.app/profile/aoty.org" target="_blank" title="Bluesky" rel="nofollow">
+                        <i class="fa-brands fa-bluesky"></i>
+                    </a>
+                    <a href="https://open.spotify.com/user/aoty" target="_blank" rel="nofollow">
+                        <i class="fa-brands fa-spotify"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="headerAd">
+            <!--  [Desktop/Tablet]leaderboard_atf -->
+            <div data-pw-desk="leaderboard_atf" id="pwDeskLbAtf"></div>
+            <script type="text/javascript">
+                window.ramp.que.push(function() {
+                    window.ramp.addTag("pwDeskLbAtf");
+                })
+            </script>
+        </div>
+        <div id="centerContent">
+            <div class="fullWidth">
+                <div class="selectRow">
+                    <div class="selectBox">
+                        <a href="/search/?q=GOOD">All</a>
+                    </div>
+                    <div class="selectBox">
+                        <a href="/search/albums/?q=GOOD">Albums</a>
+                    </div>
+                    <div class="selectBox">
+                        <a href="/search/artists/?q=GOOD">Artists</a>
+                    </div>
+                    <div class="selectBox">
+                        <a href="/search/lists/?q=GOOD">Lists</a>
+                    </div>
+                    <div class="selectBox selected">Labels</div>
+                    <div class="selectBox">
+                        <a href="/search/tags/?q=GOOD">Tags</a>
+                    </div>
+                    <div class="selectBox">
+                        <a href="/search/news/?q=GOOD">News</a>
+                    </div>
+                </div>
+                <h1 class="headline" style="margin-top:5px;">Search Results for "GOOD"</h1>
+                <div class="largeSearch center">
+                    <form id="searchLabels" action="/search/labels/">
+                        <input id="labelSearch" name="q" type="text" placeholder="Search Labels" autocomplete="off"/>
+                        <a href="#" id="searchButton" onclick="document.getElementById('searchLabels').submit()" rel="nofollow">
+                            <span class="searchImage" id="searchIcon">
+                                <i class="far fa-search" style="vertical-align: middle;"></i>
+                            </span>
+                        </a>
+                        <a href="">
+                            <span class="searchImage" style="display:none;" id="clearSearch">
+                                <i class="fa-regular fa-circle-xmark" style="vertical-align: middle;"></i>
+                            </span>
+                        </a>
+                    </form>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <div class="subHeadline">Labels (141)</div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/119-good-music/">G.O.O.D. MUSIC</a>
+                            <div class="ui-autocomplete-descriptor">American primarily Hip Hop and R&B record label founded by Kanye West in 2004</div>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/37104-good-good/">Good Good</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/66313-good-moments-good-friends/">GOOD MOMENTS GOOD FRIENDS</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/30139-10-good-songs/">10 Good Songs</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/22999-a-few-good-kids-records/">A Few Good Kids Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/37546-a-good-cry-records/">A Good Cry Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/34461-all-good-clean-records/">All Good Clean Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/34390-all-good-records/">All Good Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/25775-art-for-their-good/">Art For Their Good</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/47214-bad-witch-good-corporation/">BAD WITCH GOOD CORPORATION</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/67904-damn-good/">DAMN GOOD</a>
+                            <div class="ui-autocomplete-descriptor">Lithuanian record label based in Vilnius</div>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/9562-dead-dead-good/">Dead Dead Good</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/57411-dead-good/">Dead Good</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/15604-dead-good-dolly-platters/">Dead Good Dolly Platters</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/19757-ded-good/">Ded Good</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/63505-dig-da-good-imc/">Dig Da Good IMC</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/14606-feel-good/">Feel Good</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/21152-feel-good-all-over/">Feel Good All Over</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/65688-feel-good-lost/">Feel Good Lost</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/46222-feel-good-music-entertainment/">FEEL GOOD MUSIC ENTERTAINMENT</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/66441-feel-good-production/">Feel Good Production</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/1430-feel-so-good-records/">Feel So Good Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/32629-feeling-good-music-co-ltd/">Feeling Good Music Co., Ltd.</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/25983-feels-so-good-records/">Feels So Good Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/9725-fingerlicking-good-records/">Fingerlicking Good Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/65709-going-good/">Going Good</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/66345-good-as-gold-records/">Good As Gold Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/63066-good-behaviour/">Good Behaviour</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/13468-good-boy-records/">Good Boy Records</a>
+                            <div class="ui-autocomplete-descriptor">Los Angeles-based record label</div>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/19629-good-charamel-records/">Good Charamel Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/53375-good-cheer/">Good Cheer</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/61756-good-citizen-factory/">Good Citizen Factory</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/37819-good-city-music/">Good CIty Music</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/44550-good-cloud-day/">Good Cloud Day</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/20804-good-company/">Good Company</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/19113-good-compenny/">Good Compenny</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/39422-good-cry/">Good Cry</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/26916-good-day-entertainment/">Good Day Entertainment</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/66068-good-deeds/">Good Deeds</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/22636-good-die-young/">Good Die Young</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/63489-good-dub/">good dub.</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/24134-good-energy-recordings/">Good Energy Recordings</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/68441-good-english/">Good English</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/27417-good-enuff/">Good Enuff</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/12586-good-eye/">Good Eye</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/21709-good-fellas-entertainment/">Good Fellas Entertainment</a>
+                            <div class="ui-autocomplete-descriptor">South-Korean entertainment company</div>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/56704-good-fellas-entertainment/">Good Fellas Entertainment</a>
+                            <div class="ui-autocomplete-descriptor">Label associated with King Combs and Kanye West</div>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/1859-good-fight/">Good Fight</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/28959-good-fight-music/">Good Fight Music</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/24833-good-forever/">Good ForEver</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/35641-good-form-records/">Good Form Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/54972-good-fortune-records/">Good Fortune Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/9803-good-glass-records/">Good Glass Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/15012-good-gohoth-music/">Good Gohoth Music</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/58959-good-grief/">Good Grief</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/32876-good-hands-records/">Good Hands Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/61862-good-ink-records/">Good Ink Records</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/54875-good-international-co/">Good International Co.</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/46385-good-jimi-hunting/">Good Jimi Hunting</a>
+                        </div>
+                    </div>
+                    <div class="tagRow">
+                        <div>
+                            <i class="fa-regular fa-compact-disc"></i>
+                        </div>
+                        <div>
+                            <a href="/label/27333-good-job-dog-knights/">Good Job, Dog Knights!</a>
+                        </div>
+                    </div>
+                    <div class="pageSelectRow">
+                        <a href="/search/labels/?q=GOOD&p=2">
+                            <div class="pageSelect next">Next</div>
+                        </a>
+                    </div>
+                    <div class="adTagWide">
+                        <div class="adHeading">Advertisement</div>
+                        <!--  [Desktop/Tablet]leaderboard_btf -->
+                        <div data-pw-desk="leaderboard_btf" id="pwDeskLbBtf1"></div>
+                        <script type="text/javascript">
+                            window.ramp.que.push(function() {
+                                window.ramp.addTag("pwDeskLbBtf1");
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <br/>
+            <div class="footerButtons">
+                <div class="footerButton spotify">
+                    <a href="https://open.spotify.com/playlist/5AlWnnrZ2RMGWLyTqQH8wV?si=e19b5a596b75430f" rel="nofollow" target="_blank">
+                        <i class="fa-brands fa-spotify"></i>
+                        April Playlist
+                    </a>
+                </div>
+                <!--<div class="footerButton"><a href="https://forums.albumoftheyear.org">Forums</a></div>-->
+                <div class="footerButton donate">
+                    <a href="/subscribe/">
+                        Go Ad-Free <i class="far fa-check-circle"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="footerContent">
+                    <div class="footerColumn">
+                        <div>
+                            <strong>ALBUMS</strong>
+                        </div>
+                        <div>
+                            <a href="/ratings/6-highest-rated/2026/1">Highest Rated</a>
+                        </div>
+                        <!--<div><a href="/ratings/worst/2024/">Lowest Rated</a></div>-->
+                        <div>
+                            <a href="/must-hear/">Must Hear Albums</a>
+                        </div>
+                        <div>
+                            <a href="/lists.php">Year End Lists</a>
+                        </div>
+                        <div>
+                            <a href="/releases/">New Releases</a>
+                        </div>
+                        <div>
+                            <button class="randomFilters">Random</button>
+                        </div>
+                    </div>
+                    <div class="footerColumn">
+                        <div>
+                            <strong>ARTISTS</strong>
+                        </div>
+                        <!-- <div><a href="/artists/">Overview</a></div> -->
+                        <div>
+                            <a href="/bands/top-artists/">Highest Rated</a>
+                        </div>
+                        <div>
+                            <a href="/random/artist/" rel="nofollow">Random</a>
+                        </div>
+                    </div>
+                    <div class="footerColumn">
+                        <div>
+                            <strong>GENRE</strong>
+                        </div>
+                        <div>
+                            <a href="/genre.php">Overview</a>
+                        </div>
+                        <div>
+                            <a href="/genre/1-indie-rock/">Indie Rock</a>
+                        </div>
+                        <div>
+                            <a href="/genre/6-electronic/">Electronic</a>
+                        </div>
+                        <div>
+                            <a href="/genre/3-hip-hop/">Hip Hop</a>
+                        </div>
+                        <div>
+                            <a href="/genre/5-folk/">Folk</a>
+                        </div>
+                        <div>
+                            <a href="/genre/4-indie-pop/">Indie Pop</a>
+                        </div>
+                    </div>
+                    <div class="footerColumn">
+                        <div>
+                            <strong>MORE</strong>
+                        </div>
+                        <div>
+                            <a href="/on-this-day/">On This Day</a>
+                        </div>
+                        <!--<div><a href="https://forums.albumoftheyear.org">Forums</a></div>-->
+                        <div>
+                            <a href="/l/newsworthy/">Newsworthy</a>
+                        </div>
+                        <div>
+                            <a href="/users/">User Updates</a>
+                        </div>
+                        <div>
+                            <a href="/updates/">Site Updates</a>
+                        </div>
+                    </div>
+                    <div class="footerColumn">
+                        <div>
+                            <strong>SITE DETAILS</strong>
+                        </div>
+                        <div>
+                            <a href="/faq/" rel="nofollow">FAQ</a>
+                        </div>
+                        <div>
+                            <a href="/changelog/" rel="nofollow">Changelog</a>
+                        </div>
+                        <div>
+                            <a href="/privacy.php" rel="nofollow">Privacy Policy</a>
+                        </div>
+                        <div>
+                            <a href="/terms-of-use/" rel="nofollow">Terms of Use</a>
+                        </div>
+                        <div>
+                            <a href="/advertising.php" rel="nofollow">Advertising</a>
+                        </div>
+                        <div>
+                            <a href="/contact.php" rel="nofollow">Contact Us</a>
+                        </div>
+                        <div>
+                            <a href="/subscribe/">Subscribe</a>
+                        </div>
+                    </div>
+                    <div class="footerSocials">
+                        <div>
+                            <a href="https://www.instagram.com/aotyorg/" target="_blank" title="Instagram" rel="nofollow">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="https://www.twitter.com/aoty" target="_blank" title="Twitter" rel="nofollow">
+                                <i class="fa-brands fa-twitter"></i>
+                            </a>
+                            <a href="https://www.facebook.com/albumoftheyear" target="_blank" title="Facebook" rel="nofollow">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.threads.net/@aotyorg" target="_blank" title="Threads" rel="nofollow">
+                                <i class="fa-brands fa-threads"></i>
+                            </a>
+                            <a href="https://bsky.app/profile/aoty.org" target="_blank" title="Bluesky" rel="nofollow">
+                                <i class="fa-brands fa-bluesky"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div>&copy;2026 Album of the Year </div>
+                </div>
+                <div class="overlay"></div>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js" integrity="sha512-MSOo1aY+3pXCOCdGAYoBZ6YGI0aragoQsg1mKKBHXCYPIWxamwOE7Drh+N5CPgGI5SA9IEKJiPjdfqWFWmZtRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                <script data-cfasync="false" async src="//cdn.intergient.com/1024410/73067/ramp.js"></script>
+                <script src="/scripts/main.js?v=1776979459" type="text/javascript" async></script>
+                <script src="/scripts/albumScript.js?v=33" type="text/javascript" async></script>
+            </div>
+            <script src="https://cdn.albumoftheyear.org/js/lazysizes.min.js" async></script>
+            <script data-cfasync="false">
+
+                if (prefersDarkScheme.matches) {
+                    document.body.classList.add("dark");
+                } else {
+                    document.body.classList.remove("dark");
+                }
+            </script>
+            <script>
+                $(document).on("focus", "#labelSearch", function(e) {
+                    $(this).autocomplete({
+                        source: "/scripts/labelAutocomplete.php",
+                        minLength: 1,
+                        select: function(event, ui) {
+                            var link = ui.item.link;
+                            location.href = link;
+                        },
+
+                        html: false,
+                        // optional (jquery.ui.autocomplete.html.js required)
+
+                        // optional (if other layers overlap autocomplete list)
+                        open: function(event, ui) {
+                            $(".ui-autocomplete").css("z-index", 999999999999);
+                            $(".ui-autocomplete li").css({
+                                fontSize: '14px'
+                            });
+
+                        }
+                    });
+                });
+            </script>
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"af0ac591638742488910a9d5def551d8","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+    </body>
+</html>
