@@ -103,16 +103,21 @@ export default {
       }
 
       if (path === "/album") {
+        const slug = q.get("slug");
         const artist = q.get("artist");
         const name = q.get("name");
         const minimal = q.get("minimal") === "true";
-        if (!artist || !name) {
-          return json({ error: "Missing required parameters: artist, name" }, 400);
+
+        let albumUrl: string | null;
+        if (slug) {
+          albumUrl = `${BASE}/album/${slug}/`;
+        } else if (artist && name) {
+          albumUrl = await findAlbumUrl(artist, name);
+          if (!albumUrl) return json({ error: "Album not found" }, 404);
+        } else {
+          return json({ error: "Provide either slug or both artist and name" }, 400);
         }
-        const albumUrl = await findAlbumUrl(artist, name);
-        if (!albumUrl) {
-          return json({ error: "Album not found" }, 404);
-        }
+
         const detail = await scrapeAlbumPage(albumUrl);
         if (!minimal && detail.id) {
           const [stats, credits] = await Promise.all([

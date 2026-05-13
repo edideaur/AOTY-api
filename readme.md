@@ -44,7 +44,7 @@ Interactive docs are served at `/` via [Scalar](https://scalar.com). The raw Ope
 | ------ | ---- | ------ | ----------- |
 | GET | `/` | | Scalar API reference UI |
 | GET | `/openapi.json` | | OpenAPI 3.0.3 spec |
-| GET | `/album` | `artist`, `name`, `minimal` | Full album detail |
+| GET | `/album` | `slug` or (`artist`, `name`), `minimal` | Full album detail |
 | GET | `/releases` | `page` | New album releases |
 | GET | `/releases/singles` | `page` | New single releases |
 | GET | `/upcoming` | `page` | Upcoming releases |
