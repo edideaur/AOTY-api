@@ -1,4 +1,4 @@
-import { BASE, REQ_HEADERS } from "../constants.js";
+import { BASE, REQ_HEADERS, decodeEntities } from "../constants.js";
 import type { AlbumStats, CreditEntry, CreditSection } from "../types.js";
 
 const EXTRAS_HEADERS: HeadersInit = {
@@ -45,7 +45,17 @@ export async function scrapeAlbumCredits(albumId: string): Promise<CreditSection
     const c = {
       section: null as CreditSection | null,
       credit: null as CreditEntry | null,
+      // HTMLRewriter has no element-end hook, so track which credit a role buffer belongs
+      // to separately: flush to roleTarget when the *next* <a> element starts.
+      roleBuf: "",
+      roleTarget: null as CreditEntry | null,
     };
+
+    function flushRole() {
+      const r = c.roleBuf.trim();
+      if (r && c.roleTarget) c.roleTarget.roles.push(r);
+      c.roleBuf = "";
+    }
 
     await new HTMLRewriter()
       .on(".sectionTitle", {
@@ -74,18 +84,22 @@ export async function scrapeAlbumCredits(albumId: string): Promise<CreditSection
         text(t) { if (c.credit) c.credit.name += t.text; },
       })
       .on(".credit .songs a", {
-        text(t) {
-          const role = t.text.trim();
-          if (c.credit && role) c.credit.roles.push(role);
+        element() {
+          // flush the previous role (belongs to roleTarget, not necessarily c.credit)
+          flushRole();
+          c.roleTarget = c.credit;
         },
+        text(t) { c.roleBuf += t.text; },
       })
       .transform(res)
       .arrayBuffer();
 
+    flushRole(); // flush the last accumulated role
+
     for (const section of sections) {
-      section.title = section.title.trim();
+      section.title = decodeEntities(section.title.trim());
       for (const credit of section.credits) {
-        credit.name = credit.name.trim();
+        credit.name = decodeEntities(credit.name.trim());
       }
     }
 

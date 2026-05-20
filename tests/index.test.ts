@@ -2,7 +2,7 @@ import { describe, it, expect } from "bun:test";
 import worker from "../src/index.ts";
 
 const mockEnv = {
-  CACHE: { get: async () => null, put: async () => {} },
+  aoty_cache: { get: async () => null, put: async () => {} },
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
