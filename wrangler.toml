@@ -1,3 +1,7 @@
 name = "aoty-api"
 main = "src/index.ts"
 compatibility_date = "2024-12-18"
+
+[[kv_namespaces]]
+binding = "aoty_cache"
+id = "29be40de43fd4ed89d3152777a710a9a"

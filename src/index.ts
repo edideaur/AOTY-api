@@ -1,7 +1,5 @@
-import { BASE, FETCH_OPTS, RES_HEADERS } from "./constants.js";
+import { BASE, FETCH_OPTS, FETCH_OPTS_FRESH, RES_HEADERS, type FetchOpts } from "./constants.js";
 import { openApiSpec } from "./openapi.js";
-
-const OPENAPI_BODY = JSON.stringify(openApiSpec);
 import { scrapeAlbumBlocks } from "./scrapers/albumBlock.js";
 import { findAlbumUrl, scrapeAlbumPage } from "./scrapers/album.js";
 import { scrapeNewsPage } from "./scrapers/news.js";
@@ -9,12 +7,85 @@ import { scrapeListsIndex, scrapeListDetail } from "./scrapers/lists.js";
 import { scrapeArtistSearch, scrapeLabelSearch } from "./scrapers/search.js";
 import { scrapeAlbumStats, scrapeAlbumCredits } from "./scrapers/albumExtras.js";
 
+const OPENAPI_BODY = JSON.stringify(openApiSpec);
+
+interface Env {
+  aoty_cache: KVNamespace;
+}
+
+class ApiError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+  }
+}
+
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), { status, headers: RES_HEADERS });
 }
 
 function corsOptions(): Response {
   return new Response(null, { status: 204, headers: RES_HEADERS });
+}
+
+const TTL = {
+  HOUR:  3_600,
+  DAY:   86_400,
+  WEEK:  604_800,
+  MONTH: 2_592_000,
+} as const;
+
+function computeTtl(path: string, q: URLSearchParams, data: unknown): number | undefined {
+  // News + live listings refresh constantly
+  if (path === "/news"
+    || path === "/releases" || path === "/releases/singles"
+    || path === "/discover" || path === "/discover/singles"
+    || path === "/discover/anticipated" || path === "/discover/under-radar"
+  ) return TTL.HOUR;
+
+  // Upcoming / search / current-year must-hear: 24 h
+  if (path === "/upcoming" || path.startsWith("/search")) return TTL.DAY;
+
+  if (path === "/must-hear") {
+    const year = q.get("year");
+    const decade = q.get("decade");
+    // past year or any decade is frozen
+    if (decade || (year && parseInt(year, 10) < new Date().getFullYear())) return TTL.MONTH;
+    return TTL.DAY;
+  }
+
+  if (path === "/lists") {
+    const year = q.get("year");
+    if (year && parseInt(year, 10) < new Date().getFullYear()) return TTL.MONTH;
+    return TTL.WEEK;
+  }
+
+  if (path.startsWith("/list/")) return TTL.MONTH;
+
+  if (path === "/album") {
+    const datePublished = (data as { datePublished?: string })?.datePublished;
+    if (datePublished) {
+      const ageDays = (Date.now() - new Date(datePublished).getTime()) / 86_400_000;
+      if (ageDays < 30)  return TTL.DAY;
+      if (ageDays < 365) return TTL.MONTH;
+      return undefined; // indefinite
+    }
+    return TTL.DAY; // unknown age: be conservative
+  }
+
+  return TTL.DAY;
+}
+
+function buildCacheKey(url: URL): string {
+  const qs = new URLSearchParams(
+    [...url.searchParams.entries()].filter(([k]) => k !== "cache" && k !== "").sort()
+  ).toString();
+  return qs ? `${url.pathname}?${qs}` : url.pathname;
+}
+
+function getRequiredParam(q: URLSearchParams, key: string): string {
+  const value = q.get(key);
+  if (!value) throw new ApiError(`Missing required parameter: ${key}`, 400);
+  return value;
 }
 
 const SCALAR_HTML = `<!DOCTYPE html>
@@ -79,184 +150,176 @@ function scalarPage(): Response {
 }
 
 function getPage(q: URLSearchParams): number {
-  return Math.max(1, parseInt(q.get("page") ?? "1", 10));
+  const n = parseInt(q.get("page") ?? "1", 10);
+  return n >= 1 ? n : 1;
 }
 
-async function fetchAlbumBlocks(aotyPath: string) {
-  const res = await fetch(`${BASE}${aotyPath}`, FETCH_OPTS);
+async function fetchAlbumBlocks(aotyPath: string, opts: FetchOpts) {
+  const res = await fetch(`${BASE}${aotyPath}`, opts);
   if (!res.ok) throw new Error(`Upstream fetch failed: ${res.status}`);
   return scrapeAlbumBlocks(res);
 }
 
+async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise<unknown> {
+  if (path === "/album") {
+    const slug = q.get("slug");
+    const artist = q.get("artist");
+    const name = q.get("name");
+    const minimal = q.get("minimal") === "true";
+
+    let albumUrl: string | null;
+    if (slug) {
+      albumUrl = `${BASE}/album/${slug}/`;
+    } else if (artist && name) {
+      albumUrl = await findAlbumUrl(artist, name, opts);
+      if (!albumUrl) throw new ApiError("Album not found", 404);
+    } else {
+      throw new ApiError("Provide either slug (ID or full slug) or both artist and name", 400);
+    }
+
+    const detail = await scrapeAlbumPage(albumUrl, opts);
+    if (!minimal && detail.id) {
+      const [stats, credits] = await Promise.all([
+        scrapeAlbumStats(detail.id),
+        scrapeAlbumCredits(detail.id),
+      ]);
+      detail.stats = stats;
+      detail.credits = credits;
+    }
+    return detail;
+  }
+
+  if (path === "/releases") {
+    const page = getPage(q);
+    return { page, albums: await fetchAlbumBlocks(`/releases/${page}/`, opts) };
+  }
+
+  if (path === "/releases/singles") {
+    const page = getPage(q);
+    return { page, albums: await fetchAlbumBlocks(`/releases/singles/${page}/`, opts) };
+  }
+
+  if (path === "/upcoming") {
+    const page = getPage(q);
+    return { page, albums: await fetchAlbumBlocks(`/upcoming/${page}/`, opts) };
+  }
+
+  if (path === "/discover") {
+    return { albums: await fetchAlbumBlocks("/discover/", opts) };
+  }
+
+  if (path === "/discover/singles") {
+    return { albums: await fetchAlbumBlocks("/discover/singles/", opts) };
+  }
+
+  if (path === "/discover/anticipated") {
+    return { albums: await fetchAlbumBlocks("/discover/anticipated/", opts) };
+  }
+
+  if (path === "/discover/under-radar") {
+    return { albums: await fetchAlbumBlocks("/discover/under-radar/", opts) };
+  }
+
+  if (path === "/must-hear") {
+    const year = q.get("year");
+    const decade = q.get("decade");
+    const page = getPage(q);
+
+    let aotyPath: string;
+    let periodLabel: string;
+    if (year) {
+      periodLabel = year;
+      aotyPath = page > 1 ? `/must-hear/${year}/page/${page}/` : `/must-hear/${year}/`;
+    } else if (decade) {
+      periodLabel = decade;
+      aotyPath = `/must-hear/${decade}/`;
+    } else {
+      periodLabel = "all";
+      aotyPath = "/must-hear/";
+    }
+
+    return { year: periodLabel, page, albums: await fetchAlbumBlocks(aotyPath, opts) };
+  }
+
+  if (path === "/news") {
+    const page = getPage(q);
+    const type = q.get("type") ?? "newsworthy";
+    const validTypes = ["newsworthy", "new", "comment"];
+    const feedType = validTypes.includes(type) ? type : "newsworthy";
+    return { page, type: feedType, items: await scrapeNewsPage(`${BASE}/l/${feedType}/${page}/`, opts) };
+  }
+
+  if (path === "/lists") {
+    const year = q.get("year");
+    const aotyUrl = year ? `${BASE}/lists.php?y=${year}` : `${BASE}/lists.php`;
+    return { year: year ? parseInt(year, 10) : null, lists: await scrapeListsIndex(aotyUrl, opts) };
+  }
+
+  const listMatch = path.match(/^\/list\/(.+)$/);
+  if (listMatch) {
+    return scrapeListDetail(`${BASE}/list/${listMatch[1]}/`, opts);
+  }
+
+  if (path === "/search") {
+    const queryStr = getRequiredParam(q, "q");
+    const enc = encodeURIComponent(queryStr);
+    const [albums, artists, labels] = await Promise.all([
+      fetchAlbumBlocks(`/search/albums/?q=${enc}`, opts),
+      scrapeArtistSearch(`${BASE}/search/artists/?q=${enc}`, opts),
+      scrapeLabelSearch(`${BASE}/search/labels/?q=${enc}`, opts),
+    ]);
+    return { query: queryStr, albums, artists, labels };
+  }
+
+  if (path === "/search/albums") {
+    const queryStr = getRequiredParam(q, "q");
+    return { query: queryStr, albums: await fetchAlbumBlocks(`/search/albums/?q=${encodeURIComponent(queryStr)}`, opts) };
+  }
+
+  if (path === "/search/artists") {
+    const queryStr = getRequiredParam(q, "q");
+    return { query: queryStr, artists: await scrapeArtistSearch(`${BASE}/search/artists/?q=${encodeURIComponent(queryStr)}`, opts) };
+  }
+
+  if (path === "/search/labels") {
+    const queryStr = getRequiredParam(q, "q");
+    return { query: queryStr, labels: await scrapeLabelSearch(`${BASE}/search/labels/?q=${encodeURIComponent(queryStr)}`, opts) };
+  }
+
+  throw new ApiError("Not found", 404);
+}
+
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const { pathname: path, searchParams: q } = url;
 
     if (request.method === "OPTIONS") return corsOptions();
+    if (path === "/") return scalarPage();
+    if (path === "/openapi.json") return new Response(OPENAPI_BODY, { status: 200, headers: RES_HEADERS });
+
+    const skipCache = q.get("cache") === "false";
+    const fetchOpts = skipCache ? FETCH_OPTS_FRESH : FETCH_OPTS;
+    const cacheKey = buildCacheKey(url);
+
+    if (!skipCache) {
+      const cached = await env.aoty_cache.get(cacheKey);
+      if (cached !== null) {
+        return new Response(cached, { headers: { ...RES_HEADERS, "X-Cache": "HIT" } });
+      }
+    }
 
     try {
-      if (path === "/") {
-        return scalarPage();
-      }
-
-      if (path === "/openapi.json") {
-        return new Response(OPENAPI_BODY, { status: 200, headers: RES_HEADERS });
-      }
-
-      if (path === "/album") {
-        const slug = q.get("slug");
-        const artist = q.get("artist");
-        const name = q.get("name");
-        const minimal = q.get("minimal") === "true";
-
-        let albumUrl: string | null;
-        if (slug) {
-          albumUrl = `${BASE}/album/${slug}/`;
-        } else if (artist && name) {
-          albumUrl = await findAlbumUrl(artist, name);
-          if (!albumUrl) return json({ error: "Album not found" }, 404);
-        } else {
-          return json({ error: "Provide either slug (ID or full slug) or both artist and name" }, 400);
-        }
-
-        const detail = await scrapeAlbumPage(albumUrl);
-        if (!minimal && detail.id) {
-          const [stats, credits] = await Promise.all([
-            scrapeAlbumStats(detail.id),
-            scrapeAlbumCredits(detail.id),
-          ]);
-          detail.stats = stats;
-          detail.credits = credits;
-        }
-        return json(detail);
-      }
-
-      if (path === "/releases") {
-        const page = getPage(q);
-        const albums = await fetchAlbumBlocks(`/releases/${page}/`);
-        return json({ page, albums });
-      }
-
-      if (path === "/releases/singles") {
-        const page = getPage(q);
-        const albums = await fetchAlbumBlocks(`/releases/singles/${page}/`);
-        return json({ page, albums });
-      }
-
-      if (path === "/upcoming") {
-        const page = getPage(q);
-        const albums = await fetchAlbumBlocks(`/upcoming/${page}/`);
-        return json({ page, albums });
-      }
-
-      if (path === "/discover") {
-        const albums = await fetchAlbumBlocks("/discover/");
-        return json({ albums });
-      }
-
-      if (path === "/discover/singles") {
-        const albums = await fetchAlbumBlocks("/discover/singles/");
-        return json({ albums });
-      }
-
-      if (path === "/discover/anticipated") {
-        const albums = await fetchAlbumBlocks("/discover/anticipated/");
-        return json({ albums });
-      }
-
-      if (path === "/discover/under-radar") {
-        const albums = await fetchAlbumBlocks("/discover/under-radar/");
-        return json({ albums });
-      }
-
-      if (path === "/must-hear") {
-        const year = q.get("year");
-        const decade = q.get("decade");
-        const page = getPage(q);
-
-        let aotyPath: string;
-        let periodLabel: string;
-        if (year) {
-          periodLabel = year;
-          aotyPath = page > 1 ? `/must-hear/${year}/page/${page}/` : `/must-hear/${year}/`;
-        } else if (decade) {
-          periodLabel = decade;
-          aotyPath = `/must-hear/${decade}/`;
-        } else {
-          periodLabel = "all";
-          aotyPath = "/must-hear/";
-        }
-
-        const albums = await fetchAlbumBlocks(aotyPath);
-        return json({ year: periodLabel, page, albums });
-      }
-
-      if (path === "/news") {
-        const page = getPage(q);
-        const type = q.get("type") ?? "newsworthy";
-        const validTypes = ["newsworthy", "new", "comment"];
-        const feedType = validTypes.includes(type) ? type : "newsworthy";
-        const aotyUrl = `${BASE}/l/${feedType}/${page}/`;
-        const items = await scrapeNewsPage(aotyUrl);
-        return json({ page, type: feedType, items });
-      }
-
-      if (path === "/lists") {
-        const year = q.get("year");
-        const aotyUrl = year
-          ? `${BASE}/lists.php?y=${year}`
-          : `${BASE}/lists.php`;
-        const lists = await scrapeListsIndex(aotyUrl);
-        return json({ year: year ? parseInt(year, 10) : null, lists });
-      }
-
-      const listMatch = path.match(/^\/list\/(.+)$/);
-      if (listMatch) {
-        const slug = listMatch[1];
-        const aotyUrl = `${BASE}/list/${slug}/`;
-        const result = await scrapeListDetail(aotyUrl);
-        return json(result);
-      }
-
-      if (path === "/search") {
-        const queryStr = q.get("q");
-        if (!queryStr) return json({ error: "Missing required parameter: q" }, 400);
-        const enc = encodeURIComponent(queryStr);
-
-        const [albums, artists, labels] = await Promise.all([
-          fetchAlbumBlocks(`/search/albums/?q=${enc}`),
-          scrapeArtistSearch(`${BASE}/search/artists/?q=${enc}`),
-          scrapeLabelSearch(`${BASE}/search/labels/?q=${enc}`),
-        ]);
-        return json({ query: queryStr, albums, artists, labels });
-      }
-
-      if (path === "/search/albums") {
-        const queryStr = q.get("q");
-        if (!queryStr) return json({ error: "Missing required parameter: q" }, 400);
-        const albums = await fetchAlbumBlocks(`/search/albums/?q=${encodeURIComponent(queryStr)}`);
-        return json({ query: queryStr, albums });
-      }
-
-      if (path === "/search/artists") {
-        const queryStr = q.get("q");
-        if (!queryStr) return json({ error: "Missing required parameter: q" }, 400);
-        const artists = await scrapeArtistSearch(`${BASE}/search/artists/?q=${encodeURIComponent(queryStr)}`);
-        return json({ query: queryStr, artists });
-      }
-
-      if (path === "/search/labels") {
-        const queryStr = q.get("q");
-        if (!queryStr) return json({ error: "Missing required parameter: q" }, 400);
-        const labels = await scrapeLabelSearch(`${BASE}/search/labels/?q=${encodeURIComponent(queryStr)}`);
-        return json({ query: queryStr, labels });
-      }
-
-      return json({ error: "Not found" }, 404);
+      const data = await route(path, q, fetchOpts);
+      const body = JSON.stringify(data);
+      const ttl = computeTtl(path, q, data);
+      await env.aoty_cache.put(cacheKey, body, ttl ? { expirationTtl: ttl } : undefined);
+      return new Response(body, { headers: { ...RES_HEADERS, "X-Cache": "MISS" } });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      return json({ error: message }, 500);
+      if (err instanceof ApiError) {
+        return json({ error: err.message }, err.status);
+      }
+      return json({ error: err instanceof Error ? err.message : "Unknown error" }, 500);
     }
   },
 };

@@ -6,9 +6,16 @@ export const REQ_HEADERS: HeadersInit = {
   "Accept-Language": "en-US,en;q=0.9",
 };
 
-export const FETCH_OPTS = {
+export type FetchOpts = { headers: HeadersInit; cf: { cacheTtl: number; cacheEverything?: boolean } };
+
+export const FETCH_OPTS: FetchOpts = {
   headers: REQ_HEADERS,
   cf: { cacheTtl: 3600, cacheEverything: true },
+};
+
+export const FETCH_OPTS_FRESH: FetchOpts = {
+  headers: REQ_HEADERS,
+  cf: { cacheTtl: 0 },
 };
 
 export const RES_HEADERS: HeadersInit = {

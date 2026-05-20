@@ -1,8 +1,8 @@
-import { BASE, FETCH_OPTS } from "../constants.js";
+import { BASE, FETCH_OPTS, type FetchOpts } from "../constants.js";
 import type { ListDetailItem, ListEntry } from "../types.js";
 
-export async function scrapeListsIndex(url: string): Promise<ListEntry[]> {
-  const res = await fetch(url, FETCH_OPTS);
+export async function scrapeListsIndex(url: string, opts: FetchOpts = FETCH_OPTS): Promise<ListEntry[]> {
+  const res = await fetch(url, opts);
   if (!res.ok) throw new Error(`Lists fetch failed: ${res.status}`);
 
   const entries: ListEntry[] = [];
@@ -44,8 +44,8 @@ export async function scrapeListsIndex(url: string): Promise<ListEntry[]> {
   }));
 }
 
-export async function scrapeListDetail(url: string): Promise<{ title: string; sourceUrl: string; items: ListDetailItem[] }> {
-  const res = await fetch(url, FETCH_OPTS);
+export async function scrapeListDetail(url: string, opts: FetchOpts = FETCH_OPTS): Promise<{ title: string; sourceUrl: string; items: ListDetailItem[] }> {
+  const res = await fetch(url, opts);
   if (!res.ok) throw new Error(`List detail fetch failed: ${res.status}`);
 
   let listTitle = "";
@@ -87,7 +87,7 @@ export async function scrapeListDetail(url: string): Promise<{ title: string; so
     .on(".albumListGenre a[href*='/genre/']", {
       text(t) {
         const name = t.text.trim();
-        if (current && name) (current.genres as string[]).push(name);
+        if (current && name) current.genres?.push(name);
       },
     })
     .transform(res)
@@ -102,7 +102,7 @@ export async function scrapeListDetail(url: string): Promise<{ title: string; so
       url: item.url ?? "",
       cover: item.cover ?? "",
       date: (item.date ?? "").trim(),
-      genres: [...new Set(((item.genres as string[]) ?? []).map((g) => g.trim()).filter(Boolean))],
+      genres: [...new Set(item.genres.map((g) => g.trim()).filter(Boolean))],
     })),
   };
 }

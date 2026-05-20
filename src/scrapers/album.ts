@@ -1,9 +1,9 @@
-import { BASE, FETCH_OPTS } from "../constants.js";
+import { BASE, FETCH_OPTS, type FetchOpts } from "../constants.js";
 import type { AlbumDetail, CriticReview, StreamingLink, Track } from "../types.js";
 
-export async function findAlbumUrl(artist: string, name: string): Promise<string | null> {
+export async function findAlbumUrl(artist: string, name: string, opts: FetchOpts = FETCH_OPTS): Promise<string | null> {
   const q = encodeURIComponent(`${artist} - ${name}`);
-  const res = await fetch(`${BASE}/search/albums/?q=${q}`, FETCH_OPTS);
+  const res = await fetch(`${BASE}/search/albums/?q=${q}`, opts);
   if (!res.ok) throw new Error(`Search failed: ${res.status}`);
 
   const found = { url: null as string | null };
@@ -22,8 +22,8 @@ export async function findAlbumUrl(artist: string, name: string): Promise<string
   return found.url;
 }
 
-export async function scrapeAlbumPage(pageUrl: string): Promise<AlbumDetail> {
-  const res = await fetch(pageUrl, FETCH_OPTS);
+export async function scrapeAlbumPage(pageUrl: string, opts: FetchOpts = FETCH_OPTS): Promise<AlbumDetail> {
+  const res = await fetch(pageUrl, opts);
   if (!res.ok) throw new Error(`Album fetch failed: ${res.status}`);
 
   const s = {
@@ -136,7 +136,7 @@ export async function scrapeAlbumPage(pageUrl: string): Promise<AlbumDetail> {
     .on(".trackTitle .featuredArtists a", {
       text(t) {
         const name = t.text.trim();
-        if (s.track && name) (s.track.features as string[]).push(name);
+        if (s.track && name) s.track.features?.push(name);
       },
     })
     .on(".trackRating span", {
@@ -214,7 +214,7 @@ export async function scrapeAlbumPage(pageUrl: string): Promise<AlbumDetail> {
       rating: t.rating ? t.rating.trim() : null,
       ratingCount: t.ratingCount ?? null,
       notes: t.notes ? t.notes.trim() : null,
-      features: (t.features as string[] | undefined ?? []).filter(Boolean),
+      features: (t.features ?? []).filter(Boolean),
     }));
 
   const cleanedReviews: CriticReview[] = s.reviews
@@ -240,8 +240,8 @@ export async function scrapeAlbumPage(pageUrl: string): Promise<AlbumDetail> {
     format,
     label: primaryLabel?.name ?? null,
     labelUrl: primaryLabel?.url ?? null,
-    genres: (jsonLd["genre"] as string[] | undefined) ?? [],
-    tags: [...new Set(s.tags.map((t) => t.trim()).filter(Boolean))],
+    genres: (() => { const g = jsonLd["genre"]; return Array.isArray(g) ? g as string[] : typeof g === "string" ? [g] : []; })(),
+    tags: [...new Set(s.tags)],
     criticScore: s.criticScoreDisplay.trim() || null,
     criticScoreExact: s.criticScoreExact || null,
     criticCount: extractNum(s.criticCountRaw) || null,

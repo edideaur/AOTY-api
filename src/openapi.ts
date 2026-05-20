@@ -15,6 +15,7 @@ export const openApiSpec = {
           "Return full album details including scores, tracklist, reviews, streaming links, stats, and credits. Provide either slug (ID or full slug for direct lookup) or both artist and name (search-based lookup). Pass minimal=true to skip the PHP-based stats and credits calls.",
         operationId: "getAlbum",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "slug",
             in: "query",
@@ -65,6 +66,7 @@ export const openApiSpec = {
         summary: "New album releases",
         operationId: "getReleases",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "page",
             in: "query",
@@ -95,6 +97,7 @@ export const openApiSpec = {
         summary: "New single releases",
         operationId: "getReleaseSingles",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "page",
             in: "query",
@@ -125,6 +128,7 @@ export const openApiSpec = {
         summary: "Upcoming album releases",
         operationId: "getUpcoming",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "page",
             in: "query",
@@ -154,6 +158,7 @@ export const openApiSpec = {
       get: {
         summary: "Popular albums right now",
         operationId: "getDiscover",
+        parameters: [{ $ref: "#/components/parameters/CacheControl" }],
         responses: {
           "200": {
             description: "Currently popular albums",
@@ -176,6 +181,7 @@ export const openApiSpec = {
       get: {
         summary: "Popular singles right now",
         operationId: "getDiscoverSingles",
+        parameters: [{ $ref: "#/components/parameters/CacheControl" }],
         responses: {
           "200": {
             description: "Currently popular singles",
@@ -198,6 +204,7 @@ export const openApiSpec = {
       get: {
         summary: "Highly anticipated upcoming albums",
         operationId: "getDiscoverAnticipated",
+        parameters: [{ $ref: "#/components/parameters/CacheControl" }],
         responses: {
           "200": {
             description: "Most anticipated albums",
@@ -220,6 +227,7 @@ export const openApiSpec = {
       get: {
         summary: "Under the radar albums",
         operationId: "getDiscoverUnderRadar",
+        parameters: [{ $ref: "#/components/parameters/CacheControl" }],
         responses: {
           "200": {
             description: "Hidden gem albums",
@@ -245,6 +253,7 @@ export const openApiSpec = {
           "Albums designated as must-hear. Use `year` for a specific year (e.g. 2026) or `decade` for a decade (e.g. 2020s). Paginated with `page`.",
         operationId: "getMustHear",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "year",
             in: "query",
@@ -287,6 +296,7 @@ export const openApiSpec = {
         summary: "Music news feed",
         operationId: "getNews",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "page",
             in: "query",
@@ -328,6 +338,7 @@ export const openApiSpec = {
         summary: "Year-end critic lists index",
         operationId: "getLists",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "year",
             in: "query",
@@ -359,6 +370,7 @@ export const openApiSpec = {
         summary: "Get a specific critic list",
         operationId: "getList",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "slug",
             in: "path",
@@ -392,6 +404,7 @@ export const openApiSpec = {
         summary: "Search all content",
         operationId: "search",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           {
             name: "q",
             in: "query",
@@ -427,6 +440,7 @@ export const openApiSpec = {
         summary: "Search albums",
         operationId: "searchAlbums",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           { name: "q", in: "query", required: true, schema: { type: "string" } },
         ],
         responses: {
@@ -454,6 +468,7 @@ export const openApiSpec = {
         summary: "Search artists",
         operationId: "searchArtists",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           { name: "q", in: "query", required: true, schema: { type: "string" } },
         ],
         responses: {
@@ -481,6 +496,7 @@ export const openApiSpec = {
         summary: "Search record labels",
         operationId: "searchLabels",
         parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
           { name: "q", in: "query", required: true, schema: { type: "string" } },
         ],
         responses: {
@@ -663,6 +679,15 @@ export const openApiSpec = {
         properties: {
           error: { type: "string" },
         },
+      },
+    },
+    parameters: {
+      CacheControl: {
+        name: "cache",
+        in: "query",
+        required: false,
+        schema: { type: "boolean", default: true },
+        description: "Whether to serve from KV cache. Defaults to `true`. Pass `cache=false` to bypass the cache and fetch fresh data — the fresh result is then saved back to the cache.",
       },
     },
     responses: {

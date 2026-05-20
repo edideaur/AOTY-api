@@ -1,8 +1,8 @@
-import { BASE, FETCH_OPTS } from "../constants.js";
+import { BASE, FETCH_OPTS, type FetchOpts } from "../constants.js";
 import type { NewsItem } from "../types.js";
 
-export async function scrapeNewsPage(url: string): Promise<NewsItem[]> {
-  const res = await fetch(url, FETCH_OPTS);
+export async function scrapeNewsPage(url: string, opts: FetchOpts = FETCH_OPTS): Promise<NewsItem[]> {
+  const res = await fetch(url, opts);
   if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
 
   const items: NewsItem[] = [];
@@ -12,7 +12,7 @@ export async function scrapeNewsPage(url: string): Promise<NewsItem[]> {
     .on(".mediaContainer", {
       element(el) {
         current = {
-          id: el.getAttribute("id")?.replace("link", "") ?? "",
+          id: el.getAttribute("id")?.replace(/^link/, "") ?? "",
           url: "",
           title: "",
           image: null,
