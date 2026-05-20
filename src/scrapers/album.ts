@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, decodeEntities, type FetchOpts } from "../constants.js";
 import type { AlbumDetail, CriticReview, StreamingLink, Track } from "../types.js";
 
 export async function findAlbumUrl(artist: string, name: string, opts: FetchOpts = FETCH_OPTS): Promise<string | null> {
@@ -208,22 +208,22 @@ export async function scrapeAlbumPage(pageUrl: string, opts: FetchOpts = FETCH_O
     .filter((t) => (t.number ?? "").trim())
     .map((t) => ({
       number: (t.number ?? "").trim(),
-      title: (t.title ?? "").trim(),
+      title: decodeEntities((t.title ?? "").trim()),
       url: t.url ?? "",
       length: (t.length ?? "").trim(),
       rating: t.rating ? t.rating.trim() : null,
       ratingCount: t.ratingCount ?? null,
-      notes: t.notes ? t.notes.trim() : null,
-      features: (t.features ?? []).filter(Boolean),
+      notes: t.notes ? decodeEntities(t.notes.trim()) : null,
+      features: (t.features ?? []).filter(Boolean).map(decodeEntities),
     }));
 
   const cleanedReviews: CriticReview[] = s.reviews
     .filter((r) => (r.publication ?? "").trim())
     .map((r) => ({
       score: (r.score ?? "").trim(),
-      publication: (r.publication ?? "").trim(),
-      author: (r.author ?? "").trim(),
-      text: (r.text ?? "").trim(),
+      publication: decodeEntities((r.publication ?? "").trim()),
+      author: decodeEntities((r.author ?? "").trim()),
+      text: decodeEntities((r.text ?? "").trim()),
       image: r.image ?? "",
       url: r.url ?? "",
       date: r.date ?? "",
@@ -232,8 +232,8 @@ export async function scrapeAlbumPage(pageUrl: string, opts: FetchOpts = FETCH_O
   return {
     url: pageUrl,
     id: s.albumId,
-    title: String(jsonLd["name"] ?? ""),
-    artist: byArtist?.name ?? "",
+    title: decodeEntities(String(jsonLd["name"] ?? "")),
+    artist: decodeEntities(byArtist?.name ?? ""),
     artistUrl: byArtist?.url ? (byArtist.url.startsWith("http") ? byArtist.url : `${BASE}${byArtist.url}`) : "",
     cover: String(jsonLd["image"] ?? ""),
     datePublished: String(jsonLd["datePublished"] ?? ""),

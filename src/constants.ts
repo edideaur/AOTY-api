@@ -18,6 +18,17 @@ export const FETCH_OPTS_FRESH: FetchOpts = {
   cf: { cacheTtl: 0 },
 };
 
+export function decodeEntities(str: string): string {
+  return str
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+}
+
 export const RES_HEADERS: HeadersInit = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",

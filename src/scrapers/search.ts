@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, decodeEntities, type FetchOpts } from "../constants.js";
 import type { SearchArtist, SearchLabel } from "../types.js";
 
 export async function scrapeArtistSearch(url: string, opts: FetchOpts = FETCH_OPTS): Promise<SearchArtist[]> {
@@ -44,7 +44,7 @@ export async function scrapeArtistSearch(url: string, opts: FetchOpts = FETCH_OP
 
   return artists.map((a) => ({
     ...a,
-    name: (a.name ?? "").trim(),
+    name: decodeEntities((a.name ?? "").trim()),
   }));
 }
 
@@ -79,7 +79,7 @@ export async function scrapeLabelSearch(url: string, opts: FetchOpts = FETCH_OPT
 
   return labels.map((l) => ({
     url: l.url ?? "",
-    name: (l.name ?? "").trim(),
-    description: l.description ? l.description.trim() : null,
+    name: decodeEntities((l.name ?? "").trim()),
+    description: l.description ? decodeEntities(l.description.trim()) : null,
   }));
 }

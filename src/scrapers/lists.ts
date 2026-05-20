@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, decodeEntities, type FetchOpts } from "../constants.js";
 import type { ListDetailItem, ListEntry } from "../types.js";
 
 export async function scrapeListsIndex(url: string, opts: FetchOpts = FETCH_OPTS): Promise<ListEntry[]> {
@@ -39,8 +39,8 @@ export async function scrapeListsIndex(url: string, opts: FetchOpts = FETCH_OPTS
 
   return entries.map((e) => ({
     ...e,
-    title: (e.title ?? "").trim(),
-    publication: (e.publication ?? "").trim(),
+    title: decodeEntities((e.title ?? "").trim()),
+    publication: decodeEntities((e.publication ?? "").trim()),
   }));
 }
 
@@ -98,7 +98,7 @@ export async function scrapeListDetail(url: string, opts: FetchOpts = FETCH_OPTS
     sourceUrl,
     items: items.map((item) => ({
       rank: (item.rank ?? "").trim(),
-      title: (item.title ?? "").trim(),
+      title: decodeEntities((item.title ?? "").trim()),
       url: item.url ?? "",
       cover: item.cover ?? "",
       date: (item.date ?? "").trim(),

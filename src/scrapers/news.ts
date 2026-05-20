@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, decodeEntities, type FetchOpts } from "../constants.js";
 import type { NewsItem } from "../types.js";
 
 export async function scrapeNewsPage(url: string, opts: FetchOpts = FETCH_OPTS): Promise<NewsItem[]> {
@@ -55,8 +55,8 @@ export async function scrapeNewsPage(url: string, opts: FetchOpts = FETCH_OPTS):
 
   return items.map((item) => ({
     ...item,
-    title: (item.title ?? "").trim(),
-    source: (item.source ?? "").trim(),
+    title: decodeEntities((item.title ?? "").trim()),
+    source: decodeEntities((item.source ?? "").trim()),
     date: (item.date ?? "").trim(),
     likes: (item.likes ?? "").trim() || "0",
     comments: (item.comments ?? "").trim() || "0",
