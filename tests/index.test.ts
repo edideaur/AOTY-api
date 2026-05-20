@@ -67,9 +67,9 @@ describe("GET /openapi.json", () => {
     expect(res.headers.get("content-type")).toContain("application/json");
   });
 
-  it("is valid OpenAPI 3.0.3", async () => {
+  it("is valid OpenAPI 3.1.0", async () => {
     const body = await (await fetch("/openapi.json")).json() as Record<string, unknown>;
-    expect(body.openapi).toBe("3.0.3");
+    expect(body.openapi).toBe("3.1.0");
     expect(body.paths).toBeDefined();
     expect(body.components).toBeDefined();
   });
@@ -86,9 +86,10 @@ describe("404", () => {
     expect(res.status).toBe(404);
   });
 
-  it("404 body has error field", async () => {
-    const body = await (await fetch("/does-not-exist")).json() as { error: string };
-    expect(body.error).toBeDefined();
+  it("404 body has detail field (RFC 9457)", async () => {
+    const body = await (await fetch("/does-not-exist")).json() as { detail: string; status: number };
+    expect(body.detail).toBeDefined();
+    expect(body.status).toBe(404);
   });
 });
 
@@ -108,9 +109,10 @@ describe("GET /album parameter validation", () => {
     expect(res.status).toBe(400);
   });
 
-  it("400 body has error field", async () => {
-    const body = await (await fetch("/album")).json() as { error: string };
-    expect(body.error).toContain("artist");
+  it("400 body has detail field (RFC 9457)", async () => {
+    const body = await (await fetch("/album")).json() as { detail: string; status: number };
+    expect(body.detail).toContain("artist");
+    expect(body.status).toBe(400);
   });
 });
 
@@ -123,18 +125,19 @@ describe("GET /search parameter validation", () => {
       expect(res.status).toBe(400);
     });
 
-    it(`${path} 400 body has error field`, async () => {
-      const body = await (await fetch(path)).json() as { error: string };
-      expect(body.error).toBeDefined();
+    it(`${path} 400 body has detail field (RFC 9457)`, async () => {
+      const body = await (await fetch(path)).json() as { detail: string; status: number };
+      expect(body.detail).toBeDefined();
+      expect(body.status).toBe(400);
     });
   }
 });
 
 describe("response shape", () => {
-  it("all errors return JSON content-type", async () => {
+  it("all errors return application/problem+json content-type", async () => {
     for (const path of ["/album", "/search", "/does-not-exist"]) {
       const res = await fetch(path);
-      expect(res.headers.get("content-type")).toContain("application/json");
+      expect(res.headers.get("content-type")).toContain("application/problem+json");
     }
   });
 });

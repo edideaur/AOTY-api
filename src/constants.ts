@@ -32,7 +32,19 @@ export function decodeEntities(str: string): string {
 export const RES_HEADERS: HeadersInit = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Expose-Headers": "X-Cache, Server-Timing, Cache-Control, Link, Allow",
+  "Access-Control-Max-Age": "86400",
+  "Allow": "GET, HEAD, OPTIONS",
+  "Vary": "Accept-Encoding",
+  "Timing-Allow-Origin": "*",
+};
+
+export const PROBLEM_HEADERS: HeadersInit = {
+  "Content-Type": "application/problem+json",
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Max-Age": "86400",
+  "Vary": "Accept-Encoding",
 };
