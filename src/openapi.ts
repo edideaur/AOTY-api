@@ -1415,6 +1415,7 @@ export const openApiSpec = {
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
           { name: "genreId", in: "query", required: true, schema: { type: "string" }, example: "3" },
+          { name: "breadIds", in: "query", required: false, schema: { type: "string" }, description: "Comma-separated ancestor genre IDs for breadcrumbs", example: "3,12" },
         ],
         responses: {
           "200": {
@@ -2438,6 +2439,105 @@ export const openApiSpec = {
         },
       },
     },
+    "/user/contributions": {
+      get: {
+        summary: "User site contributions popup",
+        description: "Fetch a user's submitted albums, corrections, and site contributions via userStats.php",
+        operationId: "getUserContributions",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "username", in: "query", schema: { type: "string" }, description: "Username (will resolve numeric ID)", example: "patton" },
+          { name: "userId", in: "query", schema: { type: "string" }, description: "Numeric user ID", example: "175" },
+        ],
+        responses: {
+          "200": {
+            description: "User contributions",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    userId: { type: "integer" },
+                    username: { type: ["string", "null"] },
+                    popType: { type: "string" },
+                    html: { type: "string" },
+                    items: { type: "array", items: { $ref: "#/components/schemas/UserContributionEntry" } },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/user/stats/popup": {
+      get: {
+        summary: "User statistics modal popup",
+        description: "Fetch the detailed user stats popup via userStats.php",
+        operationId: "getUserStatsPopup",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "username", in: "query", schema: { type: "string" }, description: "Username (will resolve numeric ID)", example: "patton" },
+          { name: "userId", in: "query", schema: { type: "string" }, description: "Numeric user ID", example: "175" },
+        ],
+        responses: {
+          "200": {
+            description: "User stats popup data",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    userId: { type: "integer" },
+                    username: { type: ["string", "null"] },
+                    popType: { type: "string" },
+                    html: { type: "string" },
+                    items: { type: "array", items: { $ref: "#/components/schemas/UserContributionEntry" } },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/user/stats-popup": {
+      get: {
+        summary: "User statistics modal popup (alias)",
+        description: "Alias of `/user/stats/popup`.",
+        operationId: "getUserStatsPopupAlias",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "username", in: "query", schema: { type: "string" }, description: "Username (will resolve numeric ID)", example: "patton" },
+          { name: "userId", in: "query", schema: { type: "string" }, description: "Numeric user ID", example: "175" },
+        ],
+        responses: {
+          "200": {
+            description: "User stats popup data",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    userId: { type: "integer" },
+                    username: { type: ["string", "null"] },
+                    popType: { type: "string" },
+                    html: { type: "string" },
+                    items: { type: "array", items: { $ref: "#/components/schemas/UserContributionEntry" } },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
     "/user/favorites": {
       get: {
         summary: "User favorite albums",
@@ -2457,6 +2557,7 @@ export const openApiSpec = {
                   properties: {
                     username: { type: "string" },
                     favorites: { type: "array", items: { $ref: "#/components/schemas/AlbumBlock" } },
+                    favoriteArtists: { type: "array", items: { $ref: "#/components/schemas/SearchArtist" } },
                   },
                 },
               },
@@ -3129,6 +3230,35 @@ export const openApiSpec = {
         },
       },
     },
+    "/news-item/embed": {
+      get: {
+        summary: "Raw inline embed fragment for a news link",
+        description: "Fetch embedded player or widget HTML for a news link via showContent.php",
+        operationId: "getNewsEmbed",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "id", in: "query", required: true, schema: { type: "string" }, description: "News link ID", example: "12342" },
+        ],
+        responses: {
+          "200": {
+            description: "News embed HTML",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    id: { type: "integer" },
+                    html: { type: "string" },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
     "/album/similar": {
       get: {
         summary: "Albums similar to the given album",
@@ -3311,6 +3441,76 @@ export const openApiSpec = {
         },
       },
     },
+    "/review/comments": {
+      get: {
+        summary: "Full comment thread for a user review",
+        description: "Convenience endpoint for review comments (calls viewAllComments.php with type=user_review)",
+        operationId: "getReviewComments",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "id", in: "query", required: true, schema: { type: "string" }, description: "Numeric review ID", example: "1363027" },
+          { name: "albumId", in: "query", schema: { type: "string" }, description: "Optional numeric album ID", example: "505321" },
+        ],
+        responses: {
+          "200": {
+            description: "Review comment thread",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/AllCommentsResult" },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/list/comments": {
+      get: {
+        summary: "Full comment thread for a user list",
+        description: "Convenience endpoint for user list comments (calls viewAllComments.php with type=user_list)",
+        operationId: "getListComments",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "id", in: "query", required: true, schema: { type: "string" }, description: "Numeric user list ID", example: "555" },
+        ],
+        responses: {
+          "200": {
+            description: "List comment thread",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/AllCommentsResult" },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/news-item/comments": {
+      get: {
+        summary: "Full comment thread for a news item",
+        description: "Convenience endpoint for news item comments (calls viewAllComments.php with type=news)",
+        operationId: "getNewsItemComments",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "id", in: "query", required: true, schema: { type: "string" }, description: "Numeric news link ID", example: "12342" },
+        ],
+        responses: {
+          "200": {
+            description: "News comment thread",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/AllCommentsResult" },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
     "/album/critic-lists": {
       get: {
         summary: "Year-end critic lists ranking an album",
@@ -3455,7 +3655,8 @@ export const openApiSpec = {
         operationId: "getAlbumRatingHistory",
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
-          { name: "albumId", in: "query", required: true, schema: { type: "string" }, description: "Numeric album ID (see id in /album)", example: "1998" },
+          { name: "albumId", in: "query", schema: { type: "string" }, description: "Numeric album ID (see id in /album)", example: "1998" },
+          { name: "slug", in: "query", schema: { type: "string" }, description: "Album slug with numeric ID prefix", example: "1998-kanye-west-my-beautiful-dark-twisted-fantasy" },
         ],
         responses: {
           "200": {
@@ -3495,7 +3696,8 @@ export const openApiSpec = {
         operationId: "getAlbumDistribution",
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
-          { name: "albumId", in: "query", required: true, schema: { type: "string" }, description: "Numeric album ID (see id in /album)", example: "1998" },
+          { name: "albumId", in: "query", schema: { type: "string" }, description: "Numeric album ID (see id in /album)", example: "1998" },
+          { name: "slug", in: "query", schema: { type: "string" }, description: "Album slug with numeric ID prefix", example: "1998-kanye-west-my-beautiful-dark-twisted-fantasy" },
           { name: "format", in: "query", required: false, schema: { type: "string", enum: ["all", "following"], default: "all" } },
         ],
         responses: {
@@ -3894,6 +4096,37 @@ export const openApiSpec = {
         },
       },
     },
+    "/list/comments/replies": {
+      get: {
+        summary: "Replies to a user list comment",
+        description: "Fetch threaded replies to a user list comment via showListCommentReplies.php",
+        operationId: "getListCommentReplies",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "listId", in: "query", required: true, schema: { type: "string" }, description: "Numeric user list ID", example: "123" },
+          { name: "commentId", in: "query", required: true, schema: { type: "string" }, example: "4960474" },
+        ],
+        responses: {
+          "200": {
+            description: "Comment replies",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    listId: { type: "integer" },
+                    commentId: { type: "integer" },
+                    replies: { type: "array", items: { $ref: "#/components/schemas/AotyComment" } },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
     "/artist/news": {
       get: {
         summary: "News about an artist",
@@ -3962,6 +4195,125 @@ export const openApiSpec = {
             content: {
               "application/json": {
                 schema: { $ref: "#/components/schemas/EntityCorrectionsResult" },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/artist/aka": {
+      get: {
+        summary: "Full Also Known As names for an artist",
+        description: "Fetch all alias / alternate names for an artist via the artist credits overlay",
+        operationId: "getArtistAka",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "slug", in: "query", required: true, schema: { type: "string" }, example: "183-kanye-west" },
+        ],
+        responses: {
+          "200": {
+            description: "Artist aliases",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    slug: { type: "string" },
+                    artistId: { type: "integer" },
+                    alsoKnownAs: { type: "array", items: { type: "string" } },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/artist/comments/replies": {
+      get: {
+        summary: "Replies to an artist comment",
+        description: "Fetch threaded replies to an artist comment via showArtistCommentReplies.php",
+        operationId: "getArtistCommentReplies",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "artistId", in: "query", required: true, schema: { type: "string" }, description: "Numeric artist ID or artist slug", example: "183" },
+          { name: "commentId", in: "query", required: true, schema: { type: "string" }, example: "4960474" },
+        ],
+        responses: {
+          "200": {
+            description: "Comment replies",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    artistId: { type: "integer" },
+                    commentId: { type: "integer" },
+                    replies: { type: "array", items: { $ref: "#/components/schemas/AotyComment" } },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/artist/tags/autocomplete": {
+      get: {
+        summary: "Autocomplete suggestions for artist tags",
+        description: "Autocomplete search for artist tags via artistTagAutocomplete.php",
+        operationId: "getArtistTagAutocomplete",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "q", in: "query", required: true, schema: { type: "string" }, example: "indie" },
+        ],
+        responses: {
+          "200": {
+            description: "Artist tag autocomplete suggestions",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    query: { type: "string" },
+                    tags: { type: "array", items: { type: "string" } },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/artists/tags/autocomplete": {
+      get: {
+        summary: "Autocomplete suggestions for artist tags (alias)",
+        description: "Alias of `/artist/tags/autocomplete`.",
+        operationId: "getArtistsTagAutocompleteAlias",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "q", in: "query", required: true, schema: { type: "string" }, example: "indie" },
+        ],
+        responses: {
+          "200": {
+            description: "Artist tag autocomplete suggestions",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    query: { type: "string" },
+                    tags: { type: "array", items: { type: "string" } },
+                  },
+                },
               },
             },
           },
@@ -4057,6 +4409,25 @@ export const openApiSpec = {
             },
           },
           "400": { $ref: "#/components/responses/BadRequest" },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/random/filters": {
+      get: {
+        summary: "Available filter options and bounds for random album generation",
+        description: "Fetch valid release types and score/review ranges from randomFilters.php",
+        operationId: "getRandomFilters",
+        parameters: [{ $ref: "#/components/parameters/CacheControl" }],
+        responses: {
+          "200": {
+            description: "Random filter bounds and options",
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/RandomFiltersMeta" },
+              },
+            },
+          },
           "500": { $ref: "#/components/responses/ServerError" },
         },
       },
@@ -4173,7 +4544,10 @@ export const openApiSpec = {
       get: {
         summary: "Site FAQ",
         operationId: "getFaq",
-        parameters: [{ $ref: "#/components/parameters/CacheControl" }],
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "section", in: "query", required: false, schema: { type: "string", enum: ["general", "community", "all"], default: "general" }, description: "FAQ category facet (general, community, or all)" },
+        ],
         responses: {
           "200": {
             description: "FAQ items",
@@ -4266,6 +4640,36 @@ export const openApiSpec = {
               },
             },
           },
+          "500": { $ref: "#/components/responses/ServerError" },
+        },
+      },
+    },
+    "/stats/refresh": {
+      get: {
+        summary: "Live-refresh a site stats module counter",
+        description: "Fetch fresh HTML and timestamp for a specific stats key (e.g. stats:total_albums)",
+        operationId: "getStatsRefresh",
+        parameters: [
+          { $ref: "#/components/parameters/CacheControl" },
+          { name: "key", in: "query", required: true, schema: { type: "string" }, description: "Stats key from /stats", example: "stats:total_albums" },
+        ],
+        responses: {
+          "200": {
+            description: "Stats module refresh data",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    key: { type: "string" },
+                    html: { type: "string" },
+                    timestamp: { type: ["string", "null"] },
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest" },
           "500": { $ref: "#/components/responses/ServerError" },
         },
       },
@@ -5313,6 +5717,48 @@ export const openApiSpec = {
         properties: {
           question: { type: "string" },
           answer: { type: "string" },
+          section: { type: ["string", "null"] },
+        },
+      },
+      RandomFiltersMeta: {
+        type: "object",
+        properties: {
+          types: { type: "array", items: { type: "string" } },
+          year: {
+            type: "object",
+            properties: {
+              min: { type: "integer" },
+              max: { type: "integer" },
+            },
+          },
+          criticScore: {
+            type: "object",
+            properties: {
+              min: { type: "integer" },
+              max: { type: "integer" },
+            },
+          },
+          criticReviews: {
+            type: "object",
+            properties: {
+              min: { type: "integer" },
+              max: { type: ["integer", "null"] },
+            },
+          },
+          userScore: {
+            type: "object",
+            properties: {
+              min: { type: "integer" },
+              max: { type: "integer" },
+            },
+          },
+          userReviews: {
+            type: "object",
+            properties: {
+              min: { type: "integer" },
+              max: { type: ["integer", "null"] },
+            },
+          },
         },
       },
       ChangelogEntry: {
@@ -5368,6 +5814,16 @@ export const openApiSpec = {
           name: { type: "string" },
           description: { type: ["string", "null"] },
           image: { type: ["string", "null"] },
+          date: { type: ["string", "null"] },
+        },
+      },
+      UserContributionEntry: {
+        type: "object",
+        properties: {
+          type: { type: "string" },
+          title: { type: "string" },
+          url: { type: ["string", "null"] },
+          detail: { type: ["string", "null"] },
           date: { type: ["string", "null"] },
         },
       },

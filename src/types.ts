@@ -605,6 +605,22 @@ export interface FollowArtist {
   followers: number | null;
 }
 
+export interface UserContributionEntry {
+  type: string;
+  title: string;
+  url: string | null;
+  detail: string | null;
+  date: string | null;
+}
+
+export interface UserContributionsResult {
+  userId: number;
+  username: string | null;
+  popType: string;
+  html: string;
+  items: UserContributionEntry[];
+}
+
 export interface UserBestOfYear {
   year: number | null;
   ratings: UserRating[];
@@ -741,6 +757,16 @@ export interface ArtistsOverviewSection {
 export interface FaqItem {
   question: string;
   answer: string;
+  section?: string | null;
+}
+
+export interface RandomFiltersMeta {
+  types: string[];
+  year: { min: number; max: number };
+  criticScore: { min: number; max: number };
+  criticReviews: { min: number; max: number | null };
+  userScore: { min: number; max: number };
+  userReviews: { min: number; max: number | null };
 }
 
 export interface ChangelogEntry {

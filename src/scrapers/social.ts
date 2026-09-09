@@ -82,11 +82,10 @@ export async function scrapeAlbumCriticLists(albumSlug: string, opts: FetchOpts 
   };
 }
 
-export async function scrapeFaq(opts: FetchOpts = FETCH_OPTS): Promise<FaqItem[]> {
-  const res = await fetch(`${BASE}/faq/`, opts);
-  if (!res.ok) throw new Error(`FAQ fetch failed: ${res.status}`);
-  const html = await res.text();
+function parseFaqHtml(html: string, defaultSection: string): FaqItem[] {
   const out: FaqItem[] = [];
+  const titleM = html.match(/<div class="faqPageTitle">([^<]+)<\/div>/i);
+  const sectionTitle = titleM?.[1] ? decodeEntities(titleM[1].trim()) : defaultSection;
   for (const m of html.matchAll(/<div class="faqQuestion">(.*?)<\/div>\s*<div class="faqAnswer">(.*?)<\/div>/gs)) {
     const q = m[1];
     const a = m[2];
@@ -94,10 +93,46 @@ export async function scrapeFaq(opts: FetchOpts = FETCH_OPTS): Promise<FaqItem[]
       out.push({
         question: decodeEntities(q.replace(/<[^>]+>/g, "").trim()),
         answer: decodeEntities(a.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()),
+        section: sectionTitle,
       });
     }
   }
   return out;
+}
+
+export async function scrapeFaq(
+  sectionOrOpts?: string | FetchOpts | null,
+  opts: FetchOpts = FETCH_OPTS,
+): Promise<FaqItem[]> {
+  const section = typeof sectionOrOpts === "string" ? sectionOrOpts.trim().toLowerCase() : null;
+  const effectiveOpts = typeof sectionOrOpts === "object" && sectionOrOpts !== null ? sectionOrOpts : opts;
+
+  if (section === "community" || section === "rules") {
+    const res = await fetch(`${BASE}/faq/community.php`, effectiveOpts);
+    if (!res.ok) throw new Error(`FAQ fetch failed: ${res.status}`);
+    const html = await res.text();
+    return parseFaqHtml(html, "Community Rules");
+  }
+
+  if (section === "all") {
+    const [genRes, comRes] = await Promise.all([
+      fetch(`${BASE}/faq/`, effectiveOpts),
+      fetch(`${BASE}/faq/community.php`, effectiveOpts),
+    ]);
+    if (!genRes.ok) throw new Error(`FAQ fetch failed: ${genRes.status}`);
+    const [genHtml, comHtml] = await Promise.all([
+      genRes.text(),
+      comRes.ok ? comRes.text() : "",
+    ]);
+    const genItems = parseFaqHtml(genHtml, "Frequently Asked Questions");
+    const comItems = comHtml ? parseFaqHtml(comHtml, "Community Rules") : [];
+    return [...genItems, ...comItems];
+  }
+
+  const res = await fetch(`${BASE}/faq/`, effectiveOpts);
+  if (!res.ok) throw new Error(`FAQ fetch failed: ${res.status}`);
+  const html = await res.text();
+  return parseFaqHtml(html, "Frequently Asked Questions");
 }
 
 export async function scrapeGuidelines(type: "review" | "comment", opts: FetchOpts = FETCH_OPTS): Promise<GuidelinesSection> {
@@ -711,6 +746,20 @@ export async function scrapeListCommentReplies(listId: string | number, commentI
   });
   if (!res.ok) throw new Error(`List comment replies fetch failed: ${res.status}`);
   return { listId: parseId(listId) ?? 0, commentId: parseId(commentId) ?? 0, replies: await scrapeCommentRows(res) };
+}
+
+/** Replies on an artist comment thread (verified handler: showArtistCommentReplies {id, artistID}). */
+export async function scrapeArtistCommentReplies(artistId: string | number, commentId: string | number, opts: FetchOpts = FETCH_OPTS): Promise<{ artistId: number; commentId: number; replies: AotyComment[] }> {
+  const parsedArtistId = parseId(artistId) ?? 0;
+  const parsedCommentId = parseId(commentId) ?? 0;
+  const res = await fetch(`${BASE}/scripts/showArtistCommentReplies.php`, {
+    ...opts,
+    method: "POST",
+    headers: { ...REQ_HEADERS, "Content-Type": "application/x-www-form-urlencoded", "X-Requested-With": "XMLHttpRequest", Referer: `${BASE}/artist/${parsedArtistId}/` },
+    body: new URLSearchParams({ id: String(parsedCommentId), artistID: String(parsedArtistId) }).toString(),
+  });
+  if (!res.ok) throw new Error(`Artist comment replies fetch failed: ${res.status}`);
+  return { artistId: parsedArtistId, commentId: parsedCommentId, replies: await scrapeCommentRows(res) };
 }
 
 /**

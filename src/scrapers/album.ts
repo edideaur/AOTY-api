@@ -11,6 +11,7 @@ import type {
   CriticReview,
   NamedLink,
   RandomAlbumFilter,
+  RandomFiltersMeta,
   StreamingLink,
   Track,
   UserReview,
@@ -792,5 +793,56 @@ export async function scrapeAlbumTagAutocomplete(query: string, opts: FetchOpts 
   if (!res.ok) throw new Error(`Tag autocomplete fetch failed: ${res.status}`);
   const data = (await res.json()) as Array<{ value: string }>;
   return data.map((item) => decodeEntities(item.value.trim())).filter(Boolean);
+}
+
+/**
+ * Available filter options and bounds for random album generation
+ * (verified source: GET /scripts/randomFilters.php).
+ */
+export async function scrapeRandomFilters(opts: FetchOpts = FETCH_OPTS): Promise<RandomFiltersMeta> {
+  const res = await fetch(`${BASE}/scripts/randomFilters.php`, opts);
+  if (!res.ok) throw new Error(`Random filters fetch failed: ${res.status}`);
+  const html = await res.text();
+
+  const types: string[] = [];
+  const typeSelectM = html.match(/<select[^>]*id="randomType"[^>]*>([\s\S]*?)<\/select>/i);
+  if (typeSelectM?.[1]) {
+    for (const m of typeSelectM[1].matchAll(/<option[^>]*value="([^"]*)"[^>]*>([^<]+)<\/option>/g)) {
+      const val = m[1]?.trim();
+      if (val && val !== "") types.push(val);
+    }
+  }
+
+  const parseMinMax = (id: string, defMin: number, defMax: number): { min: number; max: number } => {
+    const inputM = html.match(new RegExp(`id="${id}"[^>]*`, "i"));
+    const minM = inputM?.[0]?.match(/min="(\d+)"/);
+    const maxM = inputM?.[0]?.match(/max="(\d+)"/);
+    return {
+      min: minM?.[1] ? parseInt(minM[1], 10) : defMin,
+      max: maxM?.[1] ? parseInt(maxM[1], 10) : defMax,
+    };
+  };
+
+  const yearRange = parseMinMax("randomYearFrom", 1900, new Date().getFullYear());
+  const criticScoreRange = parseMinMax("randomCriticScoreMin", 0, 100);
+  const userScoreRange = parseMinMax("randomUserScoreMin", 0, 100);
+
+  const criticReviewsInput = html.match(/id="randomCriticReviewsMin"[^>]*/i);
+  const userReviewsInput = html.match(/id="randomUserReviewsMin"[^>]*/i);
+  const criticRevMinM = criticReviewsInput?.[0]?.match(/min="(\d+)"/);
+  const userRevMinM = userReviewsInput?.[0]?.match(/min="(\d+)"/);
+
+  return {
+    types: types.length > 0 ? types : [
+      "Audiobook", "Box Set", "Compilation", "Demo", "DJ Mix", "EP", "Holiday",
+      "Instrumental", "Live", "LP", "Miscellaneous", "Mixtape", "Music Video",
+      "Reissue", "Remix", "Single", "Soundtrack", "Unofficial", "Video",
+    ],
+    year: yearRange,
+    criticScore: criticScoreRange,
+    criticReviews: { min: criticRevMinM?.[1] ? parseInt(criticRevMinM[1], 10) : 0, max: null },
+    userScore: userScoreRange,
+    userReviews: { min: userRevMinM?.[1] ? parseInt(userRevMinM[1], 10) : 0, max: null },
+  };
 }
 

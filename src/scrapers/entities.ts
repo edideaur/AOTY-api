@@ -1157,12 +1157,25 @@ export async function scrapeCriticPage(pageUrl: string, slug: string, opts: Fetc
   };
 }
 
-export async function scrapeSubGenres(genreId: string | number, opts: FetchOpts = FETCH_OPTS): Promise<{ genreId: number; heading: string; subgenres: NamedLink[] }> {
+export async function scrapeSubGenres(
+  genreId: string | number,
+  breadIdsOrOpts?: (string | number)[] | FetchOpts | null,
+  opts: FetchOpts = FETCH_OPTS,
+): Promise<{ genreId: number; heading: string; subgenres: NamedLink[] }> {
+  const isBreadIds = Array.isArray(breadIdsOrOpts);
+  const breadIds = isBreadIds ? breadIdsOrOpts : null;
+  const effectiveOpts = !isBreadIds && typeof breadIdsOrOpts === "object" && breadIdsOrOpts !== null ? breadIdsOrOpts : opts;
+
+  const bodyParams = new URLSearchParams({ genreID: String(genreId) });
+  if (breadIds && breadIds.length > 0) {
+    bodyParams.set("breadIDs", JSON.stringify(breadIds.map(Number)));
+  }
+
   const res = await fetch(`${BASE}/scripts/showSubGenres.php`, {
-    ...opts,
+    ...effectiveOpts,
     method: "POST",
     headers: { ...REQ_HEADERS, "Content-Type": "application/x-www-form-urlencoded", "X-Requested-With": "XMLHttpRequest", Referer: `${BASE}/genre.php` },
-    body: `genreID=${encodeURIComponent(String(genreId))}`,
+    body: bodyParams.toString(),
   });
   if (!res.ok) throw new Error(`Subgenres fetch failed: ${res.status}`);
   const html = await res.text();

@@ -2,12 +2,12 @@ import { BASE, FETCH_OPTS, FETCH_OPTS_FRESH, RES_HEADERS, PROBLEM_HEADERS, clean
 import { openApiSpec } from "./openapi.js";
 import { POSTMAN_BODY } from "./postman.js";
 import { scrapeAlbumBlocks } from "./scrapers/albumBlock.js";
-import { findAlbumUrl, scrapeAlbumCriticReviews, scrapeAlbumPage, scrapeAlbumTags, scrapeRandomAlbum, scrapeAlbumTagAutocomplete } from "./scrapers/album.js";
+import { findAlbumUrl, scrapeAlbumCriticReviews, scrapeAlbumPage, scrapeAlbumTags, scrapeRandomAlbum, scrapeAlbumTagAutocomplete, scrapeRandomFilters } from "./scrapers/album.js";
 import { scrapeNewsPageMeta, scrapeNewsFeed, scrapeNewsFeedXml } from "./scrapers/news.js";
 import { scrapeListsIndex, scrapeListDetail, scrapeYearEndSummary, scrapeCommunityYearEnd } from "./scrapers/lists.js";
 import { scrapeArtistSearch, scrapeLabelAutocomplete, scrapeLabelSearch, scrapeSearchAutocomplete, scrapeUserSearch } from "./scrapers/search.js";
 import { scrapeAlbumStats, scrapeAlbumCredits, scrapeAlbumRatingHistory, scrapeAlbumDistribution, scrapeAlbumUsers, scrapeAlbumImages } from "./scrapers/albumExtras.js";
-import { scrapeArtistPage, scrapeArtistTopSongs, scrapeSimilarArtists, scrapeArtistNews, scrapeArtistCredits, listArtistCreditRoles, scrapeRandomArtist, scrapeArtistDiscography, applyArtistImages, fetchArtistImage, scrapeArtistAka } from "./scrapers/artist.js";
+import { scrapeArtistPage, scrapeArtistTopSongs, scrapeSimilarArtists, scrapeArtistNews, scrapeArtistCredits, listArtistCreditRoles, scrapeRandomArtist, scrapeArtistDiscography, applyArtistImages, fetchArtistImage, scrapeArtistAka, scrapeArtistTagAutocomplete } from "./scrapers/artist.js";
 import {
   scrapeArtistsOverview,
   scrapeCriticPage,
@@ -29,6 +29,7 @@ import { scrapeRatingsChartPage, scrapeTopArtists, scrapeRatingSources, scrapeRa
 import {
   scrapeAlbumCommentReplies,
   scrapeListCommentReplies,
+  scrapeArtistCommentReplies,
   scrapeNewsEmbed,
   scrapeStatsRefresh,
   scrapeAlbumCriticLists,
@@ -73,6 +74,7 @@ import {
   scrapeUserDistribution,
   scrapeUserArtistRatings,
   scrapeUserAlbumTrackRatings,
+  scrapeUserPopup,
 } from "./scrapers/user.js";
 import type { AlbumDetail, RandomAlbumFilter } from "./types.js";
 
@@ -153,6 +155,7 @@ function computeTtl(path: string, q: URLSearchParams, data: unknown): number | u
     || path === "/discover/anticipated" || path === "/discover/under-radar" || path === "/discover/top-rated"
     || path === "/updates" || path === "/users" || path === "/user-reviews" || path === "/home"
     || path === "/comments" || path === "/comments/all"
+    || path === "/review/comments" || path === "/list/comments" || path === "/news-item/comments"
   ) return TTL.HOUR;
 
   // Upcoming / search / current-year charts / user content: 24 h
@@ -199,7 +202,7 @@ function computeTtl(path: string, q: URLSearchParams, data: unknown): number | u
 
   if (path === "/guidelines") return TTL.MONTH;
 
-  if (path === "/changelog" || path === "/lists/users") return TTL.WEEK;
+  if (path === "/changelog" || path === "/lists/users" || path === "/random/filters") return TTL.WEEK;
 
   if (
     path === "/album/user-lists"
@@ -220,9 +223,10 @@ function computeTtl(path: string, q: URLSearchParams, data: unknown): number | u
     || path === "/ratings/genres"
     || path === "/publication/perfect"
     || path === "/list/comments/replies"
+    || path === "/artist/comments/replies"
   ) return TTL.MONTH;
 
-  if (path === "/artist/credits" || path === "/artist/news" || path === "/artist/aka" || path === "/album/likes" || path === "/album/in-library" || path === "/user/artist-ratings" || path === "/user/track-ratings" || path === "/album/corrections" || path === "/artist/corrections" || path === "/song/corrections" || path === "/corrections" || path === "/news-item/embed") return TTL.DAY;
+  if (path === "/artist/credits" || path === "/artist/news" || path === "/artist/aka" || path === "/artist/tags/autocomplete" || path === "/artists/tags/autocomplete" || path === "/album/likes" || path === "/album/in-library" || path === "/user/artist-ratings" || path === "/user/track-ratings" || path === "/user/contributions" || path === "/user/stats/popup" || path === "/user/stats-popup" || path === "/album/corrections" || path === "/artist/corrections" || path === "/song/corrections" || path === "/corrections" || path === "/news-item/embed") return TTL.DAY;
 
   if (path === "/user/followers" || path === "/user/following" || path === "/user/distribution") return TTL.DAY;
 
@@ -605,7 +609,7 @@ const RESERVED_ALBUM_SUBPATHS = new Set([
 ]);
 
 const RESERVED_ARTIST_SUBPATHS = new Set([
-  "discography", "similar", "songs", "top-songs", "news", "credits", "corrections", "aka",
+  "discography", "similar", "songs", "top-songs", "news", "credits", "corrections", "aka", "comments", "tags",
 ]);
 
 const RESERVED_GENRE_SUBPATHS = new Set([
@@ -616,7 +620,11 @@ const RESERVED_USER_SUBPATHS = new Set([
   "ratings", "perfect", "reviews", "listened", "library", "liked-albums",
   "tags", "tag", "lists", "list", "stats", "favorites", "followers",
   "following", "following-artists", "review", "genres", "badges", "year-end", "distribution",
-  "artist-ratings", "track-ratings", "spin-list",
+  "artist-ratings", "track-ratings", "spin-list", "contributions", "stats-popup",
+]);
+
+const RESERVED_LIST_SUBPATHS = new Set([
+  "summary", "comments",
 ]);
 
 // Label listing sort orders (menu on label pages).
@@ -845,7 +853,7 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
   }
 
   const listMatch = path.match(/^\/list\/(.+)$/);
-  if (listMatch?.[1]) {
+  if (listMatch?.[1] && !RESERVED_LIST_SUBPATHS.has(listMatch[1].split("/")[0] ?? "")) {
     const slug = normSlug(listMatch[1]);
     return scrapeListDetail(`${BASE}/list/${slug}/`, opts);
   }
@@ -1002,6 +1010,18 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
     return scrapeArtistAka(slug, opts);
   }
 
+  if (path === "/artist/comments/replies") {
+    const rawArtistId = q.get("artistId") ?? q.get("slug");
+    if (!rawArtistId) throw new ApiError("Missing required parameter: artistId or slug", 400);
+    const commentId = getRequiredParam(q, "commentId");
+    return scrapeArtistCommentReplies(rawArtistId, commentId, opts);
+  }
+
+  if (path === "/artist/tags/autocomplete" || path === "/artists/tags/autocomplete") {
+    const queryStr = getRequiredParam(q, "q");
+    return { query: queryStr, tags: await scrapeArtistTagAutocomplete(queryStr, opts) };
+  }
+
   if (path === "/random/artist") {
     return scrapeRandomArtist(opts);
   }
@@ -1037,6 +1057,10 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
     const album = albums[Math.floor(Math.random() * albums.length)];
     if (!album) throw new ApiError("No must-hear albums found", 404);
     return { album };
+  }
+
+  if (path === "/random/filters") {
+    return scrapeRandomFilters(opts);
   }
 
   if (path === "/random/album" || path === "/random/release") {
@@ -1103,7 +1127,9 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
 
   if (path === "/subgenres") {
     const genreId = getRequiredParam(q, "genreId");
-    return scrapeSubGenres(genreId, opts);
+    const rawBread = q.get("breadIds");
+    const breadIds = rawBread ? rawBread.split(",").map((s) => s.trim()).filter(Boolean) : null;
+    return scrapeSubGenres(genreId, breadIds, opts);
   }
 
   if (path === "/genre/name") {
@@ -1175,7 +1201,8 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
   }
 
   if (path === "/faq") {
-    return { items: await scrapeFaq(opts) };
+    const section = q.get("section");
+    return { items: await scrapeFaq(section, opts) };
   }
 
   if (path === "/changelog") {
@@ -1364,12 +1391,25 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
     };
   }
 
+  if (path === "/user/stats/popup" || path === "/user/stats-popup") {
+    const userOrId = q.get("username") ?? q.get("userId") ?? q.get("id");
+    if (!userOrId) throw new ApiError("Missing required parameter: username or userId", 400);
+    return scrapeUserPopup(userOrId, "stats", opts);
+  }
+
+  if (path === "/user/contributions") {
+    const userOrId = q.get("username") ?? q.get("userId") ?? q.get("id");
+    if (!userOrId) throw new ApiError("Missing required parameter: username or userId", 400);
+    return scrapeUserPopup(userOrId, "contributions", opts);
+  }
+
   if (path === "/user/favorites") {
     const username = getRequiredParam(q, "username");
     const profile = await scrapeUserProfile(username, opts);
     return {
       username: profile.username,
       favorites: profile.favorites,
+      favoriteArtists: profile.favoriteArtists,
     };
   }
 
@@ -1640,12 +1680,16 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
   }
 
   if (path === "/album/rating-history") {
-    const albumId = getRequiredParam(q, "albumId");
+    const slug = q.get("slug");
+    const albumId = q.get("albumId") ?? (slug ? slug.match(/^(\d+)/)?.[1] : null);
+    if (!albumId) throw new ApiError("Missing required parameter: albumId or slug with ID", 400);
     return scrapeAlbumRatingHistory(albumId);
   }
 
   if (path === "/album/distribution") {
-    const albumId = getRequiredParam(q, "albumId");
+    const slug = q.get("slug");
+    const albumId = q.get("albumId") ?? (slug ? slug.match(/^(\d+)/)?.[1] : null);
+    if (!albumId) throw new ApiError("Missing required parameter: albumId or slug with ID", 400);
     const format = q.get("format") ?? "all";
     if (format !== "all" && format !== "following") {
       throw new ApiError("Invalid format: must be all or following", 400);
@@ -1787,6 +1831,25 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
     const itemId = getRequiredParam(q, "itemId");
     const albumId = q.get("albumId");
     return scrapeAllComments(type, itemId, albumId, opts);
+  }
+
+  if (path === "/review/comments") {
+    const id = q.get("id") ?? q.get("reviewId");
+    if (!id) throw new ApiError("Missing required parameter: id or reviewId", 400);
+    const albumId = q.get("albumId");
+    return scrapeAllComments("user_review", id, albumId, opts);
+  }
+
+  if (path === "/list/comments") {
+    const id = q.get("id") ?? q.get("listId");
+    if (!id) throw new ApiError("Missing required parameter: id or listId", 400);
+    return scrapeAllComments("user_list", id, null, opts);
+  }
+
+  if (path === "/news-item/comments") {
+    const id = q.get("id") ?? q.get("linkId") ?? q.get("newsId");
+    if (!id) throw new ApiError("Missing required parameter: id or newsId", 400);
+    return scrapeAllComments("news", id, null, opts);
   }
 
   if (path === "/album/user-lists") {
@@ -1991,7 +2054,7 @@ if (path === "/rapidoc") return htmlPage(RAPIDOC_HTML);
     }
 
     const skipCache = q.get("cache") === "false";
-    const noStore = path.startsWith("/random/") || path === "/batch" || path === "/status" || path === "/stats/refresh";
+    const noStore = (path.startsWith("/random/") && path !== "/random/filters") || path === "/batch" || path === "/status" || path === "/stats/refresh";
     const baseOpts = skipCache || noStore ? FETCH_OPTS_FRESH : FETCH_OPTS;
     const fetchOpts: FetchOpts = {
       ...baseOpts,

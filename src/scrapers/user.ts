@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseId, parseRank, parseTrackNumber, parseYear, parsePercent, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseId, parseRank, parseTrackNumber, parseYear, parsePercent, type FetchOpts } from "../constants.js";
 import { scrapeAlbumBlocks, mustHearScopeFromClass } from "./albumBlock.js";
 import { scrapeCommentRows } from "./commentRow.js";
 import { parseDiscussionTable } from "./social.js";
@@ -31,6 +31,8 @@ import type {
   UserYearEndResult,
   UserArtistRatingsResult,
   UserAlbumTrackRatingsResult,
+  UserContributionEntry,
+  UserContributionsResult,
 } from "../types.js";
 
 export async function scrapeUserProfile(username: string, opts: FetchOpts = FETCH_OPTS): Promise<UserProfile> {
@@ -1341,9 +1343,11 @@ export async function scrapeUserReviewDetail(username: string, slug: string, opt
   }
 
   const commentsList = await scrapeCommentRows(new Response(html));
+  const reviewIdM = html.match(/id="review_likes_(\d+)"/) ?? html.match(/data-review-id="(\d+)"/) ?? html.match(/id="review_(\d+)"/);
+  const reviewId = reviewIdM?.[1] ? (parseId(reviewIdM[1]) ?? null) : null;
 
   return {
-    reviewId: null,
+    reviewId,
     url,
     artist: decodeEntities(s.artist.trim()),
     artistUrl: s.artistUrl,
@@ -1360,7 +1364,7 @@ export async function scrapeUserReviewDetail(username: string, slug: string, opt
     isTruncated: false,
     likes: parseCount(s.likes.trim()) ?? 0,
     comments: parseCount(commentsCount) ?? 0,
-    commentsUrl: null,
+    commentsUrl: reviewId ? `${BASE}/scripts/viewAllComments.php?type=user_review&itemID=${reviewId}` : null,
     date: s.dateExact || s.date.trim() || null,
     dateExact: s.dateExact || null,
     edited: false,
@@ -1974,6 +1978,73 @@ export async function scrapeUserAlbumTrackRatings(
     artist,
     cover,
     tracks,
+  };
+}
+
+/** Parse structured contribution or stats items from userStats.php HTML response. */
+export function parseUserContributionsHtml(html: string): UserContributionEntry[] {
+  const items: UserContributionEntry[] = [];
+  const rowMatches = [...html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>|<div class="(?:[^"]*Row|listItem|statRow|contributionRow)[^"]*">([\s\S]*?)<\/div>/gi)];
+  for (const m of rowMatches) {
+    const chunk = m[1] ?? m[2] ?? "";
+    const linkM = chunk.match(/<a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i);
+    const dateM = chunk.match(/(?:\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},?\s+\d{4}|\d+[smhdwmy]\s+ago)/i);
+    if (linkM?.[1]) {
+      const href = linkM[1];
+      const text = decodeEntities(linkM[2]?.replace(/<[^>]+>/g, "").trim() ?? "");
+      const fullText = decodeEntities(chunk.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+      items.push({
+        type: href.includes("/album/") ? "album" : href.includes("/artist/") ? "artist" : href.includes("/song/") ? "song" : "other",
+        title: text,
+        url: href.startsWith("http") ? href : BASE + href,
+        detail: fullText !== text ? fullText : null,
+        date: dateM?.[0] ?? null,
+      });
+    }
+  }
+  return items;
+}
+
+/**
+ * Fetch a user's stats or contributions popup via the overlay endpoint
+ * (verified in userScript.js / profile HTML: POST /scripts/userStats.php {userID, popType}).
+ */
+export async function scrapeUserPopup(
+  userOrId: string | number,
+  popType: "contributions" | "stats" = "contributions",
+  opts: FetchOpts = FETCH_OPTS,
+): Promise<UserContributionsResult> {
+  let userId: number;
+  let username: string | null = null;
+  const userStr = String(userOrId).trim();
+  if (typeof userOrId === "number" || /^\d+$/.test(userStr)) {
+    userId = typeof userOrId === "number" ? userOrId : parseInt(userStr, 10);
+  } else {
+    username = userStr;
+    const profile = await scrapeUserProfile(username, opts);
+    if (!profile.userId) throw new Error(`Could not resolve numeric user ID for "${username}"`);
+    userId = profile.userId;
+  }
+
+  const res = await fetch(`${BASE}/scripts/userStats.php`, {
+    ...opts,
+    method: "POST",
+    headers: {
+      ...REQ_HEADERS,
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-Requested-With": "XMLHttpRequest",
+      Referer: username ? `${BASE}/user/${encodeURIComponent(username)}/` : `${BASE}/`,
+    },
+    body: new URLSearchParams({ userID: String(userId), popType }).toString(),
+  });
+  if (!res.ok) throw new Error(`User ${popType} fetch failed: ${res.status}`);
+  const html = await res.text();
+  return {
+    userId,
+    username,
+    popType,
+    html,
+    items: parseUserContributionsHtml(html),
   };
 }
 

@@ -1072,3 +1072,516 @@ describe("tag artists tab (live markup)", () => {
     }
   });
 });
+
+describe("verified live endpoints: artist/aka, news-item/embed, list/comments/replies, stats/refresh", () => {
+  it("parses artist alsoKnownAs with link rows and plain text fallback", async () => {
+    const { scrapeArtistAka } = await import("../src/scrapers/artist.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const linkHtml = `<div class="content"><a href="/artist/183-kanye-west/">Ye</a><a href="/artist/183-kanye-west/">Yeezy</a><a href="/artist/183-kanye-west/">Ye</a></div>`;
+    let restore = mockFetch(async () => new Response(linkHtml, { status: 200 }));
+    try {
+      const res = await scrapeArtistAka("183-kanye-west");
+      expect(res.artistId).toBe(183);
+      expect(res.slug).toBe("183-kanye-west");
+      expect(res.alsoKnownAs).toEqual(["Ye", "Yeezy"]);
+
+      const workerRes = await worker.fetch(new Request("http://localhost/artist/aka?slug=183-kanye-west"), env);
+      expect(workerRes.status).toBe(200);
+      const json = (await workerRes.json()) as { alsoKnownAs: string[]; artistId: number; slug: string };
+      expect(json.alsoKnownAs).toEqual(["Ye", "Yeezy"]);
+    } finally {
+      restore();
+    }
+
+    const textHtml = `<div>Ye, Yeezy, Kanye Omari West, +13 more...</div>`;
+    restore = mockFetch(async () => new Response(textHtml, { status: 200 }));
+    try {
+      const res = await scrapeArtistAka("183-kanye-west");
+      expect(res.alsoKnownAs).toEqual(["Ye", "Yeezy", "Kanye Omari West"]);
+    } finally {
+      restore();
+    }
+
+    expect(scrapeArtistAka("kanye-west")).rejects.toThrow("numeric artist ID");
+    const badReq = await worker.fetch(new Request("http://localhost/artist/aka"), env);
+    expect(badReq.status).toBe(400);
+  });
+
+  it("fetches raw news embed markup and serves /news-item/embed", async () => {
+    const { scrapeNewsEmbed } = await import("../src/scrapers/social.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const embedHtml = `<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"></iframe>`;
+    const restore = mockFetch(async () => new Response(embedHtml, { status: 200 }));
+    try {
+      const res = await scrapeNewsEmbed("12342");
+      expect(res.id).toBe(12342);
+      expect(res.html).toBe(embedHtml);
+
+      const workerRes = await worker.fetch(new Request("http://localhost/news-item/embed?id=12342"), env);
+      expect(workerRes.status).toBe(200);
+      const json = (await workerRes.json()) as { id: number; html: string };
+      expect(json.id).toBe(12342);
+      expect(json.html).toBe(embedHtml);
+
+      const badReq = await worker.fetch(new Request("http://localhost/news-item/embed"), env);
+      expect(badReq.status).toBe(400);
+    } finally {
+      restore();
+    }
+  });
+
+  it("fetches list comment replies and serves /list/comments/replies", async () => {
+    const { scrapeListCommentReplies } = await import("../src/scrapers/social.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const replyHtml = `
+      <div class="commentRow" id="reply123">
+        <div class="commentImage"><a href="/user/reviewer/"><img src="https://cdn.aoty.org/u.jpg" /></a></div>
+        <div class="commentUserName"><a href="/user/reviewer/">reviewer</a></div>
+        <div class="commentDate">2d ago</div>
+        <div class="commentText">Great list!</div>
+      </div>
+    `;
+    const restore = mockFetch(async () => new Response(replyHtml, { status: 200 }));
+    try {
+      const res = await scrapeListCommentReplies("555", "123");
+      expect(res.listId).toBe(555);
+      expect(res.commentId).toBe(123);
+      expect(res.replies.length).toBe(1);
+      expect(res.replies[0]?.username).toBe("reviewer");
+      expect(res.replies[0]?.text).toBe("Great list!");
+
+      const workerRes = await worker.fetch(new Request("http://localhost/list/comments/replies?listId=555&commentId=123"), env);
+      expect(workerRes.status).toBe(200);
+      const json = (await workerRes.json()) as { listId: number; commentId: number; replies: Array<{ username: string }> };
+      expect(json.listId).toBe(555);
+      expect(json.commentId).toBe(123);
+      expect(json.replies[0]?.username).toBe("reviewer");
+
+      const bad1 = await worker.fetch(new Request("http://localhost/list/comments/replies?listId=555"), env);
+      expect(bad1.status).toBe(400);
+      const bad2 = await worker.fetch(new Request("http://localhost/list/comments/replies?commentId=123"), env);
+      expect(bad2.status).toBe(400);
+    } finally {
+      restore();
+    }
+  });
+
+  it("fetches stats-refresh JSON or text and serves /stats/refresh", async () => {
+    const { scrapeStatsRefresh } = await import("../src/scrapers/social.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const jsonPayload = JSON.stringify({ html: "1,973,103</div>", timestamp: "0s ago" });
+    let restore = mockFetch(async () => new Response(jsonPayload, { status: 200 }));
+    try {
+      const res = await scrapeStatsRefresh("stats:total_albums");
+      expect(res.key).toBe("stats:total_albums");
+      expect(res.html).toBe("1,973,103</div>");
+      expect(res.timestamp).toBe("0s ago");
+
+      const workerRes = await worker.fetch(new Request("http://localhost/stats/refresh?key=stats%3Atotal_albums"), env);
+      expect(workerRes.status).toBe(200);
+      const json = (await workerRes.json()) as { key: string; html: string; timestamp: string | null };
+      expect(json.key).toBe("stats:total_albums");
+      expect(json.html).toBe("1,973,103</div>");
+      expect(json.timestamp).toBe("0s ago");
+    } finally {
+      restore();
+    }
+
+    const rawText = "<span>42</span>";
+    restore = mockFetch(async () => new Response(rawText, { status: 200 }));
+    try {
+      const res = await scrapeStatsRefresh("stats:custom");
+      expect(res.key).toBe("stats:custom");
+      expect(res.html).toBe("<span>42</span>");
+      expect(res.timestamp).toBe(null);
+    } finally {
+      restore();
+    }
+
+    const badReq = await worker.fetch(new Request("http://localhost/stats/refresh"), env);
+    expect(badReq.status).toBe(400);
+  });
+});
+
+describe("artist comment replies, artist tag autocomplete, and user contributions/stats popups", () => {
+  it("fetches artist comment replies and serves /artist/comments/replies", async () => {
+    const { scrapeArtistCommentReplies } = await import("../src/scrapers/social.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const replyHtml = `
+      <div class="commentRow" id="reply789">
+        <div class="commentImage"><a href="/user/fan/"><img src="https://cdn.aoty.org/fan.jpg" /></a></div>
+        <div class="commentUserName"><a href="/user/fan/">fan</a></div>
+        <div class="commentDate">1d ago</div>
+        <div class="commentText">Classic artist!</div>
+      </div>
+    `;
+    const restore = mockFetch(async () => new Response(replyHtml, { status: 200 }));
+    try {
+      const res = await scrapeArtistCommentReplies("183-kanye-west", "789");
+      expect(res.artistId).toBe(183);
+      expect(res.commentId).toBe(789);
+      expect(res.replies.length).toBe(1);
+      expect(res.replies[0]?.username).toBe("fan");
+      expect(res.replies[0]?.text).toBe("Classic artist!");
+
+      const workerRes = await worker.fetch(new Request("http://localhost/artist/comments/replies?artistId=183&commentId=789"), env);
+      expect(workerRes.status).toBe(200);
+      const json = (await workerRes.json()) as { artistId: number; commentId: number; replies: Array<{ username: string }> };
+      expect(json.artistId).toBe(183);
+      expect(json.commentId).toBe(789);
+      expect(json.replies[0]?.username).toBe("fan");
+
+      const bad1 = await worker.fetch(new Request("http://localhost/artist/comments/replies?artistId=183"), env);
+      expect(bad1.status).toBe(400);
+      const bad2 = await worker.fetch(new Request("http://localhost/artist/comments/replies?commentId=789"), env);
+      expect(bad2.status).toBe(400);
+    } finally {
+      restore();
+    }
+  });
+
+  it("fetches artist tag autocomplete and serves /artist/tags/autocomplete", async () => {
+    const { scrapeArtistTagAutocomplete } = await import("../src/scrapers/artist.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const json = [{ value: "hip hop" }, { value: "hardcore hip hop" }];
+    const restore = mockFetch(async () => new Response(JSON.stringify(json), { status: 200 }));
+    try {
+      const res = await scrapeArtistTagAutocomplete("hip");
+      expect(res).toEqual(["hip hop", "hardcore hip hop"]);
+
+      const workerRes = await worker.fetch(new Request("http://localhost/artist/tags/autocomplete?q=hip"), env);
+      expect(workerRes.status).toBe(200);
+      const data = (await workerRes.json()) as { query: string; tags: string[] };
+      expect(data.query).toBe("hip");
+      expect(data.tags).toEqual(["hip hop", "hardcore hip hop"]);
+
+      const aliasRes = await worker.fetch(new Request("http://localhost/artists/tags/autocomplete?q=hip"), env);
+      expect(aliasRes.status).toBe(200);
+
+      const bad = await worker.fetch(new Request("http://localhost/artist/tags/autocomplete"), env);
+      expect(bad.status).toBe(400);
+    } finally {
+      restore();
+    }
+  });
+
+  it("fetches user contributions and stats popups via /user/contributions and /user/stats/popup", async () => {
+    const { scrapeUserPopup } = await import("../src/scrapers/user.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const profileHtml = `
+      <h1 class="headline profile"><span>patton</span></h1>
+      <button class="userPop" data-type="contributions" data-user-id="175">Contributions</button>
+      <div class="profileImage"><img src="https://cdn.aoty.org/patton.jpg" /></div>
+    `;
+    const popupHtml = `
+      <div class="statRow">
+        <a href="/album/123-test.php">Test Album</a> (Submitted LP) Sep 10, 2026
+      </div>
+      <div class="statRow">
+        <a href="/artist/456-band/">Band Name</a> (Added Artist) Aug 15, 2026
+      </div>
+    `;
+
+    const restore = mockFetch(async (input) => {
+      const url = String(input);
+      if (url.includes("/user/patton/")) return new Response(profileHtml, { status: 200 });
+      return new Response(popupHtml, { status: 200 });
+    });
+    try {
+      const resById = await scrapeUserPopup(175, "contributions");
+      expect(resById.userId).toBe(175);
+      expect(resById.popType).toBe("contributions");
+      expect(resById.items.length).toBe(2);
+      expect(resById.items[0]?.title).toBe("Test Album");
+      expect(resById.items[0]?.type).toBe("album");
+      expect(resById.items[0]?.date).toBe("Sep 10, 2026");
+      expect(resById.items[1]?.title).toBe("Band Name");
+      expect(resById.items[1]?.type).toBe("artist");
+
+      const resByUsername = await scrapeUserPopup("patton", "contributions");
+      expect(resByUsername.userId).toBe(175);
+      expect(resByUsername.username).toBe("patton");
+
+      const workerRes = await worker.fetch(new Request("http://localhost/user/contributions?username=patton"), env);
+      expect(workerRes.status).toBe(200);
+      const json = (await workerRes.json()) as { userId: number; items: unknown[] };
+      expect(json.userId).toBe(175);
+      expect(json.items.length).toBe(2);
+
+      const workerIdRes = await worker.fetch(new Request("http://localhost/user/contributions?userId=175"), env);
+      expect(workerIdRes.status).toBe(200);
+
+      const statsRes = await worker.fetch(new Request("http://localhost/user/stats/popup?username=patton"), env);
+      expect(statsRes.status).toBe(200);
+
+      const aliasStatsRes = await worker.fetch(new Request("http://localhost/user/stats-popup?userId=175"), env);
+      expect(aliasStatsRes.status).toBe(200);
+
+      const bad = await worker.fetch(new Request("http://localhost/user/contributions"), env);
+      expect(bad.status).toBe(400);
+    } finally {
+      restore();
+    }
+  });
+});
+
+describe("faq facets, random filters metadata, and review id extraction", () => {
+  it("scrapes faq by section (general, community, all)", async () => {
+    const { scrapeFaq } = await import("../src/scrapers/social.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const genHtml = `
+      <div class="faqPageTitle">Frequently Asked Questions</div>
+      <div class="faqQuestion">Why aren't my ratings showing up?</div>
+      <div class="faqAnswer">It hasn't leaked or streamed yet.</div>
+    `;
+    const comHtml = `
+      <div class="faqPageTitle">Community Rules</div>
+      <div class="faqQuestion">Multiple Accounts</div>
+      <div class="faqAnswer">Multiple accounts are not allowed.</div>
+      <div class="faqQuestion">Conduct</div>
+      <div class="faqAnswer">Treat each other with respect.</div>
+    `;
+
+    const restore = mockFetch(async (input) => {
+      const url = String(input);
+      if (url.includes("/faq/community.php")) return new Response(comHtml, { status: 200 });
+      return new Response(genHtml, { status: 200 });
+    });
+    try {
+      const gen = await scrapeFaq("general");
+      expect(gen.length).toBe(1);
+      expect(gen[0]?.section).toBe("Frequently Asked Questions");
+      expect(gen[0]?.question).toBe("Why aren't my ratings showing up?");
+
+      const com = await scrapeFaq("community");
+      expect(com.length).toBe(2);
+      expect(com[0]?.section).toBe("Community Rules");
+      expect(com[0]?.question).toBe("Multiple Accounts");
+
+      const all = await scrapeFaq("all");
+      expect(all.length).toBe(3);
+
+      const workerRes = await worker.fetch(new Request("http://localhost/faq?section=community"), env);
+      expect(workerRes.status).toBe(200);
+      const json = (await workerRes.json()) as { items: Array<{ section: string; question: string }> };
+      expect(json.items.length).toBe(2);
+      expect(json.items[0]?.section).toBe("Community Rules");
+    } finally {
+      restore();
+    }
+  });
+
+  it("scrapes random filters metadata via /random/filters", async () => {
+    const { scrapeRandomFilters } = await import("../src/scrapers/album.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const filtersHtml = `
+      <select id="randomType">
+        <option value="">All</option>
+        <option value="LP">LP</option>
+        <option value="EP">EP</option>
+        <option value="Single">Single</option>
+      </select>
+      <input type="number" id="randomYearFrom" min="1950" max="2026">
+      <input type="number" id="randomCriticScoreMin" min="0" max="100">
+      <input type="number" id="randomCriticReviewsMin" min="5">
+      <input type="number" id="randomUserScoreMin" min="0" max="100">
+      <input type="number" id="randomUserReviewsMin" min="10">
+    `;
+
+    const restore = mockFetch(async () => new Response(filtersHtml, { status: 200 }));
+    try {
+      const filters = await scrapeRandomFilters();
+      expect(filters.types).toEqual(["LP", "EP", "Single"]);
+      expect(filters.year.min).toBe(1950);
+      expect(filters.year.max).toBe(2026);
+      expect(filters.criticScore.min).toBe(0);
+      expect(filters.criticScore.max).toBe(100);
+      expect(filters.criticReviews.min).toBe(5);
+      expect(filters.userReviews.min).toBe(10);
+
+      const workerRes = await worker.fetch(new Request("http://localhost/random/filters"), env);
+      expect(workerRes.status).toBe(200);
+      const json = (await workerRes.json()) as typeof filters;
+      expect(json.types).toEqual(["LP", "EP", "Single"]);
+      expect(json.year.min).toBe(1950);
+    } finally {
+      restore();
+    }
+  });
+
+  it("extracts reviewId and commentsUrl in user review detail", async () => {
+    const { scrapeUserReviewDetail } = await import("../src/scrapers/user.js");
+
+    const reviewHtml = `
+      <h2 class="artist"><a href="/artist/437-arctic-monkeys/">Arctic Monkeys</a></h2>
+      <h1 class="albumTitle"><a href="/album/505321-arctic-monkeys-the-car.php">The Car</a></h1>
+      <div class="userReviewScoreBox"><div class="albumCriticScore">100</div></div>
+      <div class="userReviewText"><p>Great album</p></div>
+      <div class="review_likes_container" id="review_likes_1363027"><div class="review_likes">50</div></div>
+    `;
+
+    const restore = mockFetch(async () => new Response(reviewHtml, { status: 200 }));
+    try {
+      const res = await scrapeUserReviewDetail("patton", "505321-the-car");
+      expect(res.reviewId).toBe(1363027);
+      expect(res.commentsUrl).toContain("itemID=1363027");
+    } finally {
+      restore();
+    }
+  });
+});
+
+describe("convenience routes, subgenre breadcrumbs, and album distribution by slug", () => {
+  it("supports slug on /album/distribution and /album/rating-history", async () => {
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const distHtml = `
+      <table class="dist">
+        <tr class="distRow"><td class="distLabel">100</td><td class="distCount">20</td></tr>
+      </table>
+    `;
+    const histHtml = `
+      <div class="scoreMilestoneRow">
+        <div class="milestone">100 Ratings</div><div class="score">85</div>
+      </div>
+    `;
+
+    const restore = mockFetch(async (input) => {
+      const url = String(input);
+      if (url.includes("ratingHistory.php")) return new Response(histHtml, { status: 200 });
+      return new Response(distHtml, { status: 200 });
+    });
+    try {
+      const distRes = await worker.fetch(new Request("http://localhost/album/distribution?slug=1998-kanye-west"), env);
+      expect(distRes.status).toBe(200);
+      const distJson = (await distRes.json()) as { albumId: number; rows: unknown[] };
+      expect(distJson.albumId).toBe(1998);
+
+      const histRes = await worker.fetch(new Request("http://localhost/album/rating-history?slug=1998-kanye-west"), env);
+      expect(histRes.status).toBe(200);
+      const histJson = (await histRes.json()) as { albumId: number; milestones: unknown[] };
+      expect(histJson.albumId).toBe(1998);
+    } finally {
+      restore();
+    }
+  });
+
+  it("passes breadIds in subgenres and returns favoriteArtists in /user/favorites", async () => {
+    const { scrapeSubGenres } = await import("../src/scrapers/entities.js");
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    let capturedBody = "";
+    const subHtml = `<div class="heading">Subgenres</div><a href="/genre/30-trap/">Trap</a>`;
+    const profileHtml = `
+      <h1 class="headline profile"><span>patton</span></h1>
+      <div id="favBlock">
+        <div class="albumBlock"><div class="albumTitle">Favorite Album</div></div>
+      </div>
+      <div id="favArtistsBlock">
+        <div class="artistBlock"><div class="name"><a href="/artist/1-kanye/">Kanye</a></div></div>
+      </div>
+    `;
+
+    const restore = mockFetch(async (input, init) => {
+      const url = String(input);
+      if (url.includes("showSubGenres.php")) {
+        capturedBody = String(init?.body ?? "");
+        return new Response(subHtml, { status: 200 });
+      }
+      return new Response(profileHtml, { status: 200 });
+    });
+    try {
+      const sub = await scrapeSubGenres(3, ["1", "2"]);
+      expect(sub.subgenres.length).toBe(1);
+      expect(capturedBody).toContain("breadIDs=%5B1%2C2%5D");
+
+      const subRoute = await worker.fetch(new Request("http://localhost/subgenres?genreId=3&breadIds=1,2"), env);
+      expect(subRoute.status).toBe(200);
+
+      const favRoute = await worker.fetch(new Request("http://localhost/user/favorites?username=patton"), env);
+      expect(favRoute.status).toBe(200);
+      const favJson = (await favRoute.json()) as { favorites: unknown[]; favoriteArtists: unknown[] };
+      expect(Array.isArray(favJson.favorites)).toBe(true);
+      expect(Array.isArray(favJson.favoriteArtists)).toBe(true);
+    } finally {
+      restore();
+    }
+  });
+
+  it("serves /review/comments, /list/comments, and /news-item/comments convenience routes", async () => {
+    const worker = (await import("../src/index.js")).default;
+    const { createMockEnv } = await import("./test_utils.js");
+    const env = createMockEnv();
+
+    const commentsHtml = `
+      <div class="commentRow" id="comment_1">
+        <div class="commentUserName"><a href="/user/reviewer/">reviewer</a></div>
+        <div class="commentText">Awesome!</div>
+      </div>
+    `;
+
+    const restore = mockFetch(async () => new Response(commentsHtml, { status: 200 }));
+    try {
+      const revRes = await worker.fetch(new Request("http://localhost/review/comments?id=1363027"), env);
+      expect(revRes.status).toBe(200);
+      const revJson = (await revRes.json()) as { type: string; itemId: number; comments: unknown[] };
+      expect(revJson.type).toBe("user_review");
+      expect(revJson.itemId).toBe(1363027);
+      expect(revJson.comments.length).toBe(1);
+
+      const listRes = await worker.fetch(new Request("http://localhost/list/comments?id=555"), env);
+      expect(listRes.status).toBe(200);
+      const listJson = (await listRes.json()) as { type: string; itemId: number };
+      expect(listJson.type).toBe("user_list");
+      expect(listJson.itemId).toBe(555);
+
+      const newsRes = await worker.fetch(new Request("http://localhost/news-item/comments?id=12342"), env);
+      expect(newsRes.status).toBe(200);
+      const newsJson = (await newsRes.json()) as { type: string; itemId: number };
+      expect(newsJson.type).toBe("news");
+      expect(newsJson.itemId).toBe(12342);
+
+      const badRev = await worker.fetch(new Request("http://localhost/review/comments"), env);
+      expect(badRev.status).toBe(400);
+
+      const badList = await worker.fetch(new Request("http://localhost/list/comments"), env);
+      expect(badList.status).toBe(400);
+
+      const badNews = await worker.fetch(new Request("http://localhost/news-item/comments"), env);
+      expect(badNews.status).toBe(400);
+    } finally {
+      restore();
+    }
+  });
+});

@@ -826,3 +826,19 @@ export async function scrapeArtistAka(slug: string, opts: FetchOpts = FETCH_OPTS
   }
   return { slug, artistId: parseInt(artistId, 10), alsoKnownAs: [...new Set(names)] };
 }
+
+/**
+ * Autocomplete artist tags (verified source in bandScript.js: /scripts/artistTagAutocomplete.php).
+ */
+export async function scrapeArtistTagAutocomplete(query: string, opts: FetchOpts = FETCH_OPTS): Promise<string[]> {
+  const enc = encodeURIComponent(query);
+  const res = await fetch(`${BASE}/scripts/artistTagAutocomplete.php?term=${enc}`, {
+    ...opts,
+    headers: { ...REQ_HEADERS, "X-Requested-With": "XMLHttpRequest", Referer: `${BASE}/` },
+  });
+  if (!res.ok) throw new Error(`Artist tag autocomplete fetch failed: ${res.status}`);
+  const data = (await res.json()) as Array<{ value?: string; name?: string; label?: string }>;
+  return data
+    .map((item) => decodeEntities((item.value ?? item.name ?? item.label ?? "").trim()))
+    .filter(Boolean);
+}
