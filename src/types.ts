@@ -7,6 +7,7 @@ export interface AlbumBlock {
   cover: string;
   mediaType: string;
   releaseDate: string;
+  releaseDateTimestamp?: number | null;
   criticScore: number | null;
   criticCount: number | null;
   userScore: number | null;
@@ -22,6 +23,7 @@ export interface Track {
   url: string;
   songId: number | null;
   length: string;
+  lengthSeconds?: number | null;
   rating: number | null;
   ratingCount: number | null;
   notes: string | null;
@@ -41,6 +43,7 @@ export interface CriticReview {
   url: string;
   isPrintOnly: boolean;
   date: string;
+  dateTimestamp?: number | null;
 }
 
 export interface StreamingLink {
@@ -59,6 +62,7 @@ export interface AlbumStats {
 export interface AlbumRatingMilestone {
   milestone: number;
   date: string | null;
+  dateTimestamp?: number | null;
   score: number | null;
   exactScore: number | null;
 }
@@ -158,8 +162,11 @@ export interface AlbumDetail {
   artistImage: string | null;
   cover: string;
   datePublished: string;
+  datePublishedTimestamp?: number | null;
   dateCreated?: string | null;
+  dateCreatedTimestamp?: number | null;
   dateModified?: string | null;
+  dateModifiedTimestamp?: number | null;
   format: string;
   label: string | null;
   labelUrl: string | null;
@@ -174,6 +181,7 @@ export interface AlbumDetail {
   producersMore: number;
   writersMore: number;
   totalLength: string | null;
+  totalLengthSeconds?: number | null;
   mustHear: boolean;
   commentCount: number | null;
   criticScore: number | null;
@@ -209,6 +217,7 @@ export interface NewsItem {
   source: string;
   sourceUrl: string;
   date: string;
+  dateTimestamp?: number | null;
   submittedBy: string | null;
   submittedByUrl: string | null;
   likes: number;
@@ -235,6 +244,7 @@ export interface ListDetailItem {
   url: string;
   cover: string;
   date: string;
+  dateTimestamp?: number | null;
   genres: string[];
   secondaryGenres: string[];
   score: number | null;
@@ -358,6 +368,7 @@ export interface ChartItem {
   url: string;
   cover: string | null;
   date: string | null;
+  dateTimestamp?: number | null;
   genres: string[];
   secondaryGenres: string[];
   score: number | null;
@@ -438,7 +449,9 @@ export interface CriticReviewEntry {
   publicationUrl: string;
   reviewUrl: string | null;
   date: string | null;
+  dateTimestamp?: number | null;
   dateExact: string | null;
+  dateExactTimestamp?: number | null;
 }
 
 export interface CriticDetail {
@@ -469,6 +482,7 @@ export interface DiscussionEntry {
   lastUserUrl: string;
   lastPostAgo: string | null;
   lastPostExact: string | null;
+  lastPostExactTimestamp?: number | null;
 }
 
 export interface SongCredit {
@@ -484,6 +498,7 @@ export interface SongRating {
   subscriber: boolean;
   rating: number | null;
   date: string | null;
+  dateTimestamp?: number | null;
 }
 
 export interface SongTracklistItem {
@@ -491,6 +506,7 @@ export interface SongTracklistItem {
   title: string;
   url: string;
   length: string;
+  lengthSeconds?: number | null;
   score: number | null;
   ratingCount: number | null;
 }
@@ -526,6 +542,7 @@ export interface SongDetail {
   trackNumber: number | null;
   year: number | null;
   duration: string | null;
+  durationSeconds?: number | null;
   userScore: number | null;
   userScoreExact: number | null;
   ratingCount: number | null;
@@ -534,6 +551,7 @@ export interface SongDetail {
   dislikePercentage?: number | null;
   tracklist?: SongTracklistItem[];
   tracklistTotalLength: string | null;
+  tracklistTotalLengthSeconds?: number | null;
   artistTopSongs: ArtistTopSong[];
   tags: NamedLink[];
   credits: SongCredit[];
@@ -563,6 +581,7 @@ export interface UserProfile {
   displayName?: string;
   userId?: number | null;
   memberSince?: string | null;
+  memberSinceTimestamp?: number | null;
   avatar: string | null;
   bio: string | null;
   location: string | null;
@@ -611,6 +630,7 @@ export interface UserContributionEntry {
   url: string | null;
   detail: string | null;
   date: string | null;
+  dateTimestamp?: number | null;
 }
 
 export interface UserContributionsResult {
@@ -629,6 +649,7 @@ export interface UserBestOfYear {
 export interface UserRating extends AlbumBlock {
   userRating: number | null;
   ratedDate: string | null;
+  ratedDateTimestamp?: number | null;
   reviewUrl: string | null;
   liked: boolean;
   albumId: number | null;
@@ -655,7 +676,9 @@ export interface UserReview {
   comments: number;
   commentsUrl: string | null;
   date: string | null;
+  dateTimestamp?: number | null;
   dateExact: string | null;
+  dateExactTimestamp?: number | null;
   edited: boolean;
 }
 
@@ -667,7 +690,9 @@ export interface UserReviewDetail extends UserReview {
   previousReview?: { title: string; url: string; cover: string | null } | null;
   nextReview?: { title: string; url: string; cover: string | null } | null;
   datePublished: string | null;
+  datePublishedTimestamp?: number | null;
   dateModified: string | null;
+  dateModifiedTimestamp?: number | null;
   relatedLinks: NamedLink[];
 }
 
@@ -679,7 +704,9 @@ export interface AotyComment {
   avatar: string | null;
   subscriber: boolean;
   date: string;
+  dateTimestamp?: number | null;
   dateExact: string;
+  dateExactTimestamp?: number | null;
   text: string;
   replies: number;
 }
@@ -771,6 +798,7 @@ export interface RandomFiltersMeta {
 
 export interface ChangelogEntry {
   date: string;
+  dateTimestamp?: number | null;
   type: string;
   title: string;
   text: string;
@@ -826,6 +854,7 @@ export interface NewsDetail {
   source: string;
   sourceUrl: string;
   date: string;
+  dateTimestamp?: number | null;
   image: string | null;
   text: string;
   likes: number;
@@ -888,12 +917,14 @@ export interface UserBadgeItem {
   description: string | null;
   image: string | null;
   date: string | null;
+  dateTimestamp?: number | null;
 }
 
 export interface RssFeedItem {
   title: string;
   link: string;
   pubDate: string | null;
+  pubDateTimestamp?: number | null;
   description: string | null;
 }
 
@@ -1116,6 +1147,7 @@ export interface CorrectionItem {
   submittedBy: string | null;
   submittedByUrl: string | null;
   date: string | null;
+  dateTimestamp?: number | null;
 }
 
 export interface EntityCorrectionsResult {
@@ -1123,6 +1155,7 @@ export interface EntityCorrectionsResult {
   title: string;
   url: string;
   addedOn: string | null;
+  addedOnTimestamp?: number | null;
   addedBy: string | null;
   addedByUrl: string | null;
   sourceUrl: string | null;
@@ -1139,6 +1172,7 @@ export interface AlbumSummary {
   artistUrl: string;
   cover: string;
   datePublished: string;
+  datePublishedTimestamp?: number | null;
   format: string;
   label: string | null;
   labelUrl: string | null;
@@ -1149,6 +1183,7 @@ export interface AlbumSummary {
   tags: string[];
   vibes: string[];
   totalLength: string | null;
+  totalLengthSeconds?: number | null;
   trackCount: number;
   mustHear: boolean;
   commentCount: number | null;

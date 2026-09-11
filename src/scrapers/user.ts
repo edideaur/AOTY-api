@@ -1,10 +1,9 @@
-import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseId, parseRank, parseTrackNumber, parseYear, parsePercent, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseId, parseRank, parseTrackNumber, parseYear, parsePercent, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import { scrapeAlbumBlocks, mustHearScopeFromClass } from "./albumBlock.js";
 import { scrapeCommentRows } from "./commentRow.js";
 import { parseDiscussionTable } from "./social.js";
 import { scrapeUserListRows } from "./userListRow.js";
 import { parseAlbumUserReviewRows } from "./album.js";
-import { fetchArtistImage } from "./artist.js";
 import type {
   AlbumBlock,
   AlbumDistributionRow,
@@ -226,12 +225,13 @@ export async function scrapeUserProfile(username: string, opts: FetchOpts = FETC
     }
   }
 
-  return {
+    return {
     url,
     username: actualUsername,
     displayName,
     userId: parseId(userId),
     memberSince,
+    memberSinceTimestamp: parseDateToTimestamp(memberSince),
     avatar: cleanImageUrl(avatarM?.[1] ?? null),
     bio: bioM?.[1] ? decodeEntities(bioM[1].replace(/<[^>]+>/g, "").trim()) : null,
     location: locM?.[1] ? decodeEntities(locM[1].replace(/<[^>]+>/g, "").trim()) : null,
@@ -555,6 +555,8 @@ async function scrapeUserAlbumBlocks(res: Response, username: string): Promise<U
 
   return ratings.map((r) => {
     const albumIdM = r.url.match(/\/album\/(\d+)/);
+    const rDate = r.releaseDate.replace(/\s+/g, " ").trim();
+    const uRatedDate = r.ratedDate;
     return {
     url: r.url,
     artist: decodeEntities(r.artist.trim()),
@@ -563,7 +565,8 @@ async function scrapeUserAlbumBlocks(res: Response, username: string): Promise<U
     title: decodeEntities(r.title.trim()),
     cover: cleanImageUrl(r.cover),
     mediaType: r.mediaType,
-    releaseDate: r.releaseDate.replace(/\s+/g, " ").trim(),
+    releaseDate: rDate,
+    releaseDateTimestamp: parseDateToTimestamp(rDate),
     criticScore: parseScore(r.criticScore),
     criticCount: parseCount(r.criticCount),
     userScore: parseScore(r.userScore),
@@ -571,7 +574,8 @@ async function scrapeUserAlbumBlocks(res: Response, username: string): Promise<U
     mustHear: r.mustHear,
     mustHearScope: r.mustHearScope ?? null,
     userRating: parseScore(r.userRating),
-    ratedDate: r.ratedDate,
+    ratedDate: uRatedDate,
+    ratedDateTimestamp: parseDateToTimestamp(uRatedDate),
     reviewUrl: r.reviewUrl,
     liked: r.liked ?? false,
     albumId: albumIdM?.[1] ? parseInt(albumIdM[1], 10) : null,
@@ -853,6 +857,8 @@ export async function scrapeUserReviewBlocks(res: Response): Promise<UserReview[
     .map((r) => {
       const dateRaw = (r.date ?? "").trim();
       const edited = /\*$/.test(dateRaw);
+      const uDate = dateRaw.replace(/\*$/, "").trim() || null;
+      const uDateExact = (r.dateExact ?? "").trim() || null;
       return {
       reviewId: r.id ? parseInt(r.id, 10) : null,
       url: r.url ?? "",
@@ -872,8 +878,10 @@ export async function scrapeUserReviewBlocks(res: Response): Promise<UserReview[
       likes: parseCount((r.likes ?? "").trim()) ?? 0,
       comments: parseCount((r.comments ?? "").trim()) ?? 0,
       commentsUrl: r.commentsUrl ?? null,
-      date: dateRaw.replace(/\*$/, "").trim() || null,
-      dateExact: (r.dateExact ?? "").trim() || null,
+      date: uDate,
+      dateTimestamp: parseDateToTimestamp(uDate),
+      dateExact: uDateExact,
+      dateExactTimestamp: parseDateToTimestamp(uDateExact),
       edited,
       };
     });
@@ -1034,6 +1042,8 @@ export async function scrapeAlbumReviewRows(res: Response, fallbackUsername: str
     .map((r) => {
       const dateRaw = (r.date ?? "").trim();
       const edited = /\*$/.test(dateRaw);
+      const dRaw = dateRaw.replace(/\*$/, "").trim() || null;
+      const dExact = (r.dateExact ?? "").trim() || null;
       return {
       reviewId: r.id ? parseInt(r.id, 10) : null,
       url: r.url ?? "",
@@ -1053,8 +1063,10 @@ export async function scrapeAlbumReviewRows(res: Response, fallbackUsername: str
       likes: parseCount((r.likes ?? "").trim()) ?? 0,
       comments: parseCount((r.comments ?? "").trim()) ?? 0,
       commentsUrl: r.commentsUrl ?? null,
-      date: dateRaw.replace(/\*$/, "").trim() || null,
-      dateExact: (r.dateExact ?? "").trim() || null,
+      date: dRaw,
+      dateTimestamp: parseDateToTimestamp(dRaw),
+      dateExact: dExact,
+      dateExactTimestamp: parseDateToTimestamp(dExact),
       edited,
       };
     });
@@ -1346,12 +1358,14 @@ export async function scrapeUserReviewDetail(username: string, slug: string, opt
   const reviewIdM = html.match(/id="review_likes_(\d+)"/) ?? html.match(/data-review-id="(\d+)"/) ?? html.match(/id="review_(\d+)"/);
   const reviewId = reviewIdM?.[1] ? (parseId(reviewIdM[1]) ?? null) : null;
 
-  return {
-    reviewId,
+    const revDate = s.dateExact || s.date.trim() || null;
+    const revDateExact = s.dateExact || null;
+    return {
     url,
+    reviewId,
     artist: decodeEntities(s.artist.trim()),
     artistUrl: s.artistUrl,
-    artistImage: await fetchArtistImage(s.artistUrl, opts),
+    artistImage: null,
     album: decodeEntities(s.album.trim()),
     albumUrl: s.albumUrl,
     cover: cleanImageUrl(s.cover),
@@ -1365,15 +1379,19 @@ export async function scrapeUserReviewDetail(username: string, slug: string, opt
     likes: parseCount(s.likes.trim()) ?? 0,
     comments: parseCount(commentsCount) ?? 0,
     commentsUrl: reviewId ? `${BASE}/scripts/viewAllComments.php?type=user_review&itemID=${reviewId}` : null,
-    date: s.dateExact || s.date.trim() || null,
-    dateExact: s.dateExact || null,
+    date: revDate,
+    dateTimestamp: parseDateToTimestamp(revDate),
+    dateExact: revDateExact,
+    dateExactTimestamp: parseDateToTimestamp(revDateExact),
     edited: false,
     commentsList,
     streamingLinks,
     previousReview,
     nextReview,
     datePublished,
+    datePublishedTimestamp: parseDateToTimestamp(datePublished),
     dateModified,
+    dateModifiedTimestamp: parseDateToTimestamp(dateModified),
     relatedLinks,
     albumId: idM?.[1] ? (parseId(idM[1]) ?? null) : null,
     trackRatings: s.tracks
@@ -1691,11 +1709,13 @@ export async function scrapeUserBadges(
       element(el) {
         el.onEndTag(() => {
           if (st.cur?.name?.trim()) {
+            const bDate = st.cur.date ? st.cur.date.trim() : null;
             badges.push({
               name: decodeEntities(st.cur.name.trim()),
               description: st.cur.description ? decodeEntities(st.cur.description.trim()) : null,
               image: cleanImageUrl(st.cur.image ?? null),
-              date: st.cur.date ? st.cur.date.trim() : null,
+              date: bDate,
+              dateTimestamp: parseDateToTimestamp(bDate),
             });
             st.cur = null;
           }
@@ -1993,12 +2013,14 @@ export function parseUserContributionsHtml(html: string): UserContributionEntry[
       const href = linkM[1];
       const text = decodeEntities(linkM[2]?.replace(/<[^>]+>/g, "").trim() ?? "");
       const fullText = decodeEntities(chunk.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+      const ucDate = dateM?.[0] ?? null;
       items.push({
         type: href.includes("/album/") ? "album" : href.includes("/artist/") ? "artist" : href.includes("/song/") ? "song" : "other",
         title: text,
         url: href.startsWith("http") ? href : BASE + href,
         detail: fullText !== text ? fullText : null,
-        date: dateM?.[0] ?? null,
+        date: ucDate,
+        dateTimestamp: parseDateToTimestamp(ucDate),
       });
     }
   }

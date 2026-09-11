@@ -1425,7 +1425,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    genreId: { type: "string" },
+                    genreId: { type: "integer" },
                     heading: { type: "string" },
                     subgenres: { type: "array", items: { $ref: "#/components/schemas/NamedLink" } },
                   },
@@ -1455,7 +1455,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    id: { type: "string" },
+                    id: { type: "integer" },
                     name: { type: "string" },
                   },
                 },
@@ -1476,7 +1476,7 @@ export const openApiSpec = {
           { name: "tag", in: "query", required: true, schema: { type: "string" }, example: "hip hop" },
           { name: "type", in: "query", required: false, schema: { type: "string", enum: ["albums", "media", "singles", "artists"], default: "albums" } },
           { name: "sort", in: "query", required: false, schema: { type: "string", enum: ["popularity", "newest-first", "critic-score", "user-score"], default: "popularity" } },
-          { name: "year", in: "query", required: false, schema: { type: "string" }, description: "Filter tag albums by year, e.g. 2026" },
+          { name: "year", in: "query", required: false, schema: { type: "integer" }, description: "Filter tag albums by year, e.g. 2026", example: 2026 },
           { name: "page", in: "query", schema: { type: "integer", default: 1, minimum: 1 } },
         ],
         responses: {
@@ -1886,11 +1886,11 @@ export const openApiSpec = {
           { $ref: "#/components/parameters/CacheControl" },
           { name: "username", in: "query", required: true, schema: { type: "string" } },
           { name: "page", in: "query", schema: { type: "integer", default: 1, minimum: 1 } },
-          { name: "type", in: "query", required: false, schema: { type: "string" }, description: "Filter by release type (lp, ep, single, mixtape, compilation, reissue, soundtrack, perfect...)" },
-          { name: "decade", in: "query", required: false, schema: { type: "string" }, description: "Filter by decade, e.g. 2020", example: "2020" },
+          { name: "type", in: "query", required: false, schema: { type: "string", description: "Filter by release type (lp, ep, single, mixtape, compilation, reissue, soundtrack, perfect...)" } },
+          { name: "decade", in: "query", required: false, schema: { type: "string", description: "Filter by decade, e.g. 2020", example: "2020" } },
           { name: "sort", in: "query", required: false, schema: { type: "string", enum: ["highest", "lowest", "release-date", "perfect"] } },
-          { name: "year", in: "query", required: false, schema: { type: "string" }, description: "Filter by release year, e.g. 2026", example: "2026" },
-          { name: "genre", in: "query", required: false, schema: { type: "string" }, description: "Filter by genre ID, e.g. 7", example: "7" },
+          { name: "year", in: "query", required: false, schema: { type: "integer" }, description: "Filter by release year, e.g. 2026", example: 2026 },
+          { name: "genre", in: "query", required: false, schema: { type: "integer" }, description: "Filter by genre ID, e.g. 7", example: 7 },
         ],
         responses: {
           "200": {
@@ -1905,6 +1905,8 @@ export const openApiSpec = {
                     type: { type: ["string", "null"] },
                     decade: { type: ["string", "null"] },
                     sort: { type: ["string", "null"] },
+                    year: { type: ["integer", "null"] },
+                    genreId: { type: ["integer", "null"] },
                     ratings: { type: "array", items: { $ref: "#/components/schemas/UserRating" } },
                   },
                 },
@@ -2412,11 +2414,11 @@ export const openApiSpec = {
                     stats: {
                       type: "object",
                       properties: {
-                        ratings: { type: "string" },
-                        reviews: { type: "string" },
-                        lists: { type: "string" },
-                        followers: { type: "string" },
-                        following: { type: "string" },
+                        ratings: { type: "integer" },
+                        reviews: { type: "integer" },
+                        lists: { type: "integer" },
+                        followers: { type: "integer" },
+                        following: { type: "integer" },
                       },
                     },
                     ratingDistribution: {
@@ -2753,7 +2755,7 @@ export const openApiSpec = {
         operationId: "getRatingSources",
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
-          { name: "year", in: "query", schema: { type: "string", default: "2026" }, example: "2026" },
+          { name: "year", in: "query", schema: { type: "integer", default: 2026 }, example: 2026 },
         ],
         responses: {
           "200": {
@@ -2776,7 +2778,7 @@ export const openApiSpec = {
         operationId: "getRatingGenres",
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
-          { name: "year", in: "query", schema: { type: "string", default: "2026" }, example: "2026" },
+          { name: "year", in: "query", schema: { type: "integer", default: 2026 }, example: 2026 },
           { name: "type", in: "query", schema: { type: "string", default: "criticHighestRated" } },
         ],
         responses: {
@@ -2921,7 +2923,7 @@ export const openApiSpec = {
         operationId: "getReleasesYear",
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
-          { name: "year", in: "query", required: true, schema: { type: "string" }, description: "4-digit release year", example: "2024" },
+          { name: "year", in: "query", required: true, schema: { type: "integer" }, description: "4-digit release year", example: 2024 },
           { name: "genre", in: "query", required: false, schema: { type: "string" }, description: "Filter by genre slug" },
           { name: "page", in: "query", schema: { type: "integer", default: 1, minimum: 1 } },
         ],
@@ -2933,7 +2935,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    year: { type: "string" },
+                    year: { type: "integer" },
                     genre: { type: ["string", "null"] },
                     page: { type: "integer" },
                     albums: { type: "array", items: { $ref: "#/components/schemas/AlbumBlock" } },
@@ -2984,7 +2986,7 @@ export const openApiSpec = {
         operationId: "getReleasesMonth",
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
-          { name: "year", in: "query", schema: { type: "string" }, example: "2026" },
+          { name: "year", in: "query", schema: { type: "integer" }, example: 2026 },
           { name: "month", in: "query", required: true, schema: { type: "string" }, example: "september-09" },
           { name: "genre", in: "query", schema: { type: "string" }, description: "Filter by genre slug" },
           { name: "page", in: "query", schema: { type: "integer", default: 1, minimum: 1 } },
@@ -2997,7 +2999,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    year: { type: "string" },
+                    year: { type: "integer" },
                     month: { type: "string" },
                     page: { type: "integer" },
                     albums: { type: "array", items: { $ref: "#/components/schemas/AlbumBlock" } },
@@ -3017,8 +3019,8 @@ export const openApiSpec = {
         operationId: "getReleasesWeek",
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
-          { name: "year", in: "query", schema: { type: "string" }, example: "2026" },
-          { name: "week", in: "query", required: true, schema: { type: "string" }, example: "36" },
+          { name: "year", in: "query", schema: { type: "integer" }, example: 2026 },
+          { name: "week", in: "query", required: true, schema: { type: "integer" }, example: 36 },
           { name: "genre", in: "query", schema: { type: "string" }, description: "Filter by genre slug" },
           { name: "page", in: "query", schema: { type: "integer", default: 1, minimum: 1 } },
         ],
@@ -3030,8 +3032,8 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    year: { type: "string" },
-                    week: { type: "string" },
+                    year: { type: "integer" },
+                    week: { type: "integer" },
                     page: { type: "integer" },
                     albums: { type: "array", items: { $ref: "#/components/schemas/AlbumBlock" } },
                   },
@@ -3050,9 +3052,9 @@ export const openApiSpec = {
         operationId: "getReleasesByDate",
         parameters: [
           { $ref: "#/components/parameters/CacheControl" },
-          { name: "year", in: "query", schema: { type: "string" }, example: "2026" },
+          { name: "year", in: "query", schema: { type: "integer" }, example: 2026 },
           { name: "month", in: "query", required: false, schema: { type: "string" }, description: "Month slug, e.g. 'september-09'", example: "september-09" },
-          { name: "week", in: "query", required: false, schema: { type: "string" }, description: "ISO week number, e.g. '36'" },
+          { name: "week", in: "query", required: false, schema: { type: "integer" }, description: "ISO week number, e.g. 36", example: 36 },
           { name: "decade", in: "query", required: false, schema: { type: "string" }, example: "2020s" },
           { name: "genre", in: "query", required: false, schema: { type: "string" }, description: "Genre id filter, e.g. '3'" },
           { name: "page", in: "query", schema: { type: "integer", default: 1, minimum: 1 } },
@@ -3065,9 +3067,9 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    year: { type: "string" },
+                    year: { type: "integer" },
                     month: { type: ["string", "null"] },
-                    week: { type: ["string", "null"] },
+                    week: { type: ["integer", "null"] },
                     decade: { type: ["string", "null"] },
                     page: { type: "integer" },
                     albums: { type: "array", items: { $ref: "#/components/schemas/AlbumBlock" } },
@@ -3312,12 +3314,12 @@ export const openApiSpec = {
                     sort: { type: "string" },
                     type: { type: "string" },
                     page: { type: "integer" },
-                    totalRatings: { type: ["string", "null"] },
+                    totalRatings: { type: ["integer", "null"] },
                     totalPages: { type: ["integer", "null"] },
                     commentCount: { type: ["integer", "null"] },
                     header: { type: ["object", "null"] },
-                    likePercentage: { type: ["string", "null"] },
-                    dislikePercentage: { type: ["string", "null"] },
+                    likePercentage: { type: ["integer", "null"] },
+                    dislikePercentage: { type: ["integer", "null"] },
                     distribution: { type: "array", items: { $ref: "#/components/schemas/AlbumDistributionRow" } },
                     reviews: { type: "array", items: { $ref: "#/components/schemas/UserReview" } },
                   },
@@ -3666,17 +3668,17 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    albumId: { type: "string" },
+                    albumId: { type: "integer" },
                     headline: { type: "string" },
                     milestones: {
                       type: "array",
                       items: {
                         type: "object",
                         properties: {
-                          milestone: { type: "string" },
+                          milestone: { type: "integer" },
                           date: { type: ["string", "null"] },
-                          score: { type: "string" },
-                          exactScore: { type: ["string", "null"] },
+                          score: { type: ["integer", "null"] },
+                          exactScore: { type: ["number", "null"] },
                         },
                       },
                     },
@@ -3708,7 +3710,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    albumId: { type: "string" },
+                    albumId: { type: "integer" },
                     format: { type: "string" },
                     rows: {
                       type: "array",
@@ -3717,7 +3719,7 @@ export const openApiSpec = {
                         properties: {
                           label: { type: "string" },
                           count: { type: "integer" },
-                          percentage: { type: ["string", "null"] },
+                          percentage: { type: ["number", "null"] },
                         },
                       },
                     },
@@ -3749,7 +3751,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    albumId: { type: "string" },
+                    albumId: { type: "integer" },
                     credits: { oneOf: [{ type: "array", items: { $ref: "#/components/schemas/CreditSection" } }, { type: "null" }] },
                   },
                 },
@@ -3779,7 +3781,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    albumId: { type: "string" },
+                    albumId: { type: "integer" },
                     stats: { oneOf: [{ $ref: "#/components/schemas/AlbumStats" }, { type: "null" }] },
                   },
                 },
@@ -3918,7 +3920,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    albumId: { type: "string" },
+                    albumId: { type: "integer" },
                     type: { type: "string" },
                     start: { type: "integer" },
                     users: { type: "array", items: { $ref: "#/components/schemas/AlbumUserItem" } },
@@ -3951,7 +3953,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    albumId: { type: "string" },
+                    albumId: { type: "integer" },
                     type: { type: "string" },
                     start: { type: "integer" },
                     users: { type: "array", items: { $ref: "#/components/schemas/AlbumUserItem" } },
@@ -3984,7 +3986,7 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    albumId: { type: "string" },
+                    albumId: { type: "integer" },
                     type: { type: "string" },
                     start: { type: "integer" },
                     users: { type: "array", items: { $ref: "#/components/schemas/AlbumUserItem" } },
@@ -4083,8 +4085,8 @@ export const openApiSpec = {
                 schema: {
                   type: "object",
                   properties: {
-                    albumId: { type: "string" },
-                    commentId: { type: "string" },
+                    albumId: { type: "integer" },
+                    commentId: { type: "integer" },
                     replies: { type: "array", items: { $ref: "#/components/schemas/AotyComment" } },
                   },
                 },
@@ -4391,7 +4393,7 @@ export const openApiSpec = {
         description: "Returns a randomly chosen essential album from the must-hear catalog. Never cached.",
         operationId: "getRandomMustHear",
         parameters: [
-          { name: "year", in: "query", required: false, schema: { type: "string" }, description: "Filter by 4-digit year", example: "2020" },
+          { name: "year", in: "query", required: false, schema: { type: "integer" }, description: "Filter by 4-digit year", example: 2020 },
           { name: "decade", in: "query", required: false, schema: { type: "string" }, description: "Filter by decade (e.g. '1990s')", example: "1990s" },
         ],
         responses: {
@@ -4608,7 +4610,7 @@ export const openApiSpec = {
                         type: "object",
                         properties: {
                           name: { type: "string" },
-                          value: { type: "string" },
+                          value: { type: "integer" },
                           key: { type: ["string", "null"] },
                           timestamp: { type: ["string", "null"] },
                         },
@@ -4628,7 +4630,7 @@ export const openApiSpec = {
                               type: "object",
                               properties: {
                                 name: { type: "string" },
-                                value: { type: "string" },
+                                value: { type: "integer" },
                               },
                             },
                           },
@@ -4790,10 +4792,11 @@ export const openApiSpec = {
           cover: { type: "string" },
           mediaType: { type: "string", description: "lp, ep, single, mixtape, compilation, etc." },
           releaseDate: { type: "string" },
-          criticScore: { type: ["string", "null"] },
-          criticCount: { type: ["string", "null"] },
-          userScore: { type: ["string", "null"] },
-          userCount: { type: ["string", "null"] },
+          releaseDateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds, null if unknown or unparseable" },
+          criticScore: { type: ["integer", "null"] },
+          criticCount: { type: ["integer", "null"] },
+          userScore: { type: ["integer", "null"] },
+          userCount: { type: ["integer", "null"] },
           mustHear: { type: "boolean" },
           mustHearScope: { type: ["string", "null"], enum: ["both", "user", "critic", null] },
           locked: { type: "boolean" },
@@ -4820,15 +4823,18 @@ export const openApiSpec = {
         type: "object",
         properties: {
           url: { type: "string" },
-          id: { type: "string" },
+          id: { type: ["integer", "null"] },
           title: { type: "string" },
           artist: { type: "string" },
           artistUrl: { type: "string" },
           artistImage: { type: ["string", "null"] },
           cover: { type: "string" },
           datePublished: { type: "string" },
+          datePublishedTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           dateCreated: { type: ["string", "null"] },
+          dateCreatedTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           dateModified: { type: ["string", "null"] },
+          dateModifiedTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           format: { type: "string" },
           label: { type: ["string", "null"] },
           labelUrl: { type: ["string", "null"] },
@@ -4843,16 +4849,17 @@ export const openApiSpec = {
           producersMore: { type: "integer" },
           writersMore: { type: "integer" },
           totalLength: { type: ["string", "null"] },
+          totalLengthSeconds: { type: ["integer", "null"], description: "Total duration in seconds" },
           mustHear: { type: "boolean" },
           commentCount: { type: ["integer", "null"] },
-          criticScore: { type: ["string", "null"] },
-          criticScoreExact: { type: ["string", "null"] },
-          criticCount: { type: ["string", "null"] },
+          criticScore: { type: ["integer", "null"] },
+          criticScoreExact: { type: ["number", "null"] },
+          criticCount: { type: ["integer", "null"] },
           criticRanking: { oneOf: [{ $ref: "#/components/schemas/AlbumRankingInfo" }, { type: "null" }] },
           criticRankingAllTime: { oneOf: [{ $ref: "#/components/schemas/AlbumAllTimeRanking" }, { type: "null" }] },
-          userScore: { type: ["string", "null"] },
-          userScoreExact: { type: ["string", "null"] },
-          userCount: { type: ["string", "null"] },
+          userScore: { type: ["integer", "null"] },
+          userScoreExact: { type: ["number", "null"] },
+          userCount: { type: ["integer", "null"] },
           userRanking: { oneOf: [{ $ref: "#/components/schemas/AlbumRankingInfo" }, { type: "null" }] },
           userRankingAllTime: { oneOf: [{ $ref: "#/components/schemas/AlbumAllTimeRanking" }, { type: "null" }] },
           tracklist: { type: "array", items: { $ref: "#/components/schemas/Track" } },
@@ -4909,12 +4916,13 @@ export const openApiSpec = {
       Track: {
         type: "object",
         properties: {
-          number: { type: "string" },
+          number: { type: "integer" },
           title: { type: "string" },
           url: { type: "string" },
           songId: { type: ["integer", "null"] },
           length: { type: "string" },
-          rating: { type: ["string", "null"] },
+          lengthSeconds: { type: ["integer", "null"], description: "Track duration in seconds" },
+          rating: { type: ["integer", "null"] },
           ratingCount: { type: ["integer", "null"] },
           notes: { type: ["string", "null"] },
           features: { type: "array", items: { type: "string" } },
@@ -4925,7 +4933,7 @@ export const openApiSpec = {
         type: "object",
         properties: {
           id: { type: ["integer", "null"] },
-          score: { type: "string" },
+          score: { type: ["integer", "null"] },
           publication: { type: "string" },
           publicationUrl: { type: ["string", "null"] },
           author: { type: "string" },
@@ -4935,6 +4943,7 @@ export const openApiSpec = {
           url: { type: "string" },
           isPrintOnly: { type: "boolean" },
           date: { type: "string" },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
         },
       },
       StreamingLink: {
@@ -4947,17 +4956,18 @@ export const openApiSpec = {
       NewsItem: {
         type: "object",
         properties: {
-          id: { type: "string" },
+          id: { type: "integer" },
           url: { type: "string" },
           title: { type: "string" },
           image: { type: ["string", "null"] },
           source: { type: "string" },
           sourceUrl: { type: "string" },
           date: { type: "string" },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           submittedBy: { type: ["string", "null"] },
           submittedByUrl: { type: ["string", "null"] },
-          likes: { type: "string" },
-          comments: { type: "string" },
+          likes: { type: "integer" },
+          comments: { type: "integer" },
         },
       },
       ListIndexSection: {
@@ -4979,18 +4989,19 @@ export const openApiSpec = {
       ListDetailItem: {
         type: "object",
         properties: {
-          rank: { type: ["string", "null"] },
+          rank: { type: ["integer", "null"] },
           artist: { type: "string" },
           album: { type: "string" },
           title: { type: "string" },
           url: { type: "string" },
           cover: { type: "string" },
           date: { type: "string" },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           genres: { type: "array", items: { type: "string" } },
           secondaryGenres: { type: "array", items: { type: "string" } },
-          score: { type: ["string", "null"] },
-          scoreExact: { type: ["string", "null"] },
-          ratingCount: { type: ["string", "null"] },
+          score: { type: ["integer", "null"] },
+          scoreExact: { type: ["number", "null"] },
+          ratingCount: { type: ["integer", "null"] },
           mustHear: { type: "boolean" },
           mustHearScope: { type: ["string", "null"], enum: ["both", "user", "critic", null] },
           streamingLinks: { type: "array", items: { $ref: "#/components/schemas/StreamingLink" } },
@@ -5004,7 +5015,7 @@ export const openApiSpec = {
           url: { type: "string" },
           name: { type: "string" },
           image: { type: ["string", "null"] },
-          score: { type: ["string", "null"] },
+          score: { type: ["integer", "null"] },
         },
       },
       DiscussionEntry: {
@@ -5019,6 +5030,7 @@ export const openApiSpec = {
           lastUserUrl: { type: "string" },
           lastPostAgo: { type: ["string", "null"] },
           lastPostExact: { type: ["string", "null"] },
+          lastPostExactTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
         },
       },
       FollowUser: {
@@ -5093,11 +5105,11 @@ export const openApiSpec = {
           notableAlbums: { type: "array", items: { type: "string" } },
           topSongsUrl: { type: ["string", "null"] },
           similarArtistsUrl: { type: ["string", "null"] },
-          criticScore: { type: ["string", "null"] },
-          criticCount: { type: ["string", "null"] },
-          userScore: { type: ["string", "null"] },
-          userCount: { type: ["string", "null"] },
-          followers: { type: ["string", "null"] },
+          criticScore: { type: ["integer", "null"] },
+          criticCount: { type: ["integer", "null"] },
+          userScore: { type: ["integer", "null"] },
+          userCount: { type: ["integer", "null"] },
+          followers: { type: ["integer", "null"] },
           genres: { type: "array", items: { $ref: "#/components/schemas/NamedLink" } },
           alsoKnownAs: { type: "array", items: { type: "string" } },
           members: { type: "array", items: { $ref: "#/components/schemas/ArtistLink" } },
@@ -5185,7 +5197,7 @@ export const openApiSpec = {
         properties: {
           tag: { type: "string" },
           type: { type: "string" },
-          year: { type: ["string", "null"] },
+          year: { type: ["integer", "null"] },
           page: { type: "integer" },
           headline: { type: ["string", "null"] },
           usedBy: { type: ["integer", "null"] },
@@ -5209,7 +5221,7 @@ export const openApiSpec = {
           artistUrl: { type: "string" },
           artistImage: { type: ["string", "null"] },
           cover: { type: ["string", "null"] },
-          score: { type: "string" },
+          score: { type: ["integer", "null"] },
           reviewUrl: { type: "string" },
         },
       },
@@ -5221,8 +5233,8 @@ export const openApiSpec = {
           name: { type: "string" },
           image: { type: ["string", "null"] },
           website: { type: ["string", "null"] },
-          albumsRated: { type: ["string", "null"] },
-          averageRating: { type: ["string", "null"] },
+          albumsRated: { type: ["integer", "null"] },
+          averageRating: { type: ["number", "null"] },
           ratingDistribution: {
             type: "array",
             items: {
@@ -5249,13 +5261,15 @@ export const openApiSpec = {
           artistUrl: { type: "string" },
           artistImage: { type: ["string", "null"] },
           cover: { type: ["string", "null"] },
-          score: { type: "string" },
+          score: { type: ["integer", "null"] },
           text: { type: "string" },
           publication: { type: "string" },
           publicationUrl: { type: "string" },
           reviewUrl: { type: ["string", "null"] },
           date: { type: ["string", "null"] },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           dateExact: { type: ["string", "null"] },
+          dateExactTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
         },
       },
       CriticDetail: {
@@ -5286,8 +5300,9 @@ export const openApiSpec = {
           userUrl: { type: "string" },
           avatar: { type: ["string", "null"] },
           subscriber: { type: "boolean" },
-          rating: { type: "string" },
+          rating: { type: ["integer", "null"] },
           date: { type: ["string", "null"] },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
         },
       },
       ArtistTopSong: {
@@ -5297,7 +5312,7 @@ export const openApiSpec = {
           url: { type: "string" },
           album: { type: ["string", "null"] },
           cover: { type: ["string", "null"] },
-          score: { type: ["string", "null"] },
+          score: { type: ["integer", "null"] },
           ratingCount: { type: ["integer", "null"] },
         },
       },
@@ -5305,7 +5320,7 @@ export const openApiSpec = {
         type: "object",
         properties: {
           url: { type: "string" },
-          id: { type: "string" },
+          id: { type: ["integer", "null"] },
           title: { type: "string" },
           artist: { type: "string" },
           artistUrl: { type: "string" },
@@ -5313,12 +5328,13 @@ export const openApiSpec = {
           cover: { type: ["string", "null"] },
           album: { type: ["string", "null"] },
           albumUrl: { type: ["string", "null"] },
-          trackNumber: { type: ["string", "null"] },
-          year: { type: ["string", "null"] },
+          trackNumber: { type: ["integer", "null"] },
+          year: { type: ["integer", "null"] },
           duration: { type: ["string", "null"] },
-          userScore: { type: ["string", "null"] },
-          userScoreExact: { type: ["string", "null"] },
-          ratingCount: { type: ["string", "null"] },
+          durationSeconds: { type: ["integer", "null"], description: "Song duration in seconds" },
+          userScore: { type: ["integer", "null"] },
+          userScoreExact: { type: ["number", "null"] },
+          ratingCount: { type: ["integer", "null"] },
           ratingDistribution: {
             type: "array",
             items: {
@@ -5329,23 +5345,25 @@ export const openApiSpec = {
               },
             },
           },
-          likePercentage: { type: ["string", "null"] },
-          dislikePercentage: { type: ["string", "null"] },
+          likePercentage: { type: ["number", "null"] },
+          dislikePercentage: { type: ["number", "null"] },
           tracklist: {
             type: "array",
             items: {
               type: "object",
               properties: {
-                number: { type: "string" },
+                number: { type: ["integer", "null"] },
                 title: { type: "string" },
                 url: { type: "string" },
                 length: { type: "string" },
-                score: { type: ["string", "null"] },
+                lengthSeconds: { type: ["integer", "null"], description: "Track duration in seconds" },
+                score: { type: ["integer", "null"] },
                 ratingCount: { type: ["integer", "null"] },
               },
             },
           },
           tracklistTotalLength: { type: ["string", "null"] },
+          tracklistTotalLengthSeconds: { type: ["integer", "null"], description: "Total duration in seconds" },
           artistTopSongs: { type: "array", items: { $ref: "#/components/schemas/ArtistTopSong" } },
           credits: { type: "array", items: { $ref: "#/components/schemas/SongCredit" } },
           tags: { type: "array", items: { $ref: "#/components/schemas/NamedLink" } },
@@ -5360,14 +5378,14 @@ export const openApiSpec = {
           url: { type: "string" },
           artist: { type: "string" },
           cover: { type: ["string", "null"] },
-          score: { type: ["string", "null"] },
+          score: { type: ["integer", "null"] },
           ratingCount: { type: ["integer", "null"] },
         },
       },
       TopSong: {
         type: "object",
         properties: {
-          rank: { type: "string" },
+          rank: { type: "integer" },
           title: { type: "string" },
           url: { type: "string" },
           artist: { type: "string" },
@@ -5377,9 +5395,9 @@ export const openApiSpec = {
           album: { type: ["string", "null"] },
           albumUrl: { type: ["string", "null"] },
           cover: { type: ["string", "null"] },
-          score: { type: ["string", "null"] },
-          exactScore: { type: ["string", "null"] },
-          ratingCount: { type: ["string", "null"] },
+          score: { type: ["integer", "null"] },
+          exactScore: { type: ["number", "null"] },
+          ratingCount: { type: ["integer", "null"] },
         },
       },
       UserProfile: {
@@ -5388,8 +5406,9 @@ export const openApiSpec = {
           url: { type: "string" },
           username: { type: "string" },
           displayName: { type: "string" },
-          userId: { type: ["string", "null"] },
+          userId: { type: ["integer", "null"] },
           memberSince: { type: ["string", "null"] },
+          memberSinceTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           avatar: { type: ["string", "null"] },
           bio: { type: ["string", "null"] },
           location: { type: ["string", "null"] },
@@ -5435,12 +5454,12 @@ export const openApiSpec = {
           stats: {
             type: "object",
             properties: {
-              ratings: { type: "string" },
-              listens: { type: "string" },
-              reviews: { type: "string" },
-              lists: { type: "string" },
-              followers: { type: "string" },
-              following: { type: "string" },
+              ratings: { type: "integer" },
+              listens: { type: "integer" },
+              reviews: { type: "integer" },
+              lists: { type: "integer" },
+              followers: { type: "integer" },
+              following: { type: "integer" },
             },
           },
         },
@@ -5451,8 +5470,9 @@ export const openApiSpec = {
           {
             type: "object",
             properties: {
-              userRating: { type: ["string", "null"] },
+              userRating: { type: ["integer", "null"] },
               ratedDate: { type: ["string", "null"] },
+              ratedDateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds, null if yearless" },
               reviewUrl: { type: ["string", "null"] },
               liked: { type: "boolean" },
               albumId: { type: ["integer", "null"] },
@@ -5475,14 +5495,16 @@ export const openApiSpec = {
           userUrl: { type: "string" },
           avatar: { type: ["string", "null"] },
           subscriber: { type: "boolean" },
-          rating: { type: ["string", "null"] },
+          rating: { type: ["integer", "null"] },
           text: { type: "string" },
           isTruncated: { type: "boolean" },
-          likes: { type: "string" },
-          comments: { type: "string" },
+          likes: { type: "integer" },
+          comments: { type: "integer" },
           commentsUrl: { type: ["string", "null"] },
           date: { type: ["string", "null"] },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           dateExact: { type: ["string", "null"] },
+          dateExactTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           edited: { type: "boolean" },
         },
       },
@@ -5492,22 +5514,24 @@ export const openApiSpec = {
           {
             type: "object",
             properties: {
-              albumId: { type: ["string", "null"] },
+              albumId: { type: ["integer", "null"] },
               trackRatings: {
                 type: "array",
                 items: {
                   type: "object",
                   properties: {
-                    number: { type: ["string", "null"] },
+                    number: { type: ["integer", "null"] },
                     title: { type: "string" },
                     url: { type: "string" },
-                    rating: { type: ["string", "null"] },
+                    rating: { type: ["integer", "null"] },
                   },
                 },
               },
               commentsList: { type: "array", items: { $ref: "#/components/schemas/AotyComment" } },
               datePublished: { type: ["string", "null"] },
+              datePublishedTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
               dateModified: { type: ["string", "null"] },
+              dateModifiedTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
               relatedLinks: { type: "array", items: { $ref: "#/components/schemas/NamedLink" } },
               streamingLinks: { type: "array", items: { $ref: "#/components/schemas/StreamingLink" } },
               previousReview: {
@@ -5543,16 +5567,18 @@ export const openApiSpec = {
       AotyComment: {
         type: "object",
         properties: {
-          id: { type: "string" },
+          id: { type: "integer" },
           username: { type: "string" },
           usernameColor: { type: ["string", "null"] },
           userUrl: { type: "string" },
           avatar: { type: ["string", "null"] },
           subscriber: { type: "boolean" },
           date: { type: "string" },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           dateExact: { type: "string" },
+          dateExactTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           text: { type: "string" },
-          replies: { type: "string" },
+          replies: { type: "integer" },
         },
       },
       UserListEntry: {
@@ -5565,8 +5591,8 @@ export const openApiSpec = {
           avatar: { type: ["string", "null"] },
           covers: { type: "array", items: { type: "string" } },
           description: { type: ["string", "null"] },
-          likes: { type: ["string", "null"] },
-          comments: { type: ["string", "null"] },
+          likes: { type: ["integer", "null"] },
+          comments: { type: ["integer", "null"] },
           updatedAgo: { type: ["string", "null"] },
           albumCount: { type: ["integer", "null"] },
           ranked: { type: "boolean" },
@@ -5575,16 +5601,16 @@ export const openApiSpec = {
       UserListDetailItem: {
         type: "object",
         properties: {
-          rank: { type: "string" },
+          rank: { type: "integer" },
           artist: { type: "string" },
           artistUrl: { type: "string" },
           artistImage: { type: ["string", "null"] },
           title: { type: "string" },
           url: { type: "string" },
           cover: { type: ["string", "null"] },
-          year: { type: ["string", "null"] },
+          year: { type: ["integer", "null"] },
           blurb: { type: ["string", "null"] },
-          creatorRating: { type: ["string", "null"] },
+          creatorRating: { type: ["integer", "null"] },
         },
       },
       UserListDetail: {
@@ -5607,7 +5633,7 @@ export const openApiSpec = {
       ChartItem: {
         type: "object",
         properties: {
-          rank: { type: "string" },
+          rank: { type: "integer" },
           title: { type: "string" },
           artist: { type: "string" },
           album: { type: "string" },
@@ -5616,9 +5642,9 @@ export const openApiSpec = {
           date: { type: ["string", "null"] },
           genres: { type: "array", items: { type: "string" } },
           secondaryGenres: { type: "array", items: { type: "string" } },
-          score: { type: ["string", "null"] },
-          scoreExact: { type: ["string", "null"] },
-          ratingCount: { type: ["string", "null"] },
+          score: { type: ["integer", "null"] },
+          scoreExact: { type: ["number", "null"] },
+          ratingCount: { type: ["integer", "null"] },
           mustHear: { type: "boolean" },
           mustHearScope: { type: ["string", "null"], enum: ["both", "user", "critic", null] },
           streamingLinks: { type: "array", items: { $ref: "#/components/schemas/StreamingLink" } },
@@ -5636,7 +5662,7 @@ export const openApiSpec = {
         properties: {
           tag: { type: "string" },
           url: { type: "string" },
-          count: { type: "string" },
+          count: { type: "integer" },
         },
       },
       NewsSearchItem: {
@@ -5652,14 +5678,15 @@ export const openApiSpec = {
         type: "object",
         properties: {
           url: { type: "string" },
-          id: { type: "string" },
+          id: { type: "integer" },
           title: { type: "string" },
           source: { type: "string" },
           sourceUrl: { type: "string" },
           date: { type: "string" },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           image: { type: ["string", "null"] },
           text: { type: "string" },
-          likes: { type: "string" },
+          likes: { type: "integer" },
           embedUrl: { type: ["string", "null"] },
           artist: { type: ["object", "null"] },
           album: { type: ["object", "null"] },
@@ -5695,7 +5722,7 @@ export const openApiSpec = {
           publication: { type: "string" },
           publicationUrl: { type: ["string", "null"] },
           cover: { type: ["string", "null"] },
-          rank: { type: ["string", "null"] },
+          rank: { type: ["integer", "null"] },
         },
       },
       PerfectSection: {
@@ -5765,6 +5792,7 @@ export const openApiSpec = {
         type: "object",
         properties: {
           date: { type: "string" },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           type: { type: "string" },
           title: { type: "string" },
           text: { type: "string" },
@@ -5782,7 +5810,7 @@ export const openApiSpec = {
       GenreAutocompleteItem: {
         type: "object",
         properties: {
-          id: { type: "string" },
+          id: { type: ["integer", "null"] },
           name: { type: "string" },
           slug: { type: "string" },
           url: { type: "string" },
@@ -5804,8 +5832,8 @@ export const openApiSpec = {
           name: { type: "string" },
           url: { type: "string" },
           count: { type: ["integer", "null"] },
-          percentage: { type: ["string", "null"] },
-          averageScore: { type: ["string", "null"] },
+          percentage: { type: ["number", "null"] },
+          averageScore: { type: ["number", "null"] },
         },
       },
       UserBadgeItem: {
@@ -5815,6 +5843,7 @@ export const openApiSpec = {
           description: { type: ["string", "null"] },
           image: { type: ["string", "null"] },
           date: { type: ["string", "null"] },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
         },
       },
       UserContributionEntry: {
@@ -5825,6 +5854,7 @@ export const openApiSpec = {
           url: { type: ["string", "null"] },
           detail: { type: ["string", "null"] },
           date: { type: ["string", "null"] },
+          dateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
         },
       },
       RssFeedItem: {
@@ -5833,6 +5863,7 @@ export const openApiSpec = {
           title: { type: "string" },
           link: { type: "string" },
           pubDate: { type: ["string", "null"] },
+          pubDateTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           description: { type: ["string", "null"] },
         },
       },
@@ -5950,7 +5981,7 @@ export const openApiSpec = {
       AlbumImageItem: {
         type: "object",
         properties: {
-          id: { type: "string" },
+          id: { type: "integer" },
           title: { type: "string" },
           src: { type: "string" },
           isDefault: { type: "boolean" },
@@ -5959,7 +5990,7 @@ export const openApiSpec = {
       AlbumImagesResult: {
         type: "object",
         properties: {
-          albumId: { type: "string" },
+          albumId: { type: "integer" },
           mainImage: { type: ["string", "null"] },
           images: { type: "array", items: { $ref: "#/components/schemas/AlbumImageItem" } },
         },
@@ -5971,8 +6002,8 @@ export const openApiSpec = {
           album: { type: "string" },
           albumUrl: { type: "string" },
           cover: { type: ["string", "null"] },
-          year: { type: ["string", "null"] },
-          score: { type: ["string", "null"] },
+          year: { type: ["integer", "null"] },
+          score: { type: ["integer", "null"] },
           reviewUrl: { type: ["string", "null"] },
         },
       },
@@ -5980,7 +6011,7 @@ export const openApiSpec = {
         type: "object",
         properties: {
           username: { type: "string" },
-          artistId: { type: "string" },
+          artistId: { type: "integer" },
           ratings: { type: "array", items: { $ref: "#/components/schemas/UserArtistRatingItem" } },
         },
       },
@@ -6063,7 +6094,7 @@ export const openApiSpec = {
       GenreNameResult: {
         type: "object",
         properties: {
-          id: { type: "string" },
+          id: { type: "integer" },
           name: { type: "string" },
         },
       },
@@ -6078,14 +6109,14 @@ export const openApiSpec = {
       RatingSourcesResult: {
         type: "object",
         properties: {
-          year: { type: "string" },
+          year: { type: "integer" },
           sources: { type: "array", items: { $ref: "#/components/schemas/RatingSourceItem" } },
         },
       },
       RatingGenreItem: {
         type: "object",
         properties: {
-          id: { type: "string" },
+          id: { type: "integer" },
           slug: { type: "string" },
           name: { type: "string" },
           url: { type: "string" },
@@ -6094,7 +6125,7 @@ export const openApiSpec = {
       RatingGenresResult: {
         type: "object",
         properties: {
-          year: { type: "string" },
+          year: { type: "integer" },
           type: { type: "string" },
           genres: { type: "array", items: { $ref: "#/components/schemas/RatingGenreItem" } },
         },
@@ -6109,6 +6140,7 @@ export const openApiSpec = {
           artistUrl: { type: "string" },
           cover: { type: "string" },
           datePublished: { type: "string" },
+          datePublishedTimestamp: { type: ["integer", "null"], description: "Unix timestamp in seconds" },
           format: { type: "string" },
           label: { type: ["string", "null"] },
           labelUrl: { type: ["string", "null"] },
@@ -6119,15 +6151,16 @@ export const openApiSpec = {
           tags: { type: "array", items: { type: "string" } },
           vibes: { type: "array", items: { type: "string" } },
           totalLength: { type: ["string", "null"] },
+          totalLengthSeconds: { type: ["integer", "null"], description: "Total duration in seconds" },
           trackCount: { type: "integer" },
           mustHear: { type: "boolean" },
           commentCount: { type: ["integer", "null"] },
-          criticScore: { type: ["number", "null"] },
+          criticScore: { type: ["integer", "null"] },
           criticScoreExact: { type: ["number", "null"] },
           criticCount: { type: ["integer", "null"] },
           criticRanking: { type: ["object", "null"] },
           criticRankingAllTime: { type: ["object", "null"] },
-          userScore: { type: ["number", "null"] },
+          userScore: { type: ["integer", "null"] },
           userScoreExact: { type: ["number", "null"] },
           userCount: { type: ["integer", "null"] },
           userRanking: { type: ["object", "null"] },

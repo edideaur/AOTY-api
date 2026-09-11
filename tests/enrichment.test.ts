@@ -360,6 +360,7 @@ describe("community discussions", () => {
         lastUserUrl: "https://www.albumoftheyear.org/user/anklebike404/",
         lastPostAgo: "54s ago",
         lastPostExact: "09 Sep 2026 14:31:07 GMT",
+        lastPostExactTimestamp: 1788964267,
       });
     } finally {
       restore();

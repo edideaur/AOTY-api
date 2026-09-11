@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseExactScore, parseRank, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseExactScore, parseRank, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type {
   ListDetailItem,
   ListEntry,
@@ -251,6 +251,7 @@ export async function scrapeListDetail(url: string, opts: FetchOpts = FETCH_OPTS
       const hasRank = (item.rank ?? "").trim().length > 0;
       const cleanGenres = [...new Set((item.genres ?? []).map((g) => g.trim()).filter(Boolean))];
       const cleanSecondary = [...new Set((item.secondaryGenres ?? []).map((g) => decodeEntities(g.trim())).filter(Boolean))].filter((g) => !cleanGenres.includes(g));
+      const lDate = (item.date ?? "").trim();
       return {
         // Unranked publication orderings carry no position node: keep rank null
         // instead of inventing one from the row index.
@@ -260,7 +261,8 @@ export async function scrapeListDetail(url: string, opts: FetchOpts = FETCH_OPTS
         title: rawTitle,
         url: item.url ?? "",
         cover: cleanImageUrl(item.cover ?? ""),
-        date: (item.date ?? "").trim(),
+        date: lDate,
+        dateTimestamp: parseDateToTimestamp(lDate),
         genres: cleanGenres,
         secondaryGenres: cleanSecondary,
         score: parseScore((item.score ?? "").trim()),

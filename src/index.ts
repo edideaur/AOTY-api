@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, FETCH_OPTS_FRESH, RES_HEADERS, PROBLEM_HEADERS, cleanImageUrl, deepDecodeEntities, type FetchOpts } from "./constants.js";
+import { BASE, FETCH_OPTS, FETCH_OPTS_FRESH, RES_HEADERS, PROBLEM_HEADERS, cleanImageUrl, deepDecodeEntities, parseId, type FetchOpts } from "./constants.js";
 import { openApiSpec } from "./openapi.js";
 import { POSTMAN_BODY } from "./postman.js";
 import { scrapeAlbumBlocks } from "./scrapers/albumBlock.js";
@@ -648,8 +648,8 @@ const BATCH_BLOCKED_PATHS = new Set([
   "/batch",
 ]);
 
-export const BATCH_MAX_ITEMS = 10;
-export const BATCH_MAX_LENGTH = 4000;
+const BATCH_MAX_ITEMS = 10;
+const BATCH_MAX_LENGTH = 4000;
 
 export interface BatchItemResult {
   path: string;
@@ -1515,7 +1515,7 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
   if (path === "/releases/year") {
     const rawYear = getRequiredParam(q, "year");
     if (!/^\d{4}$/.test(rawYear.trim())) throw new ApiError("Invalid year format", 400);
-    const year = rawYear.trim();
+    const year = parseInt(rawYear.trim(), 10);
     const genre = q.get("genre");
     const page = getPage(q);
     const pageSuffix = page > 1 ? `${page}/` : "";
@@ -1535,7 +1535,8 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
   }
 
   if (path === "/releases/month") {
-    const year = q.get("year") ?? String(new Date().getFullYear());
+    const rawYear = q.get("year") ?? String(new Date().getFullYear());
+    const year = parseInt(rawYear, 10);
     const month = getRequiredParam(q, "month");
     const genre = q.get("genre");
     const page = getPage(q);
@@ -1546,31 +1547,35 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
   }
 
   if (path === "/releases/week") {
-    const year = q.get("year") ?? String(new Date().getFullYear());
-    const week = getRequiredParam(q, "week");
+    const rawYear = q.get("year") ?? String(new Date().getFullYear());
+    const year = parseInt(rawYear, 10);
+    const rawWeek = getRequiredParam(q, "week");
+    const week = parseInt(rawWeek, 10);
     const genre = q.get("genre");
     const page = getPage(q);
     const pageSuffix = page > 1 ? `${page}/` : "";
-    let aotyPath = `/week/${year}/${week}/releases/${pageSuffix}`;
+    let aotyPath = `/week/${year}/${rawWeek}/releases/${pageSuffix}`;
     if (genre) aotyPath += `?genre=${encodeURIComponent(genre)}`;
     return { year, week, page, albums: await fetchAlbumBlocks(aotyPath, opts) };
   }
 
   if (path === "/releases/by-date") {
-    const year = q.get("year") ?? String(new Date().getFullYear());
+    const rawYear = q.get("year") ?? String(new Date().getFullYear());
+    const year = parseInt(rawYear, 10);
     const month = q.get("month");
-    const week = q.get("week");
+    const rawWeek = q.get("week");
+    const week = rawWeek ? parseInt(rawWeek, 10) : null;
     const decade = q.get("decade");
     const genre = q.get("genre");
     const page = getPage(q);
     const pageSuffix = page > 1 ? `${page}/` : "";
     let aotyPath: string;
-    if (week) aotyPath = `/week/${year}/${week}/releases/${pageSuffix}`;
+    if (rawWeek) aotyPath = `/week/${year}/${rawWeek}/releases/${pageSuffix}`;
     else if (decade) aotyPath = `/decade/${decade}/releases/${pageSuffix}`;
     else if (month) aotyPath = `/${year}/releases/${month}/${pageSuffix}`;
     else aotyPath = `/${year}/releases/${pageSuffix}`;
     if (genre) aotyPath += `?genre=${encodeURIComponent(genre)}`;
-    return { year, month: month ?? null, week: week ?? null, decade: decade ?? null, page, albums: await fetchAlbumBlocks(aotyPath, opts) };
+    return { year, month: month ?? null, week, decade: decade ?? null, page, albums: await fetchAlbumBlocks(aotyPath, opts) };
   }
 
   if (path === "/releases/vibe") {
@@ -1699,16 +1704,18 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
 
   if (path === "/album/credits") {
     const slug = q.get("slug");
-    const albumId = q.get("albumId") ?? (slug ? slug.match(/^(\d+)/)?.[1] : null);
-    if (!albumId) throw new ApiError("Missing required parameter: albumId or slug with ID", 400);
+    const rawAlbumId = q.get("albumId") ?? (slug ? slug.match(/^(\d+)/)?.[1] : null);
+    if (!rawAlbumId) throw new ApiError("Missing required parameter: albumId or slug with ID", 400);
+    const albumId = parseId(rawAlbumId) ?? parseInt(rawAlbumId, 10);
     const credits = await scrapeAlbumCredits(albumId);
     return { albumId, credits };
   }
 
   if (path === "/album/stats") {
     const slug = q.get("slug");
-    const albumId = q.get("albumId") ?? (slug ? slug.match(/^(\d+)/)?.[1] : null);
-    if (!albumId) throw new ApiError("Missing required parameter: albumId or slug with ID", 400);
+    const rawAlbumId = q.get("albumId") ?? (slug ? slug.match(/^(\d+)/)?.[1] : null);
+    if (!rawAlbumId) throw new ApiError("Missing required parameter: albumId or slug with ID", 400);
+    const albumId = parseId(rawAlbumId) ?? parseInt(rawAlbumId, 10);
     const stats = await scrapeAlbumStats(albumId);
     return { albumId, stats };
   }
@@ -1906,6 +1913,7 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
       artistUrl: detail.artistUrl,
       cover: detail.cover,
       datePublished: detail.datePublished,
+      datePublishedTimestamp: detail.datePublishedTimestamp ?? null,
       format: detail.format,
       label: detail.label,
       labelUrl: detail.labelUrl,
@@ -1916,6 +1924,7 @@ async function route(path: string, q: URLSearchParams, opts: FetchOpts): Promise
       tags: detail.tags,
       vibes: detail.vibes,
       totalLength: detail.totalLength,
+      totalLengthSeconds: detail.totalLengthSeconds ?? null,
       trackCount: detail.tracklist.length,
       mustHear: detail.mustHear,
       commentCount: detail.commentCount,

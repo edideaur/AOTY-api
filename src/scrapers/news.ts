@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseId, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseId, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type { NewsItem, RssFeed, RssFeedItem } from "../types.js";
 
 type RawNewsItem = {
@@ -108,6 +108,7 @@ async function parseNewsItems(res: Response): Promise<NewsItem[]> {
     source: decodeEntities((item.source ?? "").trim()),
     sourceUrl: item.sourceUrl,
     date,
+    dateTimestamp: parseDateToTimestamp(date),
     submittedBy,
     submittedByUrl: item.submittedByUrl || null,
     likes: parseCount((item.likes ?? "").trim()) ?? 0,
@@ -135,10 +136,12 @@ export async function scrapeNewsFeed(opts: FetchOpts = FETCH_OPTS): Promise<RssF
     const iLink = itemXml.match(/<link>([^<]*)<\/link>/)?.[1] ?? "";
     const iPubDate = itemXml.match(/<pubDate>([^<]*)<\/pubDate>/)?.[1] ?? null;
     const iDesc = itemXml.match(/<description>([^<]*)<\/description>/)?.[1] ?? null;
+    const pDate = iPubDate ? iPubDate.trim() : null;
     items.push({
       title: decodeEntities(iTitle.trim()),
       link: iLink.trim(),
-      pubDate: iPubDate ? iPubDate.trim() : null,
+      pubDate: pDate,
+      pubDateTimestamp: parseDateToTimestamp(pDate),
       description: iDesc ? decodeEntities(iDesc.trim()) : null,
     });
   }

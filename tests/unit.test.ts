@@ -256,6 +256,36 @@ describe("OpenAPI spec integrity", () => {
     }
   });
 
+  it("ensures numeric fields in schemas are typed as integer or number, not string", () => {
+    const schemas = openApiSpec.components.schemas as Record<string, { properties?: Record<string, { type?: string | string[] }>; allOf?: Array<{ properties?: Record<string, { type?: string | string[] }> }> }>;
+    const numericFields = new Set([
+      "criticScore", "criticCount", "userScore", "userCount", "rating", "ratingCount",
+      "rank", "likes", "replies", "followers", "albumCount", "artistId",
+      "albumsRated", "usedBy", "useCount", "points", "lengthSeconds", "durationSeconds",
+      "totalLengthSeconds", "tracklistTotalLengthSeconds", "dateTimestamp", "dateExactTimestamp",
+      "datePublishedTimestamp", "dateCreatedTimestamp", "dateModifiedTimestamp", "releaseDateTimestamp",
+      "memberSinceTimestamp", "ratedDateTimestamp", "pubDateTimestamp", "addedOnTimestamp",
+      "lastPostExactTimestamp",
+    ]);
+
+    for (const [schemaName, schema] of Object.entries(schemas)) {
+      if (schemaName === "RandomFiltersMeta") continue;
+      const props = schema.properties ?? {};
+      if (schema.allOf) {
+        for (const part of schema.allOf) {
+          if (part.properties) Object.assign(props, part.properties);
+        }
+      }
+      for (const [propName, propDef] of Object.entries(props)) {
+        if (numericFields.has(propName)) {
+          const typeStr = Array.isArray(propDef.type) ? propDef.type.join(",") : propDef.type;
+          expect(typeStr).not.toContain("string");
+          expect(typeStr === "integer" || typeStr === "number" || typeStr?.includes("integer") || typeStr?.includes("number")).toBe(true);
+        }
+      }
+    }
+  });
+
   it("uses unique operationIds across all paths", () => {
     const seen = new Set<string>();
     const dupes: string[] = [];

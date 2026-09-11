@@ -1,4 +1,4 @@
-import { BASE, decodeEntities, cleanImageUrl, parseCount, parseScore } from "../constants.js";
+import { BASE, decodeEntities, cleanImageUrl, parseCount, parseScore, parseDateToTimestamp } from "../constants.js";
 import type { AlbumBlock } from "../types.js";
 
 /** Audience scope from a must-hear badge wrapper class (e.g. "image mustHear both"). */
@@ -151,21 +151,25 @@ export async function scrapeAlbumBlocks(res: Response): Promise<AlbumBlock[]> {
     .transform(res)
     .arrayBuffer();
 
-  return rawAlbums.map((a) => ({
-    url: a.url,
-    artist: decodeEntities(a.artist.trim()),
-    artistUrl: a.artistUrl,
-    artistImage: null,
-    title: decodeEntities(a.title.trim()),
-    releaseDate: decodeEntities(a.releaseDate.trim()),
-    cover: cleanImageUrl(a.cover.trim()),
-    mediaType: a.mediaType,
-    criticScore: parseScore(a.criticScore),
-    criticCount: parseCount(a.criticCount),
-    userScore: parseScore(a.userScore),
-    userCount: parseCount(a.userCount),
-    mustHear: a.mustHear,
-    mustHearScope: a.mustHearScope,
-    locked: a.locked ?? false,
-  }));
+  return rawAlbums.map((a) => {
+    const releaseDate = decodeEntities(a.releaseDate.trim());
+    return {
+      url: a.url,
+      artist: decodeEntities(a.artist.trim()),
+      artistUrl: a.artistUrl,
+      artistImage: null,
+      title: decodeEntities(a.title.trim()),
+      releaseDate,
+      releaseDateTimestamp: parseDateToTimestamp(releaseDate),
+      cover: cleanImageUrl(a.cover.trim()),
+      mediaType: a.mediaType,
+      criticScore: parseScore(a.criticScore),
+      criticCount: parseCount(a.criticCount),
+      userScore: parseScore(a.userScore),
+      userCount: parseCount(a.userCount),
+      mustHear: a.mustHear,
+      mustHearScope: a.mustHearScope,
+      locked: a.locked ?? false,
+    };
+  });
 }

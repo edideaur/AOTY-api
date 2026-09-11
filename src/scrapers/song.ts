@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseExactScore, parseId, parseRank, parseTrackNumber, parseYear, parsePercent, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseExactScore, parseId, parseRank, parseTrackNumber, parseYear, parsePercent, parseDurationToSeconds, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type {
   ArtistTopSong,
   AotyComment,
@@ -166,11 +166,13 @@ export async function scrapeSongPage(pageUrl: string, opts: FetchOpts = FETCH_OP
       const scoreM = row.match(/class="[^"]*trackRating[^"]*"[^>]*>([^<]+)<\/td>|<div class="trackRating[^"]*">([^<]+)<\/div>/);
       const countM = row.match(/title="([\d,]+) Ratings?"/i);
       if (titleM?.[1] && titleM[2]) {
+        const tLen = (lenM?.[1] ?? lenM?.[2] ?? "").trim();
         tracklist.push({
           number: parseTrackNumber((numM?.[1] ?? numM?.[2] ?? "").trim()),
           title: decodeEntities(titleM[2].trim()),
           url: titleM[1].startsWith("http") ? titleM[1] : BASE + titleM[1],
-          length: (lenM?.[1] ?? lenM?.[2] ?? "").trim(),
+          length: tLen,
+          lengthSeconds: parseDurationToSeconds(tLen),
           score: parseScore((scoreM?.[1] ?? scoreM?.[2] ?? "").trim()),
           ratingCount: countM?.[1] ? parseInt(countM[1].replace(/,/g, ""), 10) : null,
         });
@@ -251,33 +253,36 @@ export async function scrapeSongPage(pageUrl: string, opts: FetchOpts = FETCH_OP
 
   const artistImage = await fetchArtistImage(s.artistUrl, opts);
 
-  return {
-    url: pageUrl,
-    id: parseId(idM?.[1]),
-    title: decodeEntities(s.title.trim()),
-    artist: decodeEntities(s.artist.trim()),
-    artistUrl: s.artistUrl,
-    artistImage,
-    cover: cleanImageUrl(s.cover),
-    album: s.album,
-    albumUrl: s.albumUrl,
-    trackNumber: s.trackNumber ? parseTrackNumber(s.trackNumber) : null,
-    year: s.year ? parseYear(s.year) : null,
-    duration: s.duration || null,
-    userScore: parseScore(s.userScore.trim()),
-    userScoreExact: parseExactScore(s.userScoreExact),
-    ratingCount: parseCount(s.ratingCount),
-    ratingDistribution,
-    likePercentage: parsePercent(likePercentage),
-    dislikePercentage: parsePercent(dislikePercentage),
-    tracklist,
-    tracklistTotalLength,
-    artistTopSongs,
-    tags,
-    credits: s.credits.filter((c) => c.artists.length > 0),
-    topRatings: s.topRatings,
-    comments,
-  };
+    const songDur = s.duration || null;
+    return {
+      url: pageUrl,
+      id: parseId(idM?.[1]),
+      title: decodeEntities(s.title.trim()),
+      artist: decodeEntities(s.artist.trim()),
+      artistUrl: s.artistUrl,
+      artistImage,
+      cover: cleanImageUrl(s.cover),
+      album: s.album,
+      albumUrl: s.albumUrl,
+      trackNumber: s.trackNumber ? parseTrackNumber(s.trackNumber) : null,
+      year: s.year ? parseYear(s.year) : null,
+      duration: songDur,
+      durationSeconds: parseDurationToSeconds(songDur),
+      userScore: parseScore(s.userScore.trim()),
+      userScoreExact: parseExactScore(s.userScoreExact),
+      ratingCount: parseCount(s.ratingCount),
+      ratingDistribution,
+      likePercentage: parsePercent(likePercentage),
+      dislikePercentage: parsePercent(dislikePercentage),
+      tracklist,
+      tracklistTotalLength,
+      tracklistTotalLengthSeconds: parseDurationToSeconds(tracklistTotalLength),
+      artistTopSongs,
+      tags,
+      credits: s.credits.filter((c) => c.artists.length > 0),
+      topRatings: s.topRatings,
+      comments,
+    };
 }
 
 async function scrapeSongRatingRows(res: Response): Promise<SongRating[]> {
@@ -339,6 +344,7 @@ async function scrapeSongRatingRows(res: Response): Promise<SongRating[]> {
     .map((r) => {
       const username = decodeEntities((r.username ?? "").trim());
       const displayName = decodeEntities((r.displayName ?? "").trim()) || username;
+      const srDate = (r.date ?? "").trim() || null;
       return {
         username,
         displayName,
@@ -346,7 +352,8 @@ async function scrapeSongRatingRows(res: Response): Promise<SongRating[]> {
         avatar: cleanImageUrl(r.avatar ?? null),
         subscriber: r.subscriber ?? false,
         rating: parseScore((r.rating ?? "").trim()),
-        date: (r.date ?? "").trim() || null,
+        date: srDate,
+        dateTimestamp: parseDateToTimestamp(srDate),
       };
     });
 }

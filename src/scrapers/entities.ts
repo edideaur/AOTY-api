@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseId, parseYear, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseId, parseYear, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type {
   ArtistsOverviewSection,
   ChartItem,
@@ -1139,21 +1139,27 @@ export async function scrapeCriticPage(pageUrl: string, slug: string, opts: Fetc
     totalPages,
     reviews: s.reviews
       .filter((r) => (r.album ?? "").trim())
-      .map((r) => ({
-        album: decodeEntities((r.album ?? "").trim()),
-        albumUrl: r.albumUrl ?? "",
-        artist: decodeEntities((r.artist ?? "").trim()),
-        artistUrl: r.artistUrl ?? "",
-        artistImage: null,
-        cover: cleanImageUrl(r.cover ?? null),
-        score: parseScore((r.score ?? "").trim()),
-        text: decodeEntities((r.text ?? "").trim()),
-        publication: decodeEntities((r.publication ?? "").trim()),
-        publicationUrl: r.publicationUrl ?? "",
-        reviewUrl: r.reviewUrl ?? null,
-        date: r.date ?? null,
-        dateExact: r.dateExact ?? null,
-      })),
+      .map((r) => {
+        const rDate = r.date ?? null;
+        const rDateExact = r.dateExact ?? null;
+        return {
+          album: decodeEntities((r.album ?? "").trim()),
+          albumUrl: r.albumUrl ?? "",
+          artist: decodeEntities((r.artist ?? "").trim()),
+          artistUrl: r.artistUrl ?? "",
+          artistImage: null,
+          cover: cleanImageUrl(r.cover ?? null),
+          score: parseScore((r.score ?? "").trim()),
+          text: decodeEntities((r.text ?? "").trim()),
+          publication: decodeEntities((r.publication ?? "").trim()),
+          publicationUrl: r.publicationUrl ?? "",
+          reviewUrl: r.reviewUrl ?? null,
+          date: rDate,
+          dateTimestamp: parseDateToTimestamp(rDate),
+          dateExact: rDateExact,
+          dateExactTimestamp: parseDateToTimestamp(rDateExact),
+        };
+      }),
   };
 }
 

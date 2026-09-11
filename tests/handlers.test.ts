@@ -94,14 +94,14 @@ describe("Query parameter routing & response shapes", () => {
     try {
       const resWeek = await worker.fetch(req("/releases/by-date?year=2025&week=10&genre=rock"), env);
       expect(resWeek.status).toBe(200);
-      const jsonWeek = (await resWeek.json()) as { year: string; week: string | null; page: number };
-      expect(jsonWeek.year).toBe("2025");
-      expect(jsonWeek.week).toBe("10");
+      const jsonWeek = (await resWeek.json()) as { year: number; week: number | null; page: number };
+      expect(jsonWeek.year).toBe(2025);
+      expect(jsonWeek.week).toBe(10);
 
       const resMonth = await worker.fetch(req("/releases/by-date?year=2025&month=january&page=2"), env);
       expect(resMonth.status).toBe(200);
-      const jsonMonth = (await resMonth.json()) as { year: string; month: string | null; page: number };
-      expect(jsonMonth.year).toBe("2025");
+      const jsonMonth = (await resMonth.json()) as { year: number; month: string | null; page: number };
+      expect(jsonMonth.year).toBe(2025);
       expect(jsonMonth.month).toBe("january");
       expect(jsonMonth.page).toBe(2);
 
@@ -456,8 +456,8 @@ describe("Query parameter routing & response shapes", () => {
 
       const resWeek = await worker.fetch(req("/releases/week?week=36"), env);
       expect(resWeek.status).toBe(200);
-      const jsonWeek = (await resWeek.json()) as { week: string; albums: unknown[] };
-      expect(jsonWeek.week).toBe("36");
+      const jsonWeek = (await resWeek.json()) as { week: number; albums: unknown[] };
+      expect(jsonWeek.week).toBe(36);
 
       const resPerf = await worker.fetch(req("/user/perfect?username=testuser"), env);
       expect(resPerf.status).toBe(200);
@@ -544,8 +544,8 @@ describe("Query parameter routing & response shapes", () => {
       expect(res.status).toBe(200);
       expect(requestedUrl).toContain("/2024/releases/2/");
       expect(requestedUrl).toContain("genre=rock");
-      const json = (await res.json()) as { year: string; genre: string; page: number; albums: unknown[] };
-      expect(json.year).toBe("2024");
+      const json = (await res.json()) as { year: number; genre: string; page: number; albums: unknown[] };
+      expect(json.year).toBe(2024);
       expect(json.genre).toBe("rock");
       expect(json.page).toBe(2);
       expect(json.albums.length).toBe(1);
@@ -636,8 +636,8 @@ describe("Query parameter routing & response shapes", () => {
     try {
       const resCredits = await worker.fetch(req("/album/credits?albumId=2915"), env);
       expect(resCredits.status).toBe(200);
-      const jsonCredits = (await resCredits.json()) as { albumId: string; credits: unknown[] };
-      expect(jsonCredits.albumId).toBe("2915");
+      const jsonCredits = (await resCredits.json()) as { albumId: number; credits: unknown[] };
+      expect(jsonCredits.albumId).toBe(2915);
       expect(jsonCredits.credits).toBeDefined();
 
       const resCreditsSlug = await worker.fetch(req("/album/credits?slug=2915-outkast-aquemini"), env);
@@ -648,8 +648,8 @@ describe("Query parameter routing & response shapes", () => {
 
       const resStats = await worker.fetch(req("/album/stats?albumId=2915"), env);
       expect(resStats.status).toBe(200);
-      const jsonStats = (await resStats.json()) as { albumId: string; stats: unknown };
-      expect(jsonStats.albumId).toBe("2915");
+      const jsonStats = (await resStats.json()) as { albumId: number; stats: unknown };
+      expect(jsonStats.albumId).toBe(2915);
       expect(jsonStats.stats).toBeDefined();
     } finally {
       restore();

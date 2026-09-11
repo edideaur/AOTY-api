@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseId, parseRank, parseScore, parseExactScore, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, cleanImageUrl, decodeEntities, parseCount, parseId, parseRank, parseScore, parseExactScore, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type { ChartItem, RatingGenresResult, RatingSourcesResult, StreamingLink, TopArtistEntry } from "../types.js";
 import { mustHearScopeFromClass } from "./albumBlock.js";
 
@@ -164,6 +164,7 @@ async function parseRatingsChartItems(res: Response): Promise<ChartItem[]> {
     const album = dashIdx > -1 ? rawTitle.slice(dashIdx + 3).trim() : rawTitle;
     const cleanGenres = [...new Set((i.genres ?? []).map((g) => decodeEntities(g.trim())).filter(Boolean))];
     const cleanSecondary = [...new Set((i.secondaryGenres ?? []).map((g) => decodeEntities(g.trim())).filter(Boolean))].filter((g) => !cleanGenres.includes(g));
+    const cDate = (i.date ?? "").trim() || null;
     return {
       rank: parseRank((i.rank ?? "").trim()) ?? idx + 1,
       artist,
@@ -171,7 +172,8 @@ async function parseRatingsChartItems(res: Response): Promise<ChartItem[]> {
       title: rawTitle,
       url: i.url ?? "",
       cover: i.cover ?? null,
-      date: (i.date ?? "").trim() || null,
+      date: cDate,
+      dateTimestamp: parseDateToTimestamp(cDate),
       genres: cleanGenres,
       secondaryGenres: cleanSecondary,
       score: parseScore((i.score ?? "").trim()),

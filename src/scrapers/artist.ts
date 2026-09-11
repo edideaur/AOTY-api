@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseRank, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseRank, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type { AlbumBlock, ArtistDetail, ArtistLink, DiscographySection, NewsItem, SearchArtist, TopSong } from "../types.js";
 import { scrapeAlbumBlocks, mustHearScopeFromClass } from "./albumBlock.js";
 import { scrapeNewsPage } from "./news.js";
@@ -593,23 +593,27 @@ export async function scrapeArtistPage(pageUrl: string, opts: FetchOpts = FETCH_
 
   const cleanedSections: DiscographySection[] = sections.map((sec) => ({
     title: sec.title.replace(/View All/g, "").trim(),
-    albums: sec.albums.map((a) => ({
-      url: a.url,
-      artist: decodeEntities(a.artist.trim()) || decodeEntities(s.name.trim()),
-      artistUrl: a.artistUrl,
-      artistImage: null,
-      title: decodeEntities(a.title.trim()),
-      cover: a.cover,
-      mediaType: a.mediaType,
-      releaseDate: a.releaseDate.trim(),
-      criticScore: parseScore(a.criticScore),
-      criticCount: parseCount(a.criticCount),
-      userScore: parseScore(a.userScore),
-      userCount: parseCount(a.userCount),
-      mustHear: a.mustHear,
-      mustHearScope: a.mustHearScope ?? null,
-          locked: a.locked ?? false,
-    })),
+    albums: sec.albums.map((a) => {
+      const relDate = a.releaseDate.trim();
+      return {
+        url: a.url,
+        artist: decodeEntities(a.artist.trim()) || decodeEntities(s.name.trim()),
+        artistUrl: a.artistUrl ?? "",
+        artistImage: null,
+        title: decodeEntities(a.title.trim()),
+        cover: a.cover,
+        mediaType: a.mediaType,
+        releaseDate: relDate,
+        releaseDateTimestamp: parseDateToTimestamp(relDate),
+        criticScore: parseScore(a.criticScore),
+        criticCount: parseCount(a.criticCount),
+        userScore: parseScore(a.userScore),
+        userCount: parseCount(a.userCount),
+        mustHear: a.mustHear,
+        mustHearScope: a.mustHearScope ?? null,
+        locked: a.locked ?? false,
+      };
+    }),
   }));
 
   // Merge section-aware blocks with the earlier h2 pass (s.sections holds raw too)
@@ -618,23 +622,27 @@ export async function scrapeArtistPage(pageUrl: string, opts: FetchOpts = FETCH_
     if (!existing && (sec.title || sec.albums.length)) {
       cleanedSections.push({
         title: sec.title.replace(/View All/g, "").trim(),
-        albums: sec.albums.map((a) => ({
-          url: a.url,
-          artist: decodeEntities(a.artist.trim()) || decodeEntities(s.name.trim()),
-          artistUrl: a.artistUrl ?? "",
-          artistImage: null,
-          title: decodeEntities(a.title.trim()),
-          cover: a.cover,
-          mediaType: a.mediaType,
-          releaseDate: a.releaseDate.trim(),
-          criticScore: parseScore(a.criticScore),
-          criticCount: parseCount(a.criticCount),
-          userScore: parseScore(a.userScore),
-          userCount: parseCount(a.userCount),
-          mustHear: a.mustHear,
-          mustHearScope: a.mustHearScope ?? null,
-          locked: a.locked ?? false,
-        })),
+        albums: sec.albums.map((a) => {
+          const rDate = a.releaseDate.trim();
+          return {
+            url: a.url,
+            artist: decodeEntities(a.artist.trim()) || decodeEntities(s.name.trim()),
+            artistUrl: a.artistUrl ?? "",
+            artistImage: null,
+            title: decodeEntities(a.title.trim()),
+            cover: a.cover,
+            mediaType: a.mediaType,
+            releaseDate: rDate,
+            releaseDateTimestamp: parseDateToTimestamp(rDate),
+            criticScore: parseScore(a.criticScore),
+            criticCount: parseCount(a.criticCount),
+            userScore: parseScore(a.userScore),
+            userCount: parseCount(a.userCount),
+            mustHear: a.mustHear,
+            mustHearScope: a.mustHearScope ?? null,
+            locked: a.locked ?? false,
+          };
+        }),
       });
     }
   }

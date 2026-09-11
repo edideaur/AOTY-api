@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseExactScore, parseId, parsePercent, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseScore, parseExactScore, parseId, parsePercent, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type {
   AlbumStats,
   CreditEntry,
@@ -172,9 +172,11 @@ export async function scrapeAlbumRatingHistory(albumId: string): Promise<AlbumRa
     headline: decodeEntities(headline.trim()),
     milestones: rawMilestones.map((m) => {
       const rawM = decodeEntities((m.milestone ?? "").replace(m.date ?? "", "").trim());
+      const mDate = (m.date ?? "").trim() || null;
       return {
         milestone: parseCount(rawM) ?? 0,
-        date: (m.date ?? "").trim() || null,
+        date: mDate,
+        dateTimestamp: parseDateToTimestamp(mDate),
         score: parseScore((m.score ?? "").trim()),
         exactScore: m.exactScore ? parseExactScore(m.exactScore.trim()) : null,
       };

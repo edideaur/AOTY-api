@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseId, parseRank, parseScore, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, REQ_HEADERS, cleanImageUrl, decodeEntities, parseCount, parseId, parseRank, parseScore, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type {
   AllCommentsResult,
   AotyComment,
@@ -229,6 +229,7 @@ export async function scrapeChangelog(opts: FetchOpts = FETCH_OPTS): Promise<Cha
       }
       entries.push({
         date,
+        dateTimestamp: parseDateToTimestamp(date),
         type: (typeM?.[1] ?? "").trim(),
         title: decodeEntities((titleM?.[1] ?? "").replace(/<[^>]+>/g, "").trim()),
         text: decodeEntities(textHtml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()),
@@ -391,6 +392,7 @@ export function parseDiscussionTable(html: string): import("../types.js").Discus
     if (!titleM?.[1]) continue;
     const titleHtml = titleM[2] ?? "";
     const divs = [...titleHtml.matchAll(/<div>([^<]*)<\/div>/g)].map((d) => decodeEntities((d[1] ?? "").trim())).filter(Boolean);
+    const lPostExact = lastDateM?.[1] ? lastDateM[1].trim() : null;
     discussions.push({
       artist: divs[0] ?? "",
       album: divs[1] ?? divs[0] ?? "",
@@ -400,7 +402,8 @@ export function parseDiscussionTable(html: string): import("../types.js").Discus
       lastUser: lastUserM?.[2] ? decodeEntities(lastUserM[2].trim()) : "",
       lastUserUrl: lastUserM?.[1] ? (lastUserM[1].startsWith("http") ? lastUserM[1] : BASE + lastUserM[1]) : "",
       lastPostAgo: lastDateM?.[2] ? lastDateM[2].trim() : null,
-      lastPostExact: lastDateM?.[1] ? lastDateM[1].trim() : null,
+      lastPostExact: lPostExact,
+      lastPostExactTimestamp: parseDateToTimestamp(lPostExact),
     });
   }
   return discussions;
@@ -521,25 +524,27 @@ export async function scrapeNewsDetail(slug: string, opts: FetchOpts = FETCH_OPT
       });
     }
   }
-  return {
-    url,
-    id: parseId(idM?.[1]) ?? 0,
-    title: decodeEntities(s.title.trim()),
-    source: decodeEntities(s.source.trim()),
-    sourceUrl: s.sourceUrl,
-    date: s.date.trim(),
-    image: cleanImageUrl(s.image),
-    text: decodeEntities(s.text.trim()),
-    likes: parseCount(s.likes.trim()) ?? 0,
-    embedUrl: s.embedUrl,
-    artist: newsArtist,
-    album: newsAlbum,
-    label: newsLabel,
-    tags: newsTags,
-    related: s.related.map((r) => ({ name: decodeEntities(r.name.trim()), url: r.url })),
-    streamingLinks: s.streamingLinks,
-    comments,
-  };
+    const nDate = s.date.trim();
+    return {
+      url,
+      id: parseId(idM?.[1]) ?? 0,
+      title: decodeEntities(s.title.trim()),
+      source: decodeEntities(s.source.trim()),
+      sourceUrl: s.sourceUrl,
+      date: nDate,
+      dateTimestamp: parseDateToTimestamp(nDate),
+      image: cleanImageUrl(s.image),
+      text: decodeEntities(s.text.trim()),
+      likes: parseCount(s.likes.trim()) ?? 0,
+      embedUrl: s.embedUrl,
+      artist: newsArtist,
+      album: newsAlbum,
+      label: newsLabel,
+      tags: newsTags,
+      related: s.related.map((r) => ({ name: decodeEntities(r.name.trim()), url: r.url })),
+      streamingLinks: s.streamingLinks,
+      comments,
+    };
 }
 
 export async function scrapeSearchNews(query: string, opts: FetchOpts = FETCH_OPTS, page = 1): Promise<{ query: string; page: number; news: NewsSearchItem[] }> {
@@ -1030,13 +1035,15 @@ export async function scrapeEntityCorrections(
     const submitterMatch = content.match(/by <a href="([^"]*)">([^<]*)<\/a>/i);
     const dateMatch = content.match(/<span class="gray-font">([^<]*)<\/span>/i);
 
+    const cDate = dateMatch?.[1] ? dateMatch[1].trim() : null;
     corrections.push({
       id: parseId(cid) ?? 0,
       title: titleMatch?.[1] ? decodeEntities(titleMatch[1].trim()) : "",
       status: statusMatch?.[1] ? decodeEntities(statusMatch[1].trim()) : "Pending",
       submittedBy: submitterMatch?.[2] ? decodeEntities(submitterMatch[2].trim()) : null,
       submittedByUrl: submitterMatch?.[1] ? (submitterMatch[1].startsWith("http") ? submitterMatch[1] : BASE + submitterMatch[1]) : null,
-      date: dateMatch?.[1] ? dateMatch[1].trim() : null,
+      date: cDate,
+      dateTimestamp: parseDateToTimestamp(cDate),
     });
   }
 
@@ -1045,6 +1052,7 @@ export async function scrapeEntityCorrections(
     title,
     url,
     addedOn,
+    addedOnTimestamp: parseDateToTimestamp(addedOn),
     addedBy,
     addedByUrl,
     sourceUrl,

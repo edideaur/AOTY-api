@@ -1,4 +1,4 @@
-import { BASE, cleanImageUrl, decodeEntities, parseCount, parseId } from "../constants.js";
+import { BASE, cleanImageUrl, decodeEntities, parseCount, parseId, parseDateToTimestamp } from "../constants.js";
 import type { AotyComment } from "../types.js";
 
 type RawComment = {
@@ -78,16 +78,22 @@ export async function scrapeCommentRows(res: Response): Promise<AotyComment[]> {
     .transform(res)
     .arrayBuffer();
   if (st.cur) st.cur.text = st.textBuf.trim();
-  return comments.map((c) => ({
-    id: parseId(c.id) ?? 0,
-    username: decodeEntities((c.username ?? "").trim()),
-    usernameColor: c.usernameColor ?? null,
-    userUrl: c.userUrl ?? "",
-    avatar: cleanImageUrl(c.avatar ?? null),
-    subscriber: c.subscriber ?? false,
-    date: (c.date ?? "").trim(),
-    dateExact: c.dateExact ?? "",
-    text: decodeEntities((c.text ?? "").trim()),
-    replies: parseCount((c.replies ?? "").trim()) ?? 0,
-  }));
+  return comments.map((c) => {
+    const cDate = (c.date ?? "").trim();
+    const cDateExact = c.dateExact ?? "";
+    return {
+      id: parseId(c.id) ?? 0,
+      username: decodeEntities((c.username ?? "").trim()),
+      usernameColor: c.usernameColor ?? null,
+      userUrl: c.userUrl ?? "",
+      avatar: cleanImageUrl(c.avatar ?? null),
+      subscriber: c.subscriber ?? false,
+      date: cDate,
+      dateTimestamp: parseDateToTimestamp(cDate),
+      dateExact: cDateExact,
+      dateExactTimestamp: parseDateToTimestamp(cDateExact),
+      text: decodeEntities((c.text ?? "").trim()),
+      replies: parseCount((c.replies ?? "").trim()) ?? 0,
+    };
+  });
 }

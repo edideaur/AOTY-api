@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, REQ_HEADERS, decodeEntities, cleanImageUrl, parseCount, parseScore, parseExactScore, parseId, parseRank, parseTrackNumber, type FetchOpts } from "../constants.js";
+import { BASE, FETCH_OPTS, REQ_HEADERS, decodeEntities, cleanImageUrl, parseCount, parseScore, parseExactScore, parseId, parseRank, parseTrackNumber, parseDurationToSeconds, parseDateToTimestamp, type FetchOpts } from "../constants.js";
 import type {
   AlbumBlock,
   AlbumDetail,
@@ -278,12 +278,14 @@ export async function scrapeAlbumPage(pageUrl: string, opts: FetchOpts = FETCH_O
     .map((t, idx) => {
       const num = parseTrackNumber(t.number ?? "");
       const songIdM = (t.url ?? "").match(/\/song\/(\d+)/);
+      const len = (t.length ?? "").trim();
       return {
         number: num ?? idx + 1,
         title: decodeEntities((t.title ?? "").trim()),
         url: t.url ?? "",
         songId: songIdM?.[1] ? parseInt(songIdM[1], 10) : null,
-        length: (t.length ?? "").trim(),
+        length: len,
+        lengthSeconds: parseDurationToSeconds(len),
         rating: parseScore(t.rating ? t.rating.trim() : null),
         ratingCount: t.ratingCount ?? null,
         notes: t.notes ? decodeEntities(t.notes.trim()) : null,
@@ -472,6 +474,8 @@ export async function scrapeAlbumPage(pageUrl: string, opts: FetchOpts = FETCH_O
         const dateM = c.match(/<div class="commentDate"[^>]*title="([^"]*)"[^>]*>([^<]*)<\/div>/);
         const textM = c.match(/<div class="commentText[^"]*">([\s\S]*?)<\/div>/);
         const repliesM = c.match(/<button class="showReplies"[^>]*>[\s\S]*?<span>(\d+)<\/span>/);
+        const dDate = dateM?.[2] ? dateM[2].trim() : "";
+        const dDateExact = dateM?.[1] ? dateM[1].trim() : "";
         comments.push({
           id: parseId(id) ?? 0,
           username: userM?.[2] ? decodeEntities(userM[2].trim()) : "",
@@ -479,8 +483,10 @@ export async function scrapeAlbumPage(pageUrl: string, opts: FetchOpts = FETCH_O
           userUrl: userM?.[1] ? (userM[1].startsWith("http") ? userM[1] : BASE + userM[1]) : "",
           avatar: cleanImageUrl(avatarM?.[1] ?? null),
           subscriber: /class="donor[\s"]/.test(c),
-          date: dateM?.[2] ? dateM[2].trim() : "",
-          dateExact: dateM?.[1] ? dateM[1].trim() : "",
+          date: dDate,
+          dateTimestamp: parseDateToTimestamp(dDate),
+          dateExact: dDateExact,
+          dateExactTimestamp: parseDateToTimestamp(dDateExact),
           text: textM?.[1] ? decodeEntities(textM[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()) : "",
           replies: parseCount(repliesM?.[1]) ?? 0,
         });
@@ -510,34 +516,40 @@ export async function scrapeAlbumPage(pageUrl: string, opts: FetchOpts = FETCH_O
     else if (typeM[1] === "6") writersMore += n;
   }
 
-  return {
-    url: pageUrl,
-    id: parseId(s.albumId),
-    title: decodeEntities(String(jsonLd["name"] ?? "")),
-    artist: decodeEntities(byArtist?.["name"] ?? ""),
-    artistUrl,
-    artistImage,
-    cover: cleanImageUrl(String(jsonLd["image"] ?? "")),
-    datePublished: String(jsonLd["datePublished"] ?? ""),
-    dateCreated,
-    dateModified,
-    format,
-    label: primaryLabel?.name ?? null,
-    labelUrl: primaryLabel?.url ?? null,
-    labels: s.labels.map((l) => ({ name: decodeEntities(l.name.trim()), url: l.url })),
-    genres,
-    genreLinks: s.genreLinks
-      .map((l) => ({ name: decodeEntities(l.name.trim()), url: l.url }))
-      .filter((l) => l.name && l.url),
-    secondaryGenres: [...new Set(secondaryGenres)],
-    tags: [...new Set(s.tags.map((t) => decodeEntities(t.trim())).filter(Boolean))],
-    vibes: [...new Set(s.vibes.map((v) => decodeEntities(v.trim())).filter(Boolean))],
-    producers,
-    writers,
-    producersMore,
-    writersMore,
-    totalLength: s.totalLength ? s.totalLength.replace(/^Total Length:\s*/i, "").trim() : null,
-    mustHear: s.mustHear,
+    const datePublished = String(jsonLd["datePublished"] ?? "");
+    const totLen = s.totalLength ? s.totalLength.replace(/^Total Length:\s*/i, "").trim() : null;
+    return {
+      url: pageUrl,
+      id: parseId(s.albumId),
+      title: decodeEntities(String(jsonLd["name"] ?? "")),
+      artist: decodeEntities(byArtist?.["name"] ?? ""),
+      artistUrl,
+      artistImage,
+      cover: cleanImageUrl(String(jsonLd["image"] ?? "")),
+      datePublished,
+      datePublishedTimestamp: parseDateToTimestamp(datePublished),
+      dateCreated,
+      dateCreatedTimestamp: parseDateToTimestamp(dateCreated),
+      dateModified,
+      dateModifiedTimestamp: parseDateToTimestamp(dateModified),
+      format,
+      label: primaryLabel?.name ?? null,
+      labelUrl: primaryLabel?.url ?? null,
+      labels: s.labels.map((l) => ({ name: decodeEntities(l.name.trim()), url: l.url })),
+      genres,
+      genreLinks: s.genreLinks
+        .map((l) => ({ name: decodeEntities(l.name.trim()), url: l.url }))
+        .filter((l) => l.name && l.url),
+      secondaryGenres: [...new Set(secondaryGenres)],
+      tags: [...new Set(s.tags.map((t) => decodeEntities(t.trim())).filter(Boolean))],
+      vibes: [...new Set(s.vibes.map((v) => decodeEntities(v.trim())).filter(Boolean))],
+      producers,
+      writers,
+      producersMore,
+      writersMore,
+      totalLength: totLen,
+      totalLengthSeconds: parseDurationToSeconds(totLen),
+      mustHear: s.mustHear,
     commentCount,
     criticScore: parseScore(s.criticScoreDisplay.trim()),
     criticScoreExact: parseExactScore(s.criticScoreExact),
@@ -602,6 +614,8 @@ export function parseAlbumUserReviewRows(htmlChunk: string): UserReview[] {
       return u.startsWith("http") ? u : BASE + u;
     };
     const commentsHref = commentsLinkM?.[1] ?? null;
+    const revDate = dateRaw.replace(/\*$/, "").trim() || null;
+    const revDateExact = dateExactM?.[1] ? dateExactM[1].trim() : null;
     reviews.push({
       reviewId,
       url: revUrl,
@@ -621,8 +635,10 @@ export function parseAlbumUserReviewRows(htmlChunk: string): UserReview[] {
       likes: parseCount(likesM?.[1]) ?? 0,
       comments: parseCount(commentsM?.[1]) ?? 0,
       commentsUrl: commentsHref ? (commentsHref.startsWith("http") ? commentsHref : BASE + commentsHref) : null,
-      date: dateRaw.replace(/\*$/, "").trim() || null,
-      dateExact: dateExactM?.[1] ? dateExactM[1].trim() : null,
+      date: revDate,
+      dateTimestamp: parseDateToTimestamp(revDate),
+      dateExact: revDateExact,
+      dateExactTimestamp: parseDateToTimestamp(revDateExact),
       edited,
     });
   }
@@ -643,6 +659,7 @@ function cleanCriticReviews(reviews: Array<Record<string, unknown>>): CriticRevi
         if (!u) return null;
         return u.startsWith("http") ? u : `${BASE}${u.startsWith("/") ? "" : "/"}${u}`;
       };
+      const criticDate = String((r["date"] as string) ?? "");
       return {
         id: idM?.[1] ? parseInt(idM[1], 10) : null,
         score: parseScore(String((r["score"] as string) ?? "").trim()),
@@ -654,7 +671,8 @@ function cleanCriticReviews(reviews: Array<Record<string, unknown>>): CriticRevi
         image: cleanImageUrl(String((r["image"] as string) ?? "")),
         url,
         isPrintOnly: !url && /^print only$/i.test(extLinkText),
-        date: String((r["date"] as string) ?? ""),
+        date: criticDate,
+        dateTimestamp: parseDateToTimestamp(criticDate),
       };
     });
 }

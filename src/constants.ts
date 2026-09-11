@@ -511,6 +511,74 @@ export function parseId(raw: unknown): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
+/**
+ * Parse a human-readable duration ("3:45", "1:02:03", "1 hour, 8 minutes", "23 minutes")
+ * into total integer seconds, or null if unparseable.
+ */
+export function parseDurationToSeconds(raw: unknown): number | null {
+  if (raw === null || raw === undefined) return null;
+  if (typeof raw === "number") return Number.isFinite(raw) ? Math.trunc(raw) : null;
+  const s = String(raw).replace(/^Total Length:\s*/i, "").trim();
+  if (!s) return null;
+
+  // Pattern: "h:mm:ss" or "m:ss" (e.g., "3:45", "03:45", "1:02:03")
+  const colonMatch = s.match(/^(\d+):(\d{2})(?::(\d{2}))?$/);
+  if (colonMatch) {
+    if (colonMatch[3] !== undefined) {
+      const hours = parseInt(colonMatch[1] ?? "0", 10);
+      const mins = parseInt(colonMatch[2] ?? "0", 10);
+      const secs = parseInt(colonMatch[3] ?? "0", 10);
+      return hours * 3600 + mins * 60 + secs;
+    }
+    const mins = parseInt(colonMatch[1] ?? "0", 10);
+    const secs = parseInt(colonMatch[2] ?? "0", 10);
+    return mins * 60 + secs;
+  }
+
+  // Pattern: "X hour(s), Y minute(s)" or "X hours" or "Y minutes" or "Z seconds"
+  const hourM = s.match(/(\d+)\s*(?:hours?|hrs?|h)\b/i);
+  const minM = s.match(/(\d+)\s*(?:minutes?|mins?|m)\b/i);
+  const secM = s.match(/(\d+)\s*(?:seconds?|secs?|s)\b/i);
+  if (hourM || minM || secM) {
+    const hours = hourM?.[1] ? parseInt(hourM[1], 10) : 0;
+    const mins = minM?.[1] ? parseInt(minM[1], 10) : 0;
+    const secs = secM?.[1] ? parseInt(secM[1], 10) : 0;
+    return hours * 3600 + mins * 60 + secs;
+  }
+
+  return null;
+}
+
+/**
+ * Parse an ISO date, RFC date, exact timestamp, or full date string into Unix timestamp (seconds integer).
+ * Returns null for relative times ("2y ago", "11h", "5 minutes ago") or partial dates missing a year ("Jun 15").
+ */
+export function parseDateToTimestamp(raw: unknown): number | null {
+  if (raw === null || raw === undefined) return null;
+  if (typeof raw === "number") {
+    if (!Number.isFinite(raw)) return null;
+    // If it looks like milliseconds (e.g. > 1e11), convert to seconds
+    return raw > 1e11 ? Math.trunc(raw / 1000) : Math.trunc(raw);
+  }
+  const s = String(raw).trim();
+  if (!s || /ago$|^(yesterday|today)$/i.test(s) || /^\d+[smhdwmy]$/i.test(s)) {
+    return null;
+  }
+  // If year-only (e.g. "2024")
+  if (/^\d{4}$/.test(s)) {
+    const y = parseInt(s, 10);
+    const ms = Date.UTC(y, 0, 1);
+    return Math.trunc(ms / 1000);
+  }
+  // Must contain a 4-digit year to avoid ambiguous yearless dates like "Jun 15"
+  if (!/\b(19|20)\d{2}\b/.test(s)) {
+    return null;
+  }
+  const parsed = Date.parse(s);
+  if (Number.isNaN(parsed)) return null;
+  return Math.trunc(parsed / 1000);
+}
+
 export const RES_HEADERS: HeadersInit = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
