@@ -1,4 +1,4 @@
-import { BASE, FETCH_OPTS, FETCH_OPTS_FRESH, RES_HEADERS, PROBLEM_HEADERS, cleanImageUrl, deepDecodeEntities, parseId, type FetchOpts } from "./constants.js";
+import { BASE, FETCH_OPTS, FETCH_OPTS_FRESH, RES_HEADERS, PROBLEM_HEADERS, CORS_HEADERS, cleanImageUrl, deepDecodeEntities, parseId, type FetchOpts } from "./constants.js";
 import { openApiSpec } from "./openapi.js";
 import { POSTMAN_BODY } from "./postman.js";
 import { scrapeAlbumBlocks } from "./scrapers/albumBlock.js";
@@ -91,7 +91,26 @@ class ApiError extends Error {
 }
 
 function corsOptions(): Response {
-  return new Response(null, { status: 204, headers: RES_HEADERS });
+  return new Response(null, {
+    status: 204,
+    headers: {
+      ...CORS_HEADERS,
+      "Allow": "GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS",
+    },
+  });
+}
+
+function withCors(res: Response): Response {
+  const headers = new Headers(res.headers);
+  for (const [k, v] of Object.entries(CORS_HEADERS)) {
+    headers.set(k, v);
+  }
+  const hasNullBody = res.status === 204 || res.status === 304 || res.body === null;
+  return new Response(hasNullBody ? null : res.body, {
+    status: res.status,
+    statusText: res.statusText,
+    headers,
+  });
 }
 
 export function toYaml(val: unknown, indent = 0): string {
@@ -583,7 +602,7 @@ ${Object.keys(openApiSpec.paths).map((p) => `  <url><loc>${p}</loc></url>`).join
 
 function htmlPage(body: string): Response {
   return new Response(body, {
-    headers: { "Content-Type": "text/html; charset=utf-8", "Access-Control-Allow-Origin": "*" },
+    headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
   });
 }
 
@@ -2006,7 +2025,7 @@ if (path === "/rapidoc") return htmlPage(RAPIDOC_HTML);
     if (path === "/elements") return htmlPage(ELEMENTS_HTML);
     if (path === "/robots.txt") {
       return new Response("User-agent: *\nAllow: /\n", {
-        headers: { "Content-Type": "text/plain", "Cache-Control": "public, max-age=86400" },
+        headers: { "Content-Type": "text/plain", "Cache-Control": "public, max-age=86400", ...CORS_HEADERS },
       });
     }
     if (path === "/health" || path === "/.well-known/health") {
@@ -2017,34 +2036,34 @@ if (path === "/rapidoc") return htmlPage(RAPIDOC_HTML);
     }
     if (path === "/openapi.yaml") {
       return new Response(OPENAPI_YAML, {
-        headers: { "Content-Type": "application/yaml", "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=3600" },
+        headers: { "Content-Type": "application/yaml", "Cache-Control": "public, max-age=3600", ...CORS_HEADERS },
       });
     }
     if (path === "/postman.json") {
       return new Response(POSTMAN_BODY, { headers: { ...RES_HEADERS, "Cache-Control": "public, max-age=3600" } });
     }
     if (path === "/humans.txt") {
-      return new Response(HUMANS_TXT, { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=86400" } });
+      return new Response(HUMANS_TXT, { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=86400", ...CORS_HEADERS } });
     }
     if (path === "/.well-known/security.txt") {
       const canonical = `${url.origin}/.well-known/security.txt`;
       return new Response(
         `Contact: mailto:eduard@prigoana.com\nExpires: 2027-01-01T00:00:00Z\nPreferred-Languages: en\nCanonical: ${canonical}\n`,
-        { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=86400" } },
+        { headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=86400", ...CORS_HEADERS } },
       );
     }
     if (path === "/.well-known/ai-plugin.json") {
       return new Response(AI_PLUGIN, { headers: { ...RES_HEADERS, "Cache-Control": "public, max-age=3600" } });
     }
     if (path === "/sitemap.xml") {
-      return new Response(SITEMAP_XML, { headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
+      return new Response(SITEMAP_XML, { headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600", ...CORS_HEADERS } });
     }
     if (path === "/feed/news.xml" || (path === "/feed/news" && q.get("format") === "xml")) {
       const xml = await scrapeNewsFeedXml(FETCH_OPTS);
-      return new Response(xml, { headers: { "Content-Type": "application/xml; charset=utf-8", "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=3600" } });
+      return new Response(xml, { headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600", ...CORS_HEADERS } });
     }
     if (path === "/ping") {
-      return new Response(null, { status: 200, headers: { "Cache-Control": "no-store", "Access-Control-Allow-Origin": "*" } });
+      return new Response(null, { status: 200, headers: { "Cache-Control": "no-store", ...CORS_HEADERS } });
     }
     if (path === "/favicon.ico") {
       return Response.redirect("https://Prigoana.com/favicon.png", 302);
@@ -2053,10 +2072,10 @@ if (path === "/rapidoc") return htmlPage(RAPIDOC_HTML);
       return new Response(VERSION_JSON, { headers: { ...RES_HEADERS, "Cache-Control": "public, max-age=3600" } });
     }
     if (path === "/manifest.json") {
-      return new Response(MANIFEST_JSON, { headers: { "Content-Type": "application/manifest+json", "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=3600" } });
+      return new Response(MANIFEST_JSON, { headers: { "Content-Type": "application/manifest+json", "Cache-Control": "public, max-age=3600", ...CORS_HEADERS } });
     }
     if (path === "/opensearch.xml") {
-      return new Response(buildOpenSearch(url.origin), { headers: { "Content-Type": "application/opensearchdescription+xml", "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=86400" } });
+      return new Response(buildOpenSearch(url.origin), { headers: { "Content-Type": "application/opensearchdescription+xml", "Cache-Control": "public, max-age=86400", ...CORS_HEADERS } });
     }
     if (path === "/.well-known/api-catalog") {
       return new Response(API_CATALOG, { headers: { ...RES_HEADERS, "Cache-Control": "public, max-age=3600" } });
@@ -2113,17 +2132,6 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const method = request.method;
     if (method === "OPTIONS") {
-      try {
-        const preflightUrl = new URL(request.url);
-        if (preflightUrl.pathname === "/batch") {
-          return new Response(null, {
-            status: 204,
-            headers: { ...RES_HEADERS, "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS" },
-          });
-        }
-      } catch {
-        // fall through to the default CORS response
-      }
       return corsOptions();
     }
     if (method === "POST") {
@@ -2131,18 +2139,18 @@ export default {
       try {
         batchUrl = new URL(request.url);
       } catch {
-        return problem("Invalid request URL", 400);
+        return withCors(problem("Invalid request URL", 400));
       }
       if (batchUrl.pathname !== "/batch") {
-        return new Response(null, { status: 405, headers: { "Allow": "GET, HEAD, OPTIONS", "Access-Control-Allow-Origin": "*" } });
+        return withCors(new Response(null, { status: 405, headers: { "Allow": "GET, HEAD, OPTIONS" } }));
       }
       let parsed: unknown;
       try {
         const text = await request.text();
-        if (text.length > 8192) return problem("Request body too large (max 8KB)", 400);
+        if (text.length > 8192) return withCors(problem("Request body too large (max 8KB)", 400));
         parsed = text ? JSON.parse(text) : null;
       } catch {
-        return problem("Invalid JSON body", 400);
+        return withCors(problem("Invalid JSON body", 400));
       }
       try {
         const items = parseBatchPaths((parsed as Record<string, unknown> | null)?.["paths"]);
@@ -2150,38 +2158,37 @@ export default {
         const rawData = await executeBatchPaths(items, fetchOpts);
         const data = deepDecodeEntities(sanitizeImageUrls(rawData));
         const body = JSON.stringify(data);
-        return new Response(body, {
+        return withCors(new Response(body, {
           headers: { ...RES_HEADERS, "X-Cache": "MISS", "Cache-Control": "no-store", "Link": `</openapi.json>; rel="service-desc"` },
-        });
+        }));
       } catch (err) {
-        if (err instanceof ApiError) return problem(err.message, err.status);
-        return problem(err instanceof Error ? err.message : "Unknown error", 500);
+        if (err instanceof ApiError) return withCors(problem(err.message, err.status));
+        return withCors(problem(err instanceof Error ? err.message : "Unknown error", 500));
       }
     }
     if (method !== "GET" && method !== "HEAD") {
-      return new Response(null, { status: 405, headers: { "Allow": "GET, HEAD, OPTIONS", "Access-Control-Allow-Origin": "*" } });
+      return withCors(new Response(null, { status: 405, headers: { "Allow": "GET, HEAD, OPTIONS" } }));
     }
     let url: URL;
     try {
       url = new URL(request.url);
     } catch {
-      return problem("Invalid request URL", 400);
+      return withCors(problem("Invalid request URL", 400));
     }
     const res = await handle(url, env);
     const ifNoneMatch = request.headers.get("if-none-match");
     if (ifNoneMatch && res.status === 200) {
       const etag = res.headers.get("etag");
       if (etag && etag === ifNoneMatch) {
-        return new Response(null, {
+        return withCors(new Response(null, {
           status: 304,
           headers: {
             "ETag": etag,
             "Cache-Control": res.headers.get("cache-control") ?? "public",
-            "Access-Control-Allow-Origin": "*",
           },
-        });
+        }));
       }
     }
-    return method === "HEAD" ? new Response(null, { status: res.status, headers: res.headers }) : res;
+    return withCors(method === "HEAD" ? new Response(null, { status: res.status, headers: res.headers }) : res);
   },
 };

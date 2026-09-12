@@ -579,13 +579,17 @@ export function parseDateToTimestamp(raw: unknown): number | null {
   return Math.trunc(parsed / 1000);
 }
 
+export const CORS_HEADERS: Record<string, string> = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS",
+  "Access-Control-Allow-Headers": "*",
+  "Access-Control-Expose-Headers": "*",
+  "Access-Control-Max-Age": "86400",
+};
+
 export const RES_HEADERS: HeadersInit = {
   "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Expose-Headers": "X-Cache, Server-Timing, Cache-Control, Link, Allow",
-  "Access-Control-Max-Age": "86400",
+  ...CORS_HEADERS,
   "Allow": "GET, HEAD, OPTIONS",
   "Vary": "Accept-Encoding",
   "Timing-Allow-Origin": "*",
@@ -593,8 +597,6 @@ export const RES_HEADERS: HeadersInit = {
 
 export const PROBLEM_HEADERS: HeadersInit = {
   "Content-Type": "application/problem+json",
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
+  ...CORS_HEADERS,
   "Vary": "Accept-Encoding",
 };

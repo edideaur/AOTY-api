@@ -40,12 +40,15 @@ describe("Static & well-known routes smoke tests", () => {
   ] as const;
 
   for (const [path, status, contentType] of routes) {
-    it(`GET ${path} returns ${status}${contentType ? ` with ${contentType}` : ""}`, async () => {
+    it(`GET ${path} returns ${status}${contentType ? ` with ${contentType}` : ""} and allows CORS`, async () => {
       const res = await fetch(path);
       expect(res.status).toBe(status);
       if (contentType) {
         expect(res.headers.get("content-type")).toContain(contentType);
       }
+      expect(res.headers.get("access-control-allow-origin")).toBe("*");
+      expect(res.headers.get("access-control-allow-methods")).toContain("GET");
+      expect(res.headers.get("access-control-allow-headers")).toBe("*");
     });
   }
 
@@ -65,5 +68,36 @@ describe("Static & well-known routes smoke tests", () => {
     expect(html).toContain("Open+Sans");
     expect(html).toContain("Roboto");
     expect(html).toContain("data-configuration");
+  });
+
+  it("allows CORS on OPTIONS preflight across multiple endpoints", async () => {
+    const endpoints = ["/", "/health", "/album", "/discover", "/batch", "/nonexistent"];
+    for (const ep of endpoints) {
+      const res = await worker.fetch(new Request(`http://localhost${ep}`, { method: "OPTIONS" }), mockEnv);
+      expect(res.status).toBe(204);
+      expect(res.headers.get("access-control-allow-origin")).toBe("*");
+      expect(res.headers.get("access-control-allow-methods")).toContain("GET");
+      expect(res.headers.get("access-control-allow-methods")).toContain("POST");
+      expect(res.headers.get("access-control-allow-headers")).toBe("*");
+      expect(res.headers.get("access-control-expose-headers")).toBe("*");
+      expect(res.headers.get("access-control-max-age")).toBe("86400");
+    }
+  });
+
+  it("allows CORS on 404, 405, and error responses", async () => {
+    const notFound = await fetch("/unknown-endpoint-xyz");
+    expect(notFound.status).toBe(404);
+    expect(notFound.headers.get("access-control-allow-origin")).toBe("*");
+    expect(notFound.headers.get("access-control-allow-headers")).toBe("*");
+
+    const methodNotAllowed = await fetch("/health", "DELETE");
+    expect(methodNotAllowed.status).toBe(405);
+    expect(methodNotAllowed.headers.get("access-control-allow-origin")).toBe("*");
+    expect(methodNotAllowed.headers.get("access-control-allow-headers")).toBe("*");
+
+    const badPost = await fetch("/unknown-post", "POST");
+    expect(badPost.status).toBe(405);
+    expect(badPost.headers.get("access-control-allow-origin")).toBe("*");
+    expect(badPost.headers.get("access-control-allow-headers")).toBe("*");
   });
 });
